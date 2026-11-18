@@ -3520,7 +3520,7 @@ if(ART)(async()=>{try{if(!window.claude)return;const db=await claude.use("db");i
   db.doc("tv/market").onSnapshot(s=>{if(s.exists){const d=s.data();if(d&&d.hot10&&d.hot10.length>=10){MARKET=Object.assign({},MARKET,d);buildTicker();}}},()=>{});
 }catch(e){}})();
 setInterval(()=>{const d=now();if(d.getHours()===4&&d.getMinutes()<1)hardReload();},45000);
-if(!IS_REMOTE){let fsN=0;const fsc=()=>{const on=!!(document.fullscreenElement||document.webkitFullscreenElement);if(!on&&fsN<6){fsN++;post({cmd:"fslog",now:lastId,up:Math.round((Date.now()-BOOT)/1000),w:WEAKTV,vis:document.visibilityState},"-ack");}};document.addEventListener("fullscreenchange",fsc);document.addEventListener("webkitfullscreenchange",fsc);document.documentElement.classList.add("tvmode");try{const o=JSON.parse(localStorage.getItem("cctvTV")||"null");if(o)applyState(o);}catch(x){}}
+if(!IS_REMOTE){["pointerdown","mousedown","touchstart"].forEach(ev=>document.addEventListener(ev,()=>{goFull();try{Radio.unlock();soundUnlock();}catch(x){}},{passive:true}));let fsN=0;const fsc=()=>{const on=!!(document.fullscreenElement||document.webkitFullscreenElement);if(!on&&fsN<6){fsN++;post({cmd:"fslog",now:lastId,up:Math.round((Date.now()-BOOT)/1000),w:WEAKTV,vis:document.visibilityState},"-ack");}};document.addEventListener("fullscreenchange",fsc);document.addEventListener("webkitfullscreenchange",fsc);document.documentElement.classList.add("tvmode");try{const o=JSON.parse(localStorage.getItem("cctvTV")||"null");if(o)applyState(o);}catch(x){}}
 
 </script>
 </body></html>
