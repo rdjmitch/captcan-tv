@@ -941,7 +941,7 @@ function setPaused(p){paused=p;document.body.classList.toggle("paused",p);if(p){
 const next=()=>go(1);
 /* push a specific screen (from the desk remote) */
 const PUSH={book:p=>S.book(p),msg:m=>S.msg(m),join:()=>S.join(),cash:()=>S.svc(0),sell:()=>S.svc(1),consign:()=>S.svc(2),pressing:()=>S.svc(3),holdbox:()=>S.svc(4),presale:()=>S.presale(),wall:()=>S.wall(),board:()=>S.board(),hero:()=>S.hero(),run:()=>S.run(),blow:()=>S.blow(),keys:()=>S.keys(),soon:()=>S.soon(),excl:()=>S.excl(),merch:()=>S.merch(),market:()=>S.market(0),market2:()=>S.market(1),alpha:()=>S.alpha(),sold:()=>S.sold(),vel:()=>S.vel(),timeline:()=>S.timeline(0),timeline2:()=>S.timeline(1),quiz:()=>S.quizFirst(),quizprice:()=>S.quizPrice(),ratio:()=>S.lesson(0),cpv:()=>S.lesson(1),cgc:()=>S.school(),eras:()=>S.eras(),artists:()=>S.artists(),howto:()=>S.howto(),trailer:i=>S.trailer(i),open:()=>S.open(),chain:()=>S.chain(),chainall:()=>S.chainall(),inc:()=>S.inc(),trades:()=>S.trades(),about:()=>S.about(0),about2:()=>S.about(1),sign:()=>S.sign(),cgcss:()=>S.cgcss(),dwj:()=>S.dwj(),monk:()=>S.monk(),app:()=>S.app(),feat:()=>S.feat()};
-function pushScreen(name,arg,hold){const f=PUSH[name];if(!f)return;let sc=null;try{sc=f(arg);}catch(e){}if(!sc)return;go(0,{sc,hold:hold||(sc.manual?null:sc.dur)}).then(()=>{if(!IS_REMOTE&&!ART)post(ackMsg(),"-ack");});}
+function pushScreen(name,arg,hold){const f=PUSH[name];if(!f)return;let sc=null;try{sc=f(arg);}catch(e){}if(!sc)return;go(0,{sc,hold:hold||(sc.manual?null:sc.dur)}).then(()=>{});}
 function buildTicker(){const lead={1:"Pre-sales close tonight at 8pm",2:"This week's new releases go up today",3:"New comic book day",5:"New back issues go up today"}[DAYNOW()];
   const mk=MARKET.hot10.slice(0,3).map(m=>`Market: ${m.t} ${m.up}`);
   const sp=sigPhase(),sl={before:"Jeff Monk signs today 12 to 4 · CGC witness on site",live:"Jeff Monk is signing now until 4pm",break:"Jeff Monk is on a quick break"+(SIG.back?", back at "+SIG.back:""),last:"Last call for Jeff Monk signatures"}[sp];
@@ -959,7 +959,7 @@ const wake=()=>{try{navigator.wakeLock&&navigator.wakeLock.request("screen").cat
 /* ===== shared channel between the TV and the desk remote (ntfy.sh, a free open message relay; the topic name is the secret) ===== */
 const TOPIC="captcan-tv-r7k2m9q4x8v3n5w1",RELAY="https://ntfy.sh/"+TOPIC;
 const IS_REMOTE=location.hash==="#remote"||location.hash==="#r";addEventListener("hashchange",()=>hardReload());
-const post=(o,t)=>fetch(RELAY+(t||""),{method:"POST",body:JSON.stringify(Object.assign({at:Date.now()},o))}).catch(()=>{});
+let RELAYFULL=0;const post=(o,t)=>fetch(RELAY+(t||""),{method:"POST",body:JSON.stringify(Object.assign({at:Date.now()},o))}).then(r=>{if(r.status===429){RELAYFULL=Date.now();try{window.onRelayFull&&window.onRelayFull();}catch(x){}}else RELAYFULL=0;return r;}).catch(()=>{});
 /* ===== radio ===== */
 const DEFST=[{id:"groovesalad",name:"Groove Salad",url:"https://ice2.somafm.com/groovesalad-128-mp3"},{id:"indiepop",name:"Indie Pop Rocks",url:"https://ice2.somafm.com/indiepop-128-mp3"},{id:"u80s",name:"Underground 80s",url:"https://ice2.somafm.com/u80s-128-mp3"},{id:"seventies",name:"Left Coast 70s",url:"https://ice2.somafm.com/seventies-128-mp3"},{id:"poptron",name:"PopTron",url:"https://ice2.somafm.com/poptron-128-mp3"}];const stationUrl=id=>{const x=DEFST.find(s=>s.id===id);return x?x.url:"";};
 const WEAKTV=/Tizen|Web0S|webOS|SMART-TV|SmartTV/i.test(navigator.userAgent);
@@ -978,7 +978,7 @@ function handle(m){if(!m||!m.cmd)return;
   if(Date.now()-(m.at||0)>120000)return;
   if(m.cmd==="next")go(1);else if(m.cmd==="prev")go(-1);else if(m.cmd==="pause")setPaused(true);else if(m.cmd==="play")setPaused(false);
   else if(m.cmd==="show")pushScreen(m.screen,m.arg,m.hold);else if(m.cmd==="yttest"){FORCEYT=true;if(m.host)YTHOST=m.host;TRBAD=0;pushScreen("trailer",m.arg||0,0);setTimeout(()=>{FORCEYT=false;},180000);}else if(m.cmd==="reload")hardReload();else if(m.cmd==="goto"&&/^https:\/\/(captcancomics\.ca|rdjmitch\.github\.io)\//.test(m.url||""))location.href=m.url;
-  setTimeout(()=>post(ackMsg(),"-ack"),900);}
+  if(m.cmd==="ping")setTimeout(()=>post(ackMsg(),"-ack"),900);}
 function updTk(){const e=document.getElementById("tk");if(!e)return;const ph=sigPhase();const on=SERVE>0&&(ph==="live"||ph==="last"||ph==="break");e.style.display=on?"flex":"none";if(on)e.innerHTML="Now signing <b>#"+SERVE+"</b>";}
 function ackMsg(){const u=navigator.userAgent,m=u.match(/Chrom(?:e|ium)\/(\d+)/)||u.match(/\) (\d{2,3})\.0\.\d{4}\.\d+/);return {cmd:"ack",now:lastId,paused,mode:MODE,radio:Radio.on?Radio.name:"",locked:SOUNDWAIT(),cv:m?+m[1]:0,fg:FLEXGAP,ua:navigator.userAgent.slice(0,140),sig:sigPhase(),serve:SERVE};}
 function listen(){try{const es=new EventSource(RELAY+"/sse");es.onmessage=e=>{try{const d=JSON.parse(e.data);if(d.event==="message")handle(JSON.parse(d.message));}catch(x){}};es.onerror=()=>{};}catch(x){}}
@@ -1034,7 +1034,8 @@ function remoteUI(){
   const save=extra=>{try{localStorage.setItem("cctvState",JSON.stringify(S0));}catch(x){}post(Object.assign({cmd:"state"},S0,extra||{}));};
   const tip=t=>{const e=W.querySelector(".toast");e.textContent=t;e.classList.add("show");clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove("show"),1700);};
   const cmd=(o,t)=>{post(o);tip(t||"Sent to the TV");};
-  const show=(k,arg)=>{cmd({cmd:"show",screen:k,arg,hold:k==="trailer"?null:HOLD},"On the TV now");};
+  const show=(k,arg)=>{cmd({cmd:"show",screen:k,arg,hold:k==="trailer"?null:HOLD},"On the TV now");try{const n=W.querySelector("#tvnow");if(n)n.textContent=NAMES[k]||"Your screen";}catch(x){}};
+  window.onRelayFull=()=>{const e=W.querySelector(".toast");e.textContent="This wifi hit today's message limit. Turn wifi off on your phone and use data, it works right away.";e.classList.add("show");clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove("show"),9000);};
   const SIGS=[["auto","Automatic","Runs by the clock"],["before","Starting soon","Countdown to noon"],["live","Signing now","Line is open"],["break","Jeff's on break","Shows when he's back"],["last","Last call","Final minutes"],["done","Signing's over","Keep selling the books"]];
   const PRE=[["Today, 12 to 4","Jeff Monk *signs at noon*","CGC witness on site for yellow label Signature Series"],["Live now","The line is *open*","Bring your books up to the table"],["Heads up","Signing starts in *10 minutes*","Line forms by the counter"],["CGC witness here","Want a *yellow label?*","Tell us before Jeff signs your book"],["Last call","Last call *for signatures*","Signing ends at 4pm"],["Free account","Get the next *exclusive* first","Scan any code on screen or ask us"],["Heads up","We close in *15 minutes*","Thanks for coming in today"]];
   const T=(k,n)=>`<div class="rtile" data-p="${k}" role="button" tabindex="0"><div class="pv" data-pv="${k}"></div><b>${n}</b></div>`;
