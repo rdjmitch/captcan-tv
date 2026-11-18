@@ -628,6 +628,25 @@ html,body{background:#0B0B0D}
 .trailer .dd span{font-weight:700;font-size:34px;letter-spacing:.14em;text-transform:uppercase;color:#fff;margin-top:18px}
 .trailer.rolling .dd{opacity:0}
 .trailer.pre .tie{opacity:1}
+.news .ncols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:40px}
+.news article{display:flex;flex-direction:column;background:#1A1A1E;border-top:6px solid var(--red);padding:0 0 30px}
+.news .nimg{height:330px;display:flex;align-items:center;justify-content:center;background:#121214;padding:24px}
+.news .nimg img{max-height:100%;max-width:100%;object-fit:contain;display:block}
+.news .nimg.none{display:none}
+.news .neye{margin:26px 30px 0;font-weight:700;font-size:20px;letter-spacing:.14em;text-transform:uppercase;color:var(--red)}
+.news h2{margin:12px 30px 0;font-family:var(--head);font-weight:900;font-size:46px;line-height:1;text-transform:uppercase;text-wrap:balance}
+.news .ntx{margin:16px 30px 0;font-size:27px;line-height:1.35;color:#D6D6DA}
+.news .np{margin:auto 30px 0;padding-top:20px;font-weight:700;font-size:22px;letter-spacing:.1em;text-transform:uppercase;color:#A9A9B0}
+.news .np b{font-family:var(--head);font-size:40px;color:#fff;letter-spacing:0;margin-left:10px}
+/* ticker fills the bar */
+#bar .run{font-family:var(--head)!important;font-weight:900!important;font-size:58px!important;letter-spacing:.01em!important}
+#bar .run span{gap:56px!important;padding-right:56px!important}
+#bar .run span::after{width:16px!important;height:16px!important}
+/* TV: no mouse pointer */
+.tvmode,.tvmode *{cursor:none!important}
+.news h1{font-size:104px}
+.news header .src{font-weight:700;font-size:22px;letter-spacing:.14em;text-transform:uppercase;color:#A9A9B0;text-align:right}
+.news .nimg{height:270px}
 
 </style></head><body>
 <div id="stage">
@@ -637,9 +656,2306 @@ html,body{background:#0B0B0D}
   <div id="bar"><div id="prog"></div><div class="lab"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAT8AAABNCAYAAADQO2PVAAAApmVYSWZJSSoACAAAAAYAEgEDAAEAAAABAAAAGgEFAAEAAABWAAAAGwEFAAEAAABeAAAAKAEDAAEAAAACAAAAPAECAAkAAABmAAAAaYcEAAEAAABwAAAAAAAAAC8ZAQDoAwAALxkBAOgDAABpbWFnZXJ5NAAABAAAkAcABAAAADAyMTABoAMAAQAAAP//AAACoAQAAQAAAD8BAAADoAQAAQAAAE0AAAAAAAAAgKRwLwAAAQtpQ0NQaWNjAAB4nGNgYFyRk5xbzCTAwJCbV1IU5O6kEBEZpcB+h4GRQZKBmUGTwTIxubjAMSDAhwEn+HaNgRFEX9YFmcVAGuBMSS1OZmBg+MDAwBCfXFBUwsDACLKLp7ykAMSOYGBgECmKiIxiYGDMAbHTIewGEDsJwp4CVhMS5MzAwMjDwMDgkI7ETkJiQ+0CAdZko+RMZIcklxaVQZlSDAwMpxlPMiezTuLI5v4mYC8aKG2i+FFzgpGE9SQ31sDy2LfZBVWsnRtn1azJ3F97+fBLg///S1IrSkCanZ0NGEBhiB42CLH8RQwMFl8ZGJgnIMSSZjIwbG9lYJC4hRBTWcDAwN/CwLDtPADw/U3bQyU8RgAAAAlwSFlzAAALEgAACxIB0t1+/AAAFjxJREFUeNrtnX9wXNV1x793V+CVI1w8lrDjfcu0o2chB80AJkPFD6dKyxBKTFQKxEAYpq3dAh5oxTDptBAlpcNQXE/KD3sgLnJhGNzY/KhwIGBSAqauwQM2JjOOLZxVabUrx/LqB+M47ArWe/qHzpOfru/7sft2JbDPZ0YDfvvefe+de955555z7n2AIAiCIAiCIAiCIAiCIAhCFclYVr1IQRCE6SY2kycfSdrtCdT/oxhAQRCmmxk1fiWFVYpK19WrxBXSFYIgTCczZvxGknY7gMWk1F4irBTvTxCE6WTGjF9JYRWA/SWFLgALxPsTBGE6mRHjN5K02xXR0hjhsfmZdD8ResX7EwRhOpkR41dSWEVKbZ83mN4JABTDZvH+BEGYTqbd+Lm9PmebeH+CIEw3VTV+GcuqDzJeutfnENb7O5JsnScGUhCEqFTV+M2mxHkJJNZzJvcETF6fQ5D3l7Gs+pxlrxxXxYdOV4mF0nWCIESh6sNeRbSUQD/OWYvWDKXsZmd7xrLqJ7y+2PO61+fg5f1NFEMnnlVE9wJY/CkVDkrXCYIQhbpqNlaMIRcjNUyEXgW6OEbYlLPs9QUUNs6mxHkEWqqAG72On59J9x9O2r0AVh5Jtv53PlY8M0bqNqLSdUDseVIYA4BUNpuXrhMEIQpV9fzYIzukFA4XUPg2gPUAbk0g8WxJYa2f1+eQQN16AAvGVfGpGGETQK0K6sam7K++C2AuEfqk2wRBiEpVjR97ZGOAOieVzeabsumeksINRHiHCL2zKP5gUBtzBvtGYoQ7AdWnFO4voPDteYPpnUeSrfMALIjF8EvpNkEQolJX7QaJ0KcUXez8e34m3Q/ggXLaYO9wiof4GYqLAOAYsFe6TRCEqFQ94cGe2QL21KoGxTAfx4fWgiAIkai68XM8M8dTqxalEs4FsF+SHYIgVIOqGz/HM3M8tWqhFFol2SEIQrWouvFjz2w/kbqsWm3yEHqxJDsEQagWFRu/kaTd7i5idjPhoVFrtS4yHyueCZ9kx3DK7qx2jFEQhJObiowfz9a4N0Z42GR0qp30iANtAFBfqvtY/204ZXeiRA+Pq+I10p2CIISlIuM3mxLnKaI2LkZ+SDdyjofmeGxR4WTHoTmDfSPu7SNJu50I3yOlhgF0yoIHgiCEZbLObyRpt5cU2mKEvcUYcp9S4aBXZrWk1LUAtpcU7osRNo2r4kMZy7rV2b++VPfxuCo6Hlt/1IvkZMc77m18vWuJ0EsxbI4RNvGc4C2mNo4kW+flY8Uz40AbEZoKKGyUzLEgnLpMKXJWRPcSgBip4QQSh3LWoj6APowR9p6Gul/NGewbGUrZzSDqUAr3z8+k+4dS9g0xwib+Ctv3U9lsfs5g30jOsvezx7YlygWyN7c4FsMLzrahlN1cIqwF1LZxlX8olcnmc9aibUR0LYAtGcuqP10lFsaBtlIJ5yqF1nEUF8cIAFEjlNqeymZ7pPsF4dRl0vh9ogq/SCCxlwjvxAlvlBTaAJwDoLOkcOs4ishZ9iEQAOBQngo/A8/gGEnad5YUrXUbwImZHoic9DhdJRaCAFXCENjwTcz5xf4C8t93vLcY0QsTq8nYTwOYC8ICmvAaD01MlaMXVAlDJaVWmZbUEgTh1EK5/3E4ad+jFC5uyqavdrbpXhR46SmetjaJexh61mD6geGU3UmE7xVQ+FqU4aXTziyquxIAxlXxKQBjs6juLj0GOLGvukz3Vp3fJwynuo0XSRAE4RRmyrA3DrxRAq4ZStnNjnFjw9XPf55D2HmD6Z3DKft+RfRwzrIPqxL2kmLPLULcjwhNAA7huOGDyfABQGMmvcXvGuNAmyJ6QbpdEIQpxo+HvogRvl6JwWrMpLcMp2yoEj1cUspzAQIiigNwZ2aLSqmC1/6KqM0xfCWFrjnZEw1fEE4m+BNV+MXJ2pkGueaVUsdEzSPJ0Fc3hS8uU4xfKjuROADoawAqSgg0ZtJbRpL2EEFdqxT1OB4kETViIvu7FEArgIUAzgAwDuA3RJQGkAbwAYC9aqJ8BQUUNiZUAkQ4yzTcDsvvUMPsvCruPdkyvCzXdgAXAFgC4CwAszS57uG/AUeuwhQZNgD4qo9uZjFRvjVFN4WTjJGk3Z6z7Pe8Zm9U8nAS0Qoi2kFEeQpmlIh2EdFqIlpCRHFWzkicbDWALNcullVYue4gom63XNnTOSXh+y9HN/Mm3TyVZfhFRukbjiRb542r4lYA65uy6UjlIES0hNfyu3wi5FY2YwDe4r+1XkM411Cl6HmjAUMXIkqwJ1wMJTiP9thQtwDYF7FvvuLlqRFRB4AfAOiosO0MgN0R5VoXZkjoI9c6v2G5x7nrqjWUZ93sBnB1RN18H8CaEHJoYI/S/fGtIwAOAxgOO7QOo6d+bVVyvI8e1JUTFuB2vsyjkzmaDD5WSh2toB8duTZobR4FMOrnpSvTxpy1aA1A85uy6VsiKFcHgKcBpCLq6RiAP1VKbfM5lwXgTgAXGX7+GMAGpdTLIa73bwCEmZUyDmAEwHsAXlFKHXC10wjgiZDtBHGru21ufxmAx6ok18uVUu8HyPXvgIksv0Guj/j1C7fRAuBvAegjiV8C+Acv5eTj/lo797tsrLMRDV8Hy3BxRBkWAFzvp1t8H8sBXMl91uT6Oc/JvA/ZkL6i93cFevoMgKd8Xip+x38MYAOAV93Hs8H8DoCbtf37AfxziGtuBNAJYBmXzy1wxVXzbKj6uX9fBbAryBC65PqHrFsNhjYPs2zfALDdncfwfIEOp+zOnGW/V+ncXB4SDPgMHwaIaCsRreMhRA8RvelxzOowbxQi6vUZqnSEaKOBhzTlMsDDz3jEdkzttuiKG0KuvZpcd/CQV6c7hEwS3E9ew+glIftmo+H4fUHH8z2Udc0hdXNflXRzndeQl/WgO6C/vHSpIYKerg4ynj5D/H38wvOSm35cT4i+X8Y6WAwpgzzv38XHJgztLg/oQ79no9so36GU3Zyz7JU5y34vZ9lPVxIn487xe2C6iahFvyk+rsUVg3E6oyWkQo9WqhCu8++o0FDliWhFLY0fx/h2+OzryDXuIdcu13Xt8lJyTXGD5NodUid6PI7f5de/fE9uuiIavgafl+QoGzuTbiYMujngde3cVxsr7PciH9tYoZ56vpQCnk3neWssQxd6Al6cXQH6EySHFYZ2l3m0WXT9+TGpQ3WO0VMlLFcEZ2WU9bOorrdpsKLM6HKO8elkAKzyGiKwm3sAwAEieg3AWgBvBbnUzDcBzPX5/WoiqmS4NMZuuFsO9ZxZdQ+ZEgDuJqItPBQa52N16nlfNwWtfS9uBnCJh1xv8Rp+anJ9nrP4zwXJQil1jIiWB8i1k4gej5D9vBDAk0T05yH7OSrf5OGnqZ9vV0pt9pBFwSXDLQAeAdBnumY2nA8CuMnQ1H4egqX53zYP29y6FOdj80R0RwVlNnNZF1cYjvV6NhFCF8o97DYA/+Sh7x/xcHSEn4nfZRm4de11AJt14w3gDm2/3VzbewDAbwF8iYfALRwGa3aFiHZzWOA4I0m7fTjZ/FHULK/PMMloxQPaWuL19jO8ZfdpXti+cs/v8Ub1ehO2GLy7PA8pGviNt8Twt8IwdNjos6/lurY3PTzO5RXItSHEfpYmx1EPuS4P0VZPwNt4q8kTrabn5xMaKZbbrp9u8pAsb+in1R732OLhJRr7NuQIJc+xYb/+DO35wXt01VPGvo6nv5yf2birXxr4GCdMMGoKVbGsRrXrbQmwR86oZ5+nDeAh70s5y36pUgPIJxrwuOlG1AAWptvV3eHhGm8NEUvZUYYy9HgZAlOcAt7xltU+HRcPUKY3yy0DCluWwcZXl5/pwe71ut8AWZGhncYaGj/LQzf3VUs3fUIT6/zk7jMcPUFnDXo66hFm2eG+L4MsBwzyiGz82Jj1lBvi0J6R1SZ5Ga5hlHXSCio54nan3Nvken6fUuHgLKr7MwBjMcKm4ZTdWUH/t2jZLIedtSgM5YfuBq1U4Tl2md/Vdr+IC1nDcszPyAM4X9v8GTCx+EI1ZgQopQqujNQiVxrfzbvllgeEKRPhB07P7D0H4Kdc2uHmD7gspxy5PsXDdTd/AuCRWr0keYhp0s09VdTNNi40d5MB8GiA3PM8VC4YdDbIYBwF8LhBnr/v9CHHAP9S+/2JKpRjmWgGcIW2rcCZ/TChjZ1cOmSS12G+X4e5rEtvA3gNwPP8oulmozjpoSultun9PDnDg2c+5DOWdessStzFc3Sbyqz1+xKA0wzbh2qk0F/hh8+taK8opQpE9JxWXzgXwHUAtoVsO84p+UeIKCjmB45jpGt0nw0etWi/rtH5vsqzRtxyfU0pdZTleommgMsNRtGP/wTwIpdCueM3Tqyrq5KarxAyNJGt4jnON8S4dgdNFeWY2l7WIbdezeEX3/sB97UdwI+5pMitv39FRK8AuFsrjdoN4EkAl9ZAd1q0Wkbw9Yd67thx8HIefm24zwTfm176dYzr/f6HiH4OYLNe1nXCSs6pbDZ/1mD6AcRUlyK6N2ctWlNGyctvy1S8qOgB+Z+5FO01DoK6+VYY11t7sG8CsML1d5PB8BUA/DBq/ZkPXobgjBqd72btIf6J695eMXgZVwdljw1K/jKA2w2JoRUAHgwaSldRhtX89suXDdtGQhZlHzU4CfEynp21nFBxs5iN3B9rurqmhi/O+YYX9f9W42XGclzDtYhBo6s4P78XsrF8nWN/CU/j59CYSW9RUDcC1DGuik+FjAMeZGurc1EFsalEQIzO4up8d6c+4ygaP6wvaYelAFxV5c7OAPh7ABtRO4Y8OvvSco1ECLm2aMOWMQD/5lLAAwB+oh3WAuAbFSjzZgDfNRjA2wDcV+WX5hGPrPr55Q61faZcmh7wsOVidQBOD9mmSZZZAD80hGsu0RyErRy+OA3TSLWmAPLQ9Q4A17MR3M/6E/SCmcvZ5++4Be7JvMH0Tl6p+QcxwqaRpH3nvMH0Tp9DBrhiXS+PaOepWC+XcZ+NAK4joh95xNC+oXlgOQDNRKR/L/iY9ia6noh6Qr6JChyDGDf8ZpzhUSPShiEROCbUXsZQHgDOBnAVl/6YFOYqbQhxFMAFRLTIR65xluvmCmKQG4joDK0sIs6zO3JVlOEBflD0cqFzAfyRXlYR4kG6nYgecu6XH26THpxDRI0h4ooLDUO3sTJDRpvZa/cq6h/jWTlHa+BZOwwZnrlzWGahYqtE1OCnR2wPXiaiV7nds1l+NnvfFpfP6MPhBIC/KEtPM5ZVn7MWreFymJUBF77aJ42+JOzNc9ByVE/Zwz87VgyRVcz7tGnK9lrsLel/cZT5Risn22s4dl0lhcIech3wKCXwylaGkeuo10waLft3QnkMe1JdIRYXiFrk3O2jmx0h23AX7+r3Yap2yIcsB+oKUyXhke11F8Mv85Fjj0tvTWVp1cj2mmRQVqkby6LFsD3uNevDQ9db+LkpalnulrKVJ2fZK4eTzR8dTtr3eM3+8Cl3cYS7wqeK3OIszVbXBZvS/R0hV+GgICUIYfyqln2MaPyWBMh1eQi5vumSa69BrssiynVdJcbP9TB2B1ToRzV+frVuAwG62cjy6XXJSC8niRteUsWgFz+3a+rb7hAvad34eZWa6DOGamL84F3XOcD3GVTys4L3XWd4Rp362q6wMWbDdU/Koa4c5WnKpntGkvZepbA2gUTrUMq+T19fTyl1gIjuA7DOkPlaDGA9V6C/DeD/eLtTkX0O/9d905dzYmODa9t1Wtu7uWLcxGzOCLuH4ldwSn46ZhVUBaXU+0T0Lx5V84s55vgBEX0QUq5X8oyHzTjuwd4YUa7fIqJHKwkDcIZ+DV/z3RWutBJ0jizr5uOG0EzKpZt7APQZZPh7mnwu4WHmwzietX1Um7UR5/9/hoj+lRNGo/zb2dwHdxmu521OVpR7j8eI6DHWcfeQ74lpmkUDXjRCP3+Ks/v/QUQv8rP3CevRQs6Ud3IYJ8GJxee1kM5STmCcz5lsZ8GCPSxTd+y4nvvtbk22Gc5NVIarIPq9kaTd7vGmjDKvz+TZtMDsWU4uXMDnnfIH76F4d8Ab9XPl+bnurzuid6YPqyyYPctRP7l6eBjG2RJhPD+tH9bVwvNz3cuKKuqmaQGK5T7tD7Be7QvYp8NHPp6en2u/blM/u36vmecXQgZ5V5H1gI8+T476+Hq9ZugM8D1u5dkyvR4LekzRz4o+Wj4/k+6fKIhW20oKa/WCaA6kr+VShv0RdLUA4N+5tsfpYD0g/xaAXc559T/eZ7Mho9hZw4LamsD38wBnu6LIdYzluoWDxGAPRJfrTi+58rU8o8k1znJtiHCPR3kZrQ0hMngVyVAptQHALezZRtHNF7lYuEU7x2Zu39RHKfYEF3vMm37bb652GTzpur/HDWVYn9VYV/1k4K7NSxlGMmAPLe+amHA2L8OlP8dxbuNCToLexAXzepb7GIAfVbpC/YlXZ1n1ThzQ5AHieJylm98qYTwWx5JvdAc3+Y1tmlO7Oijp4BHIz7MH4HiHLYZ40EDYJE0Y+Hx6TGtjJcaCr3d1BXLtYQ80rsl1X1C8yaNvd/kF+Fn2+hu7K0Sfma5pXTWylK57d3RzV1TdNJ3DFXAfCNHuPr4Wq0y5GJOCLn0zxXbjHn034LMijNfUxsYy9DRoxRVnXv7k6jouz6+Rr3kJ/74rpPeed8UJp8hBVcMAJpD4r6CVn7VvTbi/kwAAv+GFFA9wNfgeAP16KQZ3zAVa00MAtvmlrlmhLjXUjU0e69E2uGh6e9TVg1nwHVwE6uYoT7E6UGG7FsdAlrIHcqYm14M8i6ESub4esCpwCx/X4HUs77PUcM8/raDPjgL4ebWnSlZDNwMMbTPL4AIASddCou52d4Qpkvfoq36eQlow6NyZpnbL0Xc28pcbdBe874EQ1+305xLW03rXt2ZGOMa6B8AHIeXgfBOo2SVXvc0sxwSN02sjGz/nu7olhRvCflyIFeI0LeEiXxqL/hCf8OUxAJ+JXMuWYc1009U+TtW+0WRQlbnwepthZBvJ+LHX9ywR3jlrMP2APDqCIHxRqItycL1KXIEStUGpscNJ+55yj48DbzgzRkaSdvuxiRKBUCiFw0ohp0oYCph1IgiCcAKRjB8RmqDUdkwYo9aA3adkthRR27EJx3MnJj5GvipGtJRO/Ng5Z3fUEBGNuY1eUSH3qSoc/BzKVRCEUx2vmSA5y37J7S3mLPvpMN7jyfb9XUEQZoZYrU/A6wQaUH1TvUU1pJSaW3l7giAI4YnN3KnpQwCLj68VSB8C1CqenSAI08GMGb+SwpsA8GmseJnr3wtOV4mF0i2CINSaGTN+8zPpfiL0EmFlxrLquUZwf4zwdekWQRBqTWwmT55A3XoAY7MocRcmMsYvAOgsY9l8QRCEiphR4zdnsG+kpHCfUmpuzlq05hiwF1B946p4jXSNIAi1RH0eLiJjWfX1KnEFkbpsYgt1KIX7GzPpLdJFgiDUgs+F8XPIWFb9bEqcV1JoA4ACChultEUQBEEQBEEQBEEQBEEQBEEQBEEQBEEQBEEQBEEQBEEQBEEQBEEQBEEQBEE4Sfh/nk32/CUagUQAAAAASUVORK5CYII=" alt="CaptCan Comics"></div><div class="track"><div class="run" id="run"></div></div><div id="tk" style="display:none"></div><div id="pz">❚❚ Paused</div><div class="clock" id="clk">--:--</div></div>
 </div>
 
-<script id="tvdata" type="application/json">{"feed": {"newLabel": "Nov 17th", "newColl": "/collections/nov-17th-2026-new-releases", "asOf": "Updated Nov 18", "hot": [{"title": "Chainkata #1 (2026) Johnson B&W Variant", "handle": "nov18-26-0085", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/0926IM0264_41d2c1be-628c-40fd-a199-c5ca74d1af7c.jpg", "price": 5.19, "sold": 443, "inv": 47}, {"title": "X-Orcists #1 (2026) Variant", "handle": "nov18-26-0419", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/75960621451800151_191936c3-8387-4234-ac51-07c6d3ca32aa.jpg", "price": 6.49, "sold": 85, "inv": 24}, {"title": "Midnight Spider-Man #2 (2026)", "handle": "nov18-26-0222", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/75960621681900211_adf8ea12-baf4-40c1-bfe8-46453863b500.jpg", "price": 6.49, "sold": 84, "inv": 241}, {"title": "Midnight X-Men #2 (2026)", "handle": "nov18-26-0232", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/75960621668000211_a4eb59a2-f44c-49cc-b35f-f5440f2a8e8b.jpg", "price": 6.49, "sold": 78, "inv": 200}, {"title": "Midnight Fantastic Four #2 (2026)", "handle": "nov18-26-0213", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/75960621680200211_123df44a-ec22-4720-9bad-1d4dfe9844e7.jpg", "price": 6.49, "sold": 67, "inv": 150}, {"title": "Absolute Flash #21 (2026) Robles", "handle": "nov18-26-0025", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/0926DC0075_e94ab0e8-6988-4c16-a455-0a3edc64e9b7.jpg", "price": 6.49, "sold": 19, "inv": 57}, {"title": "Tomb of Apocalypse #4 (2026) Momoko Momo-tone Variant", "handle": "nov18-26-0367", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/75960621613000421_06822973-57aa-4584-9951-a8ac638fa4a0.jpg", "price": 6.49, "sold": 18, "inv": 24}, {"title": "Punisher #10 (2026) Momo-tone Variant", "handle": "nov18-26-0289", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/75960621516401021_373aed2b-c898-434e-af0d-23d99cbaf86b.jpg", "price": 6.49, "sold": 18, "inv": 24}, {"title": "Fantastic Four #19 (2026) Momoko Momo-tone Variant", "handle": "nov18-26-0145", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/75960621122701921_2917d2b9-707c-450f-9248-8837ef9cbbae.jpg", "price": 6.49, "sold": 16, "inv": 4}, {"title": "Detective Comics #1115 (2026) Janin", "handle": "nov18-26-0115", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/0926DC0111_adac56d9-34f8-4143-ade4-4e83fed3d4b5.jpg", "price": 6.49, "sold": 16, "inv": 47}, {"title": "DNX #5 (2026)", "handle": "nov18-26-0121", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/75960621519500511_74a1e388-428f-4ac1-a072-428d004afae4.jpg", "price": 6.49, "sold": 15, "inv": 20}, {"title": "Dorc #10 (2026) Bean", "handle": "nov18-26-0127", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/0926IM0322_7ef899a5-a10d-4472-8dcf-e70748e0d05c.jpg", "price": 5.19, "sold": 13, "inv": 70}, {"title": "Lobo #9 (2026) Johnson Variant", "handle": "nov18-26-0192", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/0926DC0044_59ca51bb-a1b0-4878-91f1-431d92b81446.jpg", "price": 6.49, "sold": 12, "inv": 3}, {"title": "Chainkata #1 (2026) Johnson Variant", "handle": "nov18-26-0086", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/0926IM0265_67db03db-266c-42f3-b657-bf9510b73b2b.jpg", "price": 5.19, "sold": 68, "inv": 45}, {"title": "Chainkata #1 (2026) Rossmo Variant", "handle": "nov18-26-0087", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/0926IM0266_df9baaa5-fb9d-4203-9747-c15bd88e858a.jpg", "price": 5.19, "sold": 44, "inv": 23}, {"title": "X-Orcists #1 (2026)", "handle": "nov18-26-0415", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/75960621451800111_b5da0d0f-4f01-4822-91be-561506d6da8f.jpg", "price": 6.49, "sold": 20, "inv": 13}, {"title": "Midnight Spider-Man #2 (2026) Homage Variant", "handle": "nov18-26-0225", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/75960621681900241_a09c475d-bb7e-411a-ae27-15796ebedb20.jpg", "price": 6.49, "sold": 17, "inv": 83}, {"title": "Midnight X-Men #2 (2026) Variant", "handle": "nov18-26-0234", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/75960621668000231_7be805c7-a450-4970-8984-3b12b5afc021.jpg", "price": 6.49, "sold": 17, "inv": 83}], "keys": [{"title": "Vampirella #1 CGC 7.5 (1969)", "handle": "nov13-26-1517", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/19FndqvbExWkEpdRTxz7ZP8Zk9V3Tes8V.jpg", "price": 2000, "inv": 1}, {"title": "Amazing Spider-Man #129 VG 4.0 (1974)", "handle": "nov13-26-0116", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1G438nmCAS5hVQiDG_LI6RZ1qAkVmhJjc.jpg", "price": 1100, "inv": 1}, {"title": "Batman #181 VG/FN 5.0 (1966)", "handle": "nov13-26-0002", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1nj_8ecn_HQfDBj0jKzF2dVhubK8_qtQ7.jpg", "price": 850, "inv": 1}, {"title": "Marvel Preview #2 CGC 9.6 (1975)", "handle": "nov13-26-1518", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1bebWxVvOt17y7kHpyREAg4dpe5mH9D8C.jpg", "price": 850, "inv": 1}, {"title": "Avengers #4 FR 1.0 (1964)", "handle": "nov13-26-0004", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1fmklo4j7SEJsAHeU2QVEAYk5Dvk9wtT2.jpg", "price": 800, "inv": 1}, {"title": "Six Million Dollar Man #1 CGC 9.8 (1976)", "handle": "nov13-26-1519", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1sWLDV69gN7dq_rRlC3aA_uXf4fSy0RDS.jpg", "price": 800, "inv": 1}, {"title": "Human Torch #38 VG- 3.5 (1954)", "handle": "nov13-26-0006", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1G5S-2EZW1fDpAItcTvNvwEguBFWp-klx.jpg", "price": 700, "inv": 1}, {"title": "The Thing #8 FN 6.0 (1953)", "handle": "nov13-26-0007", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1rzPPVAqzVcmdxExtP9GPKR_MQroFLA_B.jpg", "price": 550, "inv": 1}, {"title": "Marvel Team-Up #15 CGC 9.6 (1973)", "handle": "nov13-26-1504", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1Hf4eDNdt6lbpsSmzuI2e9Kkj2yV0oGkF.jpg", "price": 500, "inv": 1}, {"title": "Shazam! #8 CGC 9.8 (1973)", "handle": "nov13-26-1511", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1ZSWhfC_ywsqwCEaK4_qQ220w0EaZ3698.jpg", "price": 500, "inv": 1}, {"title": "The Thing #10 FN- 5.5 (1953)", "handle": "nov13-26-0008", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1jS2uPLpVwF8h0_fRIjxKyM_EwFGMrYFY.jpg", "price": 450, "inv": 1}, {"title": "X-Men #34 VF- 7.5 (1967)", "handle": "nov13-26-0005", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/13kAXDIGI730ig7Dsf6Ug4-gOpDg1CgnM.jpg", "price": 400, "inv": 1}], "run": {"title": "Amazing Spider-Man", "eye": "Friday's upload \u00b7 Silver Age run", "h": "Silver Age <em>Spider-Man<\/em>", "count": 43, "from": 22, "to": 320, "coll": "/collections/nov-13th-2026-upload", "items": [{"t": "ASM #19", "y": "1964", "price": 200, "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1W1D_n10voTgk6y6lqwE03YQ7XZKQkTIW.jpg", "handle": "nov13-26-0010"}, {"t": "ASM #24", "y": "1965", "price": 320, "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/11WatTTxDH5gsSiyYJX68BTC-Mg_PVu3d.jpg", "handle": "nov13-26-0014"}, {"t": "ASM #27", "y": "1965", "price": 220, "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/13pzZCgYlNqOLNzFxPb6pIJqc4yEOIDWN.jpg", "handle": "nov13-26-0017"}, {"t": "ASM #33", "y": "1966", "price": 220, "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1t4Ojwg8om9TZ0cikuLBj2XSN97AKsA17.jpg", "handle": "nov13-26-0022"}, {"t": "ASM #39", "y": "1966", "price": 220, "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1ePdlMw5He0ctvYTqTxHiaYGIlHpdqOsW.jpg", "handle": "nov13-26-0028"}, {"t": "ASM #43", "y": "1966", "price": 300, "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1jepmNHjQ0GIS8lQsjPd1NmKW5D0yC2bp.jpg", "handle": "nov13-26-0032"}, {"t": "ASM #51", "y": "1967", "price": 200, "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1dObhoboOXMPRyWXVUb4rTgKGRVQVoziI.jpg", "handle": "nov13-26-0038"}, {"t": "ASM #57", "y": "1968", "price": 80, "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1MDQE5C-MzrKTbDOk4gKt_R7pWk6MXRPN.jpg", "handle": "nov13-26-0044"}, {"t": "ASM #66", "y": "1968", "price": 180, "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1XNBBtP94m9FNmYn7d4J6-V5tnVxdJfZo.jpg", "handle": "nov13-26-0053"}, {"t": "ASM #73", "y": "1969", "price": 110, "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1RM5tV6xtKjKxnv_okSUh_Wc5FIwR9pqs.jpg", "handle": "nov13-26-0060"}, {"t": "ASM #79", "y": "1969", "price": 120, "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/11UIBas2vz9Yy-nII3fQtYYuLUddXbcct.jpg", "handle": "nov13-26-0066"}, {"t": "ASM #88", "y": "1970", "price": 100, "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/13_yWxyCe-ABRhQsAR1zid23Hn61loLx.jpg", "handle": "nov13-26-0075"}]}, "blow": [{"t": "Absolute Batman #17", "handle": "feb18-26-0005", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/img005_1dfc6f0f-fb5e-4db3-b153-028a8be7e701.jpg", "price": 4.87, "was": 6.49}, {"t": "Absolute Batman #18", "handle": "mar11-26-0012", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/img012_2f1f6a6d-900f-433a-b4b4-3e9da0cdd5db.jpg", "price": 4.87, "was": 6.49}, {"t": "Absolute Batman #22", "handle": "jul08-26-0002", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1Fz9nFXOo3QkgZP2QUz6Sg2I1-MIZh1ON.jpg", "price": 4.87, "was": 6.49}, {"t": "Absolute Catwoman #1", "handle": "jun10-26-0001", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/img001_qzbz7i.jpg", "price": 4.87, "was": 6.49}, {"t": "Absolute Green Arrow #3", "handle": "jul15-26-0013", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/0526DC0038_62046511-002b-4b59-bfba-a7a80fdbc88a.jpg", "price": 4.68, "was": 6.24}, {"t": "Absolute Wonder Woman Annual #1", "handle": "feb11-26-0011", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/img011_5457d4b4-3013-4afa-8c7a-0465c2556e73.jpg", "price": 5.84, "was": 7.79}, {"t": "Skinbreaker #1", "handle": "sep24-25-0264", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/img264_081d82da-d77c-465c-a611-832121502cf3.jpg", "price": 4.5, "was": 6.24}, {"t": "Batman / Spawn #1", "handle": "dec14-22-0026", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/products/img026_34162115-e925-4c98-aff5-ff5a5e52193f.jpg", "price": 5, "was": 6.56}], "foc": [{"title": "Star Wars/Marvel: Hope Assembles #1 Cover A", "handle": "75960621652900111", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/75960621652900111_3c96f90e-92db-48da-8b60-f401d3ed343f.jpg", "price": 7.79}, {"title": "Midnight Spider-Man #3 Cover A", "handle": "75960621681900311", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/75960621681900311_79e515d1-ec66-4f65-af6e-7ed9388bb65a.jpg", "price": 6.49}, {"title": "Midnight X-Men #3 Cover A", "handle": "75960621668000311", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/75960621668000311_cc6951cf-1796-40e0-bd6d-0b8bb09e8842.jpg", "price": 6.49}, {"title": "Midnight Fantastic Four #3 Cover A", "handle": "75960621680200311", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/75960621680200311_0a5078c1-1b04-47f1-81de-70e02d5194de.jpg", "price": 6.49}, {"title": "Star Wars/Marvel: Hope Assembles #1 Cover B Alex Ross Variant", "handle": "75960621652900121", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/IMG_7696.jpg", "price": 7.79}], "soon": [{"title": "Absolute Batman #25 Second Printing Cvr D Nick Dragotta Clay Mann Spot Foil Var", "handle": "1026dc8317", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/0826DC8926_ea2483c3-0112-4b64-ae4b-03c1871bdf61.jpg", "price": 11.69, "sold": 83, "release": ""}, {"title": "Absolute Batman #26 Cvr A Nick Dragotta", "handle": "1126dc0048", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1126DC0048_a825d238-637a-490e-abaf-ae000d7dffe2.jpg", "price": 6.49, "sold": 44, "release": "Jan 13 2027"}, {"title": "Midnight Spider-Man #4 Cover A", "handle": "75960621681900411", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/75960621681900411_a37170ac-9d70-4a58-8b80-ebb9ccf09dae.jpg", "price": 6.49, "sold": 27, "release": "Jan 13 2027"}, {"title": "Dungeon Crawler Carl #1 Cvr A Nathan Gooden", "handle": "1126vl1138", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1126VL1138_9ef623d3-42e4-4454-af38-8e2f82964895.jpg", "price": 5.19, "sold": 20, "release": "Jan 20 2027"}], "merch": [{"title": "Cover Series 001: Captain Canada Tee", "handle": "captcan-cover-series-001-captain-canada-tee", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/captcan-merch-img_9132.jpg", "price": 49.99}, {"title": "Captain Canada Bookmark", "handle": "captain-canada-bookmark", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/captcan-merch-img_9186.jpg", "price": 1.99}, {"title": "CaptCan Comics Logo Tee Black", "handle": "captcan-comics-logo-tee-black", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/captcan-merch-img_9097.jpg", "price": 20.99}, {"title": "CaptCan Sticker Pack", "handle": "captcan-sticker-pack", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/captcan-merch-img_9184.jpg", "price": 4.99}, {"title": "CaptCan Comics Hoodie Black", "handle": "captcan-comics-hoodie-black", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/captcan-merch-img_9195.jpg", "price": 44.99}, {"title": "CaptCan Comics Logo Tee Red", "handle": "captcan-comics-logo-tee-red", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/captcan-merch-img_9152.jpg", "price": 20.99}, {"title": "CaptCan CC Maple Dad Hat Black", "handle": "captcan-cc-maple-dad-hat-black", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/captcan-merch-img_9077.jpg", "price": 29.99}, {"title": "Captain Canada Sticker", "handle": "captain-canada-sticker", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/captcan-merch-img_9178.jpg", "price": 2.49}], "chain": {"monk": [{"t": "Chainkata #1", "v": "Matte foil wraparound \u00b7 /500", "handle": "nov18-26-0082", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1gJDQZww7Kwp0MUb81RxVIhyeYcB__X2r.jpg", "price": 29.99, "inv": 22, "g": "", "title": "Chainkata #1"}, {"t": "Chainkata #1", "v": "Foil virgin \u00b7 /500", "handle": "nov18-26-0083", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1gU6_bYrUxz5jMx81zyUUYTXCAva5Tl7J.jpg", "price": 34.99, "inv": 21, "g": "NM 9.4", "title": "Chainkata #1"}], "covers": [{"t": "Chainkata #1", "v": "Foil incentive \u00b7 Daniel Warren Johnson", "handle": "nov18-26-0093", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1lRMR2xZevJ303pT_kq3XXdEzURxTNAEr.jpg", "price": 100, "inv": 1, "g": "NM 9.4", "title": "Chainkata #1"}, {"t": "Chainkata #1", "v": "Cover C \u00b7 Sword and sorcery variant", "handle": "nov18-26-0086", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/0926IM0265_67db03db-266c-42f3-b657-bf9510b73b2b.jpg", "price": 5.19, "inv": 44, "g": "", "title": "Chainkata #1"}, {"t": "Chainkata #1", "v": "Cover B \u00b7 Black and white variant", "handle": "nov18-26-0085", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/0926IM0264_41d2c1be-628c-40fd-a199-c5ca74d1af7c.jpg", "price": 5.19, "inv": 28, "g": "", "title": "Chainkata #1"}, {"t": "Chainkata #1", "v": "Cover E \u00b7 Rob Liefeld variant", "handle": "nov18-26-0088", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/0926IM0267_ebe12f0d-1e0c-45c3-b9d4-2fec7fa2f09a.jpg", "price": 5.19, "inv": 53, "g": "", "title": "Chainkata #1"}, {"t": "Chainkata #1", "v": "Cover D \u00b7 Riley Rossmo variant", "handle": "nov18-26-0087", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/0926IM0266_df9baaa5-fb9d-4203-9747-c15bd88e858a.jpg", "price": 5.19, "inv": 23, "g": "", "title": "Chainkata #1"}, {"t": "Chainkata #1", "v": "Cover F \u00b7 Blank sketch variant", "handle": "nov18-26-0089", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/0926IM0268_652d4b30-8bfa-408e-89b6-b45a3adc397b.jpg", "price": 6.49, "inv": 26, "g": "", "title": "Chainkata #1"}], "next": [{"t": "Chainkata #2", "v": "Out Dec 23", "handle": "1026im0324", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1026IM0324_00c3dacc-56c2-4f64-a4a7-b9a981c3673f.jpg", "price": 5.19, "inv": 0, "g": "", "title": "Chainkata #2"}, {"t": "Chainkata #3", "v": "Out Jan 20", "handle": "1126im0295", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1126IM0295_a5b24a2d-c624-4414-a253-211983ee77e3.jpg", "price": 5.19, "inv": 0, "g": "", "title": "Chainkata #3"}]}, "inc": [{"t": "Midnight X-Men #1", "v": "Virgin incentive", "handle": "oct06-26-0260", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/19NfOrI1YpF7tjNlyCxM07vusiLSlRP4N_6be42fce-1166-4f91-979c-05f6fff1dcda.jpg", "price": 50, "inv": 3, "g": "NM- 9.2", "title": "Midnight X-Men #1"}, {"t": "Midnight Spider-Man #2", "v": "Virgin incentive", "handle": "nov18-26-0231", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1eLTYkwtRM9yU8wBNH116Z4ay_M7Sh4_z.jpg", "price": 45, "inv": 3, "g": "NM 9.4", "title": "Midnight Spider-Man #2"}, {"t": "Liquid Kill #1", "v": "Homage incentive", "handle": "feb21-23-0275", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/products/img275_3528ea9f-6bb1-4d19-8391-87fd071d458a.jpg", "price": 45, "inv": 2, "g": "NM", "title": "Liquid Kill #1"}, {"t": "Mercy Sparx: Heaven's Devil #1", "v": "UV spot gloss incentive", "handle": "nov18-26-0212", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1tHvMxAA0c3bY_PBeIJtts4BvC4PII1Pk.jpg", "price": 40, "inv": 1, "g": "NM 9.4", "title": "Mercy Sparx: Heaven's Devil #1"}, {"t": "Midnight Fantastic Four #2", "v": "Virgin incentive", "handle": "nov18-26-0220", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1s8AJmvgoegNQKq413WGFrKBrhrUjhEVI.jpg", "price": 40, "inv": 1, "g": "NM- 9.2", "title": "Midnight Fantastic Four #2"}, {"t": "A Quiet Place: Rising Tides #1", "v": "Kirkham virgin incentive", "handle": "nov18-26-0024", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1EngiVAnzL7Vf6ZqhPjIRc43jipE_P3km.jpg", "price": 30, "inv": 1, "g": "NM 9.4", "title": "A Quiet Place: Rising Tides #1"}, {"t": "X-Men: Incursions #1", "v": "Homage incentive", "handle": "nov18-26-0413", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1ZZOCqoXq1pXbeIiC1YOLyZEMBAokeM7u.jpg", "price": 22, "inv": 2, "g": "NM- 9.2", "title": "X-Men: Incursions #1"}, {"t": "BRZRKR: City of Darkness #1", "v": "Hill virgin incentive", "handle": "nov18-26-0071", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/15teVzfXjyy5MnQBTK45wPybz7I5yFpjC.jpg", "price": 20, "inv": 1, "g": "NM 9.4", "title": "BRZRKR: City of Darkness #1"}], "trades": [{"t": "Silver Surfer: The Infinity Gauntlet", "v": "Omnibus HC", "handle": "nov18-26-0310", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/9781302969844_22cb0af8-2afa-4408-a69c-55c2a582d960.jpg", "price": 150, "inv": 2, "g": "", "title": "Silver Surfer: The Infinity Gauntlet"}, {"t": "Batman by Snyder and Capullo", "v": "Omnibus Vol 1 HC", "handle": "nov11-26-0044", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1Vn531G2OIHtKsxMzfWdHyTFKoykR1CgS.jpg", "price": 125, "inv": 2, "g": "", "title": "Batman by Snyder and Capullo"}, {"t": "The Warlord by Mike Grell", "v": "Omnibus Vol 2 HC", "handle": "nov04-26-0367", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/9781799506157_6e356bd3-bbb1-4c7f-8034-a952a0979932.jpg", "price": 100, "inv": 2, "g": "", "title": "The Warlord by Mike Grell"}, {"t": "Absolute Batman", "v": "Vol 1 HC", "handle": "nov11-26-0001", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1z7TzPM_MzrZYpuoD87ePAuprooTooJrL.jpg", "price": 24.99, "inv": 7, "g": "", "title": "Absolute Batman"}, {"t": "Absolute Batman", "v": "Vol 2 HC", "handle": "nov11-26-0003", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1ICuvM4Lm49i5TVDk_OPWxNuuxp7eFe2A.jpg", "price": 29.99, "inv": 3, "g": "", "title": "Absolute Batman"}, {"t": "Absolute Superman", "v": "Vol 3 HC", "handle": "nov04-26-0022", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/0726DC0262_f3280e94-4ecd-455e-97e9-048027752a18.jpg", "price": 29.99, "inv": 12, "g": "", "title": "Absolute Superman"}, {"t": "Batman: H2SH", "v": "HC", "handle": "nov18-26-0046", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/0526DC0218_aeb40a26-5b4a-4618-a806-a0cc63556b79.jpg", "price": 29.99, "inv": 4, "g": "", "title": "Batman: H2SH"}, {"t": "Crisis on Infinite Earths", "v": "DC Finest Vol 3", "handle": "nov18-26-0108", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/0726DC0281_5b904c81-a9d0-4416-a105-908e31afea94.jpg", "price": 39.99, "inv": 4, "g": "", "title": "Crisis on Infinite Earths"}], "monk": [{"t": "Spider-Man: Black Suit & Blood #1", "v": "Blank variant \u00b7 signed and remarqued", "handle": "mar3-26-1042", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/img138_0703c09b-119f-4b87-81c8-c1d5fb1eff9b.jpg", "price": 400, "inv": 1, "g": "CGC 9.8", "title": "Spider-Man: Black Suit & Blood #1"}, {"t": "Spawn #330", "v": "Blank variant \u00b7 signed and remarqued", "handle": "mar3-26-1043", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/img139_d750ca65-95c2-4de7-85f1-844b33b78a90.jpg", "price": 400, "inv": 1, "g": "CGC 9.8", "title": "Spawn #330"}, {"t": "Spawn 30th Anniversary", "v": "Signed and remarqued", "handle": "oct09-26-1043", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1stexHLSOOd1clYjhQD1CE0IG5t1rg_lr.jpg", "price": 400, "inv": 1, "g": "CGC 9.4", "title": "Spawn 30th Anniversary"}, {"t": "Spawn #362", "v": "Spawn sketch cover \u00b7 signed and remarqued", "handle": "oct09-26-1041", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1hngp2QfKVHe6CNfgk97-rLRlSwciIYot.jpg", "price": 225, "inv": 1, "g": "CGC 9.8", "title": "Spawn #362"}, {"t": "Spawn #362", "v": "Gunslinger sketch cover \u00b7 signed and remarqued", "handle": "oct09-26-1042", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1yjC6FcT5vtJKmL8-03w4iRBd5WzyA_fS.jpg", "price": 225, "inv": 1, "g": "CGC 9.8", "title": "Spawn #362"}, {"t": "Something Is Killing the Children #45", "v": "Monk foil virgin \u00b7 /225 \u00b7 signed", "handle": "jun05-26-0532", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/img087_gw4ziu.jpg", "price": 150, "inv": 1, "g": "NM- 9.2", "title": "Something Is Killing the Children #45"}], "chainA": {"t": "Chainkata #1", "v": "Cover A \u00b7 Daniel Warren Johnson", "handle": "nov18-26-0084", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/0926IM0263_a597747e-2ec0-4302-a837-9dac8558fd5f.jpg", "price": 5.19, "inv": 0, "g": "", "title": "Chainkata #1"}, "shop": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/captcan-shop-hero.jpg", "logo": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/Squarelogo2.png"}, "market": {"artists": [["Jack Kirby", "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/img002_by2vfl.jpg"], ["Todd McFarlane", "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1kLWPk4OslP8_VJLxVaq7aywubDGki2JC.jpg"], ["Francesco Francavilla", "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/0926DC0047_8757beca-fdc4-4206-b118-88715fe78a4a.jpg"], ["Daniel Warren Johnson", "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/0926IM0263_12bb76ab-995a-41c1-bc57-282a7b5b6cd1.jpg"], ["Mark Spears", "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/75960623001300621.jpg"], ["Jeff Monk", "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/Chainkata_01_CoverZZ85_Front_GlossFoil.jpg"]], "asOf": "Nov 18", "eras": [["Golden Age", "1930 to 1956", "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/img120_9fa49f5e-3ca5-45af-8418-1eaec4af0a45.jpg", "/collections/golden-age-1930-1956"], ["Silver Age", "1957 to 1970", "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/img167_ea8f1900-5031-4a7d-abb8-83946a4b4f27.jpg", "/collections/silver-age-1957-1970"], ["Bronze Age", "1970 to 1984", "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1sVnt1h4lNLJ8GbJTOEnF3Pzfy3M8qIsN.jpg", "/collections/bronze-age-1970-1984"], ["Modern Age", "1985 to today", "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1suXszSCTFs-npw-9GxuSa4HJJaNqlemT.jpg", "/collections/modern-age-1985-2026"]], "excl": [{"img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/abbam1-ccx-td-1-raw.jpg", "t": "Ark-M #1 Tom Fowler trade dress", "v": "CaptCan x Nefarious \u00b7 ltd 1,000"}, {"img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/abbam1-ccx-vf-1-raw.jpg", "t": "Ark-M #1 Tom Fowler virgin foil", "v": "CaptCan x Nefarious \u00b7 ltd 1,000"}, {"img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/Chainkata_01_CoverZZ85_Front_GlossFoil.jpg", "t": "Chainkata #1 Jeff Monk gloss foil", "v": "CaptCan exclusive \u00b7 /500"}], "hot10": [{"r": 1, "t": "Challenges of Doom: Doctor Strange #1", "v": "Peach Momoko error cover", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/75960621690100131_6e06f4de-5899-48b4-a12f-35b3b2b0673c.jpg", "why": "Printing error. Same art landed on Emperor Doom #1", "s": "in one week", "up": "100+ sold"}, {"r": 2, "t": "Halloween: The Game #1", "v": "Jonathan Wayshak \u00b7 ltd 1,500", "why": "Allocated cover, only 1,500 made", "s": "price jump", "up": "+157%", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/0926MP0984_34bf6e7c-41cb-44b4-b876-69a5600977b3.jpg"}, {"r": 3, "t": "Superman Unlimited #1", "v": "Dan Mora James Gunn cover", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/0325DC015.jpg", "why": "DC Studios shake-up and Man of Tomorrow buzz", "s": "CGC 9.8 jump", "up": "+1,567%"}, {"r": 4, "t": "Exquisite Corpses #1", "v": "Michael Walsh cover", "why": "Tynion's Blumhouse deal. Film rumoured", "s": "signed 9.8s", "up": "+142%", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/0325IM247.jpg"}, {"r": 5, "t": "Horror of Godzilla #1", "v": "Tristan Jones cover", "why": "Riding Godzilla Minus Zero at the box office", "s": "price jump", "up": "+233%", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/82771403545200111.jpg"}, {"r": 6, "t": "Avengers: The Children's Crusade", "v": "2010 run \u00b7 #1 leads", "why": "VisionQuest has fans hunting Young Avengers", "s": "to the list", "up": "New", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/products/scan0098_1f3a5155-9566-42e8-8f06-09b82be34c73.jpg"}, {"r": 7, "t": "Alpha Flight #1", "v": "John Byrne \u00b7 1983", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/products/scan0758_d4d2edb3-d932-4df9-9ae4-c833776a8a4a.jpg", "why": "Alpha Flight movie rumoured", "s": "in one week", "up": "50+ sold"}, {"r": 8, "t": "Uncanny X-Men #121", "v": "1979", "why": "1st full Alpha Flight", "s": "CGC 9.6 jump", "up": "+142%", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/products/scan0128_164c76e9-d867-48c8-ae57-b6599d59cf1e.jpg"}, {"r": 9, "t": "Uncanny X-Men #120", "v": "1979", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/products/img471_70ec5994-60e2-44b0-9078-0a104352e727.jpg", "why": "1st Alpha Flight cameo", "s": "CGC 9.6 jump", "up": "+67%"}, {"r": 10, "t": "Godzilla #1", "v": "Marvel \u00b7 1977", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/img024_6bd77e9f-85d2-43a5-87be-5492b410491e.jpg", "why": "The first Godzilla comic", "s": "CGC 9.2 jump", "up": "+100%"}], "hot10src": "CBSI Hot 10 \u00b7 week of Nov 14 \u00b7 eBay sales", "lesson": {"cpv": {"a": {"img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/img037_16158ae1-b592-45c0-b027-90bc21a5b60e.jpg", "p": 3500, "t": "Amazing Spider-Man #252", "v": "CGC 9.8 \u00b7 Canadian price"}, "b": {"img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1sfm1eheMTaW7QuXq3V-JAIY-Gcc-tAXc.jpg", "p": 2500, "t": "Amazing Spider-Man #252", "v": "CGC 9.8 \u00b7 US newsstand"}}, "inc": {"inc": {"img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1tbjiagCqxaUQ5DfnZp2r3LRCcfN2sTYs.jpg", "p": 20, "t": "Absolute Batman #25", "v": "Larosa incentive"}, "reg": {"img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1AXEAd60V9Zbu_4ngJ_1q061pBTRhLPDx.jpg", "p": 7.79, "t": "Absolute Batman #25", "v": "Regular cover"}}}, "quiz": [{"a": "Doctor Doom", "b": "Fantastic Four #5", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/img167_ea8f1900-5031-4a7d-abb8-83946a4b4f27.jpg", "o": ["Galactus", "Doctor Doom", "Silver Surfer", "Namor"], "sold": 3700, "y": "1962"}, {"a": "The Punisher", "b": "Amazing Spider-Man #129", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1CBmyAotW-8dWKEam73twLwqQ6QFN3Gxx.jpg", "o": ["The Jackal", "Kraven", "The Punisher", "Hobgoblin"], "sold": 2000, "y": "1974"}, {"a": "Ghost Rider", "b": "Marvel Spotlight #5", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1NZTxuuvROOrzuO-pQ-fpUdkxBTRZCwjn.jpg", "o": ["Moon Knight", "Blade", "Morbius", "Ghost Rider"], "sold": 2250, "y": "1972"}, {"a": "Moon Knight", "b": "Werewolf by Night #32", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1sVnt1h4lNLJ8GbJTOEnF3Pzfy3M8qIsN.jpg", "o": ["Moon Knight", "Blade", "Man-Thing", "Morbius"], "sold": 1500, "y": "1975"}, {"a": "Swamp Thing", "b": "House of Secrets #92", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1lZ_cmMdty6O-8ECeWLkhJecMvwrv0mvQ.jpg", "o": ["The Spectre", "Swamp Thing", "Etrigan", "Man-Thing"], "sold": 1450, "y": "1971"}, {"a": "Loki", "b": "Journey into Mystery #85", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1P6JYNRFbFLxU7U0KF6pT5uTJ31dRu_s9.jpg", "o": ["Odin", "Hela", "Loki", "Enchantress"], "sold": 1200, "y": "1962"}, {"a": "Venom", "b": "Amazing Spider-Man #300", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1kLWPk4OslP8_VJLxVaq7aywubDGki2JC.jpg", "o": ["Carnage", "Venom", "Hobgoblin", "Morbius"], "sold": 1500, "y": "1988"}, {"a": "Storm, Colossus & Nightcrawler", "b": "Giant-Size X-Men #1", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1jWHBX3sGQD2wSDkZ3YEhj_TDuEY8Kd_8.jpg", "o": ["Gambit, Rogue & Jubilee", "Storm, Colossus & Nightcrawler", "Cable, Bishop & Psylocke", "Cyclops, Beast & Iceman"], "sold": 4500, "y": "1975"}, {"a": "Jonah Hex", "b": "All-Star Western #10", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1EWeh0a0hwzhaZO4bycqUWyval1lCMP31.jpg", "o": ["Jonah Hex", "Deadman", "Sgt. Rock", "The Phantom Stranger"], "sold": 1500, "y": "1972"}, {"a": "Alpha Flight", "b": "Uncanny X-Men #121", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/products/scan0128_164c76e9-d867-48c8-ae57-b6599d59cf1e.jpg", "note": "Number 8 on this week's hot list", "o": ["Excalibur", "X-Factor", "Alpha Flight", "New Mutants"], "y": "1979"}], "sold": [{"g": "CGC 9.4 \u00b7 signed Stan Lee", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/img067_186f84ae-b988-4874-a4d9-90c8bda705ea.jpg", "p": 9500, "t": "Iron Man #1"}, {"g": "CGC 8.5", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1jWHBX3sGQD2wSDkZ3YEhj_TDuEY8Kd_8.jpg", "p": 4500, "t": "Giant-Size X-Men #1"}, {"g": "CGC 1.5", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/img167_ea8f1900-5031-4a7d-abb8-83946a4b4f27.jpg", "p": 3700, "t": "Fantastic Four #5"}, {"g": "CGC 9.8 \u00b7 Canadian price", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/img037_16158ae1-b592-45c0-b027-90bc21a5b60e.jpg", "p": 3500, "t": "Amazing Spider-Man #252"}, {"g": "CGC 4.0 \u00b7 1952", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/img030_7e749664-e602-4abe-85bb-2652d0ba4ddd.jpg", "p": 3250, "t": "Mad #1"}, {"g": "CGC 9.8 \u00b7 1982", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/img143_eeb36546-d564-4e30-b110-1b46107d9031.jpg", "p": 2500, "t": "Creepshow"}, {"g": "FN 6.0 \u00b7 signed Dave Sim", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/img001_34d74aa1-489d-4f88-91a6-934cbb18f501.jpg", "p": 2500, "t": "Cerebus #1"}, {"g": "CGC 9.8 \u00b7 newsstand", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1sfm1eheMTaW7QuXq3V-JAIY-Gcc-tAXc.jpg", "p": 2500, "t": "Amazing Spider-Man #252"}], "spot": {"eye": "Market spotlight \u00b7 Canada's team", "h": "Alpha Flight <em>is heating up<\/em>", "txt": "A movie is rumoured, and three Alpha Flight keys made this week's hot list. Canadian price copies sell for the most.", "pts": [["Uncanny X-Men #120", "1st Alpha Flight cameo. 9.6 copies up 67%"], ["Uncanny X-Men #121", "1st full Alpha Flight. 9.6 copies up 142%"], ["Alpha Flight #1", "50+ copies sold in one week"]], "cta": "Got one?", "ctaTxt": "Ask us what yours is worth. We buy keys and consign graded books."}, "timeline": [[{"d": "Dec 18 2026", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/img167_ea8f1900-5031-4a7d-abb8-83946a4b4f27.jpg", "k": "Fantastic Four #5", "kn": "1st Doctor Doom", "t": "Avengers: Doomsday"}, {"d": "Jan 13 2027", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/img083_45640545-b264-4b0e-80d9-4f660ffe677a.jpg", "k": "Amazing Fantasy #15", "kn": "1st Spider-Man", "t": "Friendly Neighborhood Spider-Man S2"}, {"d": "Mar 2027", "k": "Daredevil #1", "kn": "1st Daredevil \u00b7 1964", "t": "Daredevil: Born Again S3"}, {"d": "Jul 9 2027", "k": "Action Comics #242", "kn": "1st Brainiac", "t": "Man of Tomorrow"}, {"d": "Dec 17 2027", "k": "Secret Wars #8", "kn": "1st black suit symbiote", "t": "Avengers: Secret Wars"}], [{"d": "Feb 18 2028", "k": "Batman #1", "kn": "1st Joker and Catwoman", "t": "The Batman Part II"}, {"d": "May 5 2028", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1jWHBX3sGQD2wSDkZ3YEhj_TDuEY8Kd_8.jpg", "k": "Giant-Size X-Men #1", "kn": "1st new X-Men", "t": "X-Men"}, {"d": "Jul 28 2028", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1NZTxuuvROOrzuO-pQ-fpUdkxBTRZCwjn.jpg", "k": "Marvel Spotlight #5", "kn": "1st Ghost Rider", "t": "Ghost Rider"}, {"d": "Dec 15 2028", "k": "Fantastic Four #52", "kn": "1st Black Panther", "t": "Black Panther 3"}, {"d": "Out now", "k": "Avengers #57", "kn": "1st Vision", "t": "VisionQuest on Disney+"}]], "trailers": [{"id": "irVNGjRFZGk", "kw": "Doom", "t": "Avengers: Doomsday", "when": "In theatres December 18", "rel": "2026-12-18"}, {"id": "X1aFkAkFASk", "kw": "Doom", "sub": "Special look", "t": "Avengers: Doomsday", "when": "In theatres December 18", "rel": "2026-12-18"}, {"id": "UfNu7pcR0e8", "kw": "Doom", "sub": "Teaser", "t": "Avengers: Doomsday", "when": "In theatres December 18", "rel": "2026-12-18"}], "vel": [{"img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/abbam1-ccx-td-1-raw.jpg", "n": 327, "ours": 1, "t": "Ark-M #1 exclusives", "v": "CaptCan x Nefarious \u00b7 Tom Fowler"}, {"img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1EOrED04KnYUNjJB8rRkU2BCOFM9wfST.jpg", "n": 324, "t": "Absolute Batman #25", "v": "Clay Mann foil"}, {"img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/75960621380100141_a8df7880-c79f-4266-9c37-fca353bd42c2.jpg", "n": 264, "t": "Avengers #1", "v": "True Believers blind sealed"}, {"img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/0926DC0047_8757beca-fdc4-4206-b118-88715fe78a4a.jpg", "n": 247, "t": "Ark-M #1", "v": "Francesco Francavilla Cover A"}, {"img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/0926IM0263_a597747e-2ec0-4302-a837-9dac8558fd5f.jpg", "n": 200, "t": "Chainkata #1", "v": "Daniel Warren Johnson"}, {"img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1AXEAd60V9Zbu_4ngJ_1q061pBTRhLPDx.jpg", "n": 168, "t": "Absolute Batman #25", "v": "Nick Dragotta Cover A"}, {"img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/0926DC0048_d6de5a9e-81fc-4db7-9415-e708301f4b38.jpg", "n": 117, "t": "Ark-M #1", "v": "Dustin Nguyen card stock"}]}}</script>
+<script id="tvdata" type="application/json">{"feed": {"newLabel": "Nov 17th", "newColl": "/collections/nov-17th-2026-new-releases", "asOf": "Updated Nov 18", "hot": [{"title": "Chainkata #1 (2026) Johnson B&W Variant", "handle": "nov18-26-0085", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/0926IM0264_41d2c1be-628c-40fd-a199-c5ca74d1af7c.jpg", "price": 5.19, "sold": 443, "inv": 47}, {"title": "X-Orcists #1 (2026) Variant", "handle": "nov18-26-0419", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/75960621451800151_191936c3-8387-4234-ac51-07c6d3ca32aa.jpg", "price": 6.49, "sold": 85, "inv": 24}, {"title": "Midnight Spider-Man #2 (2026)", "handle": "nov18-26-0222", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/75960621681900211_adf8ea12-baf4-40c1-bfe8-46453863b500.jpg", "price": 6.49, "sold": 84, "inv": 241}, {"title": "Midnight X-Men #2 (2026)", "handle": "nov18-26-0232", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/75960621668000211_a4eb59a2-f44c-49cc-b35f-f5440f2a8e8b.jpg", "price": 6.49, "sold": 78, "inv": 200}, {"title": "Midnight Fantastic Four #2 (2026)", "handle": "nov18-26-0213", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/75960621680200211_123df44a-ec22-4720-9bad-1d4dfe9844e7.jpg", "price": 6.49, "sold": 67, "inv": 150}, {"title": "Absolute Flash #21 (2026) Robles", "handle": "nov18-26-0025", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/0926DC0075_e94ab0e8-6988-4c16-a455-0a3edc64e9b7.jpg", "price": 6.49, "sold": 19, "inv": 57}, {"title": "Tomb of Apocalypse #4 (2026) Momoko Momo-tone Variant", "handle": "nov18-26-0367", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/75960621613000421_06822973-57aa-4584-9951-a8ac638fa4a0.jpg", "price": 6.49, "sold": 18, "inv": 24}, {"title": "Punisher #10 (2026) Momo-tone Variant", "handle": "nov18-26-0289", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/75960621516401021_373aed2b-c898-434e-af0d-23d99cbaf86b.jpg", "price": 6.49, "sold": 18, "inv": 24}, {"title": "Fantastic Four #19 (2026) Momoko Momo-tone Variant", "handle": "nov18-26-0145", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/75960621122701921_2917d2b9-707c-450f-9248-8837ef9cbbae.jpg", "price": 6.49, "sold": 16, "inv": 4}, {"title": "Detective Comics #1115 (2026) Janin", "handle": "nov18-26-0115", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/0926DC0111_adac56d9-34f8-4143-ade4-4e83fed3d4b5.jpg", "price": 6.49, "sold": 16, "inv": 47}, {"title": "DNX #5 (2026)", "handle": "nov18-26-0121", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/75960621519500511_74a1e388-428f-4ac1-a072-428d004afae4.jpg", "price": 6.49, "sold": 15, "inv": 20}, {"title": "Dorc #10 (2026) Bean", "handle": "nov18-26-0127", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/0926IM0322_7ef899a5-a10d-4472-8dcf-e70748e0d05c.jpg", "price": 5.19, "sold": 13, "inv": 70}, {"title": "Lobo #9 (2026) Johnson Variant", "handle": "nov18-26-0192", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/0926DC0044_59ca51bb-a1b0-4878-91f1-431d92b81446.jpg", "price": 6.49, "sold": 12, "inv": 3}, {"title": "Chainkata #1 (2026) Johnson Variant", "handle": "nov18-26-0086", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/0926IM0265_67db03db-266c-42f3-b657-bf9510b73b2b.jpg", "price": 5.19, "sold": 68, "inv": 45}, {"title": "Chainkata #1 (2026) Rossmo Variant", "handle": "nov18-26-0087", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/0926IM0266_df9baaa5-fb9d-4203-9747-c15bd88e858a.jpg", "price": 5.19, "sold": 44, "inv": 23}, {"title": "X-Orcists #1 (2026)", "handle": "nov18-26-0415", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/75960621451800111_b5da0d0f-4f01-4822-91be-561506d6da8f.jpg", "price": 6.49, "sold": 20, "inv": 13}, {"title": "Midnight Spider-Man #2 (2026) Homage Variant", "handle": "nov18-26-0225", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/75960621681900241_a09c475d-bb7e-411a-ae27-15796ebedb20.jpg", "price": 6.49, "sold": 17, "inv": 83}, {"title": "Midnight X-Men #2 (2026) Variant", "handle": "nov18-26-0234", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/75960621668000231_7be805c7-a450-4970-8984-3b12b5afc021.jpg", "price": 6.49, "sold": 17, "inv": 83}], "keys": [{"title": "Vampirella #1 CGC 7.5 (1969)", "handle": "nov13-26-1517", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/19FndqvbExWkEpdRTxz7ZP8Zk9V3Tes8V.jpg", "price": 2000, "inv": 1}, {"title": "Amazing Spider-Man #129 VG 4.0 (1974)", "handle": "nov13-26-0116", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1G438nmCAS5hVQiDG_LI6RZ1qAkVmhJjc.jpg", "price": 1100, "inv": 1}, {"title": "Batman #181 VG/FN 5.0 (1966)", "handle": "nov13-26-0002", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1nj_8ecn_HQfDBj0jKzF2dVhubK8_qtQ7.jpg", "price": 850, "inv": 1}, {"title": "Marvel Preview #2 CGC 9.6 (1975)", "handle": "nov13-26-1518", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1bebWxVvOt17y7kHpyREAg4dpe5mH9D8C.jpg", "price": 850, "inv": 1}, {"title": "Avengers #4 FR 1.0 (1964)", "handle": "nov13-26-0004", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1fmklo4j7SEJsAHeU2QVEAYk5Dvk9wtT2.jpg", "price": 800, "inv": 1}, {"title": "Six Million Dollar Man #1 CGC 9.8 (1976)", "handle": "nov13-26-1519", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1sWLDV69gN7dq_rRlC3aA_uXf4fSy0RDS.jpg", "price": 800, "inv": 1}, {"title": "Human Torch #38 VG- 3.5 (1954)", "handle": "nov13-26-0006", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1G5S-2EZW1fDpAItcTvNvwEguBFWp-klx.jpg", "price": 700, "inv": 1}, {"title": "The Thing #8 FN 6.0 (1953)", "handle": "nov13-26-0007", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1rzPPVAqzVcmdxExtP9GPKR_MQroFLA_B.jpg", "price": 550, "inv": 1}, {"title": "Marvel Team-Up #15 CGC 9.6 (1973)", "handle": "nov13-26-1504", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1Hf4eDNdt6lbpsSmzuI2e9Kkj2yV0oGkF.jpg", "price": 500, "inv": 1}, {"title": "Shazam! #8 CGC 9.8 (1973)", "handle": "nov13-26-1511", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1ZSWhfC_ywsqwCEaK4_qQ220w0EaZ3698.jpg", "price": 500, "inv": 1}, {"title": "The Thing #10 FN- 5.5 (1953)", "handle": "nov13-26-0008", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1jS2uPLpVwF8h0_fRIjxKyM_EwFGMrYFY.jpg", "price": 450, "inv": 1}, {"title": "X-Men #34 VF- 7.5 (1967)", "handle": "nov13-26-0005", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/13kAXDIGI730ig7Dsf6Ug4-gOpDg1CgnM.jpg", "price": 400, "inv": 1}], "run": {"title": "Amazing Spider-Man", "eye": "Friday's upload \u00b7 Silver Age run", "h": "Silver Age <em>Spider-Man<\/em>", "count": 43, "from": 22, "to": 320, "coll": "/collections/nov-13th-2026-upload", "items": [{"t": "ASM #19", "y": "1964", "price": 200, "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1W1D_n10voTgk6y6lqwE03YQ7XZKQkTIW.jpg", "handle": "nov13-26-0010"}, {"t": "ASM #24", "y": "1965", "price": 320, "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/11WatTTxDH5gsSiyYJX68BTC-Mg_PVu3d.jpg", "handle": "nov13-26-0014"}, {"t": "ASM #27", "y": "1965", "price": 220, "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/13pzZCgYlNqOLNzFxPb6pIJqc4yEOIDWN.jpg", "handle": "nov13-26-0017"}, {"t": "ASM #33", "y": "1966", "price": 220, "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1t4Ojwg8om9TZ0cikuLBj2XSN97AKsA17.jpg", "handle": "nov13-26-0022"}, {"t": "ASM #39", "y": "1966", "price": 220, "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1ePdlMw5He0ctvYTqTxHiaYGIlHpdqOsW.jpg", "handle": "nov13-26-0028"}, {"t": "ASM #43", "y": "1966", "price": 300, "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1jepmNHjQ0GIS8lQsjPd1NmKW5D0yC2bp.jpg", "handle": "nov13-26-0032"}, {"t": "ASM #51", "y": "1967", "price": 200, "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1dObhoboOXMPRyWXVUb4rTgKGRVQVoziI.jpg", "handle": "nov13-26-0038"}, {"t": "ASM #57", "y": "1968", "price": 80, "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1MDQE5C-MzrKTbDOk4gKt_R7pWk6MXRPN.jpg", "handle": "nov13-26-0044"}, {"t": "ASM #66", "y": "1968", "price": 180, "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1XNBBtP94m9FNmYn7d4J6-V5tnVxdJfZo.jpg", "handle": "nov13-26-0053"}, {"t": "ASM #73", "y": "1969", "price": 110, "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1RM5tV6xtKjKxnv_okSUh_Wc5FIwR9pqs.jpg", "handle": "nov13-26-0060"}, {"t": "ASM #79", "y": "1969", "price": 120, "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/11UIBas2vz9Yy-nII3fQtYYuLUddXbcct.jpg", "handle": "nov13-26-0066"}, {"t": "ASM #88", "y": "1970", "price": 100, "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/13_yWxyCe-ABRhQsAR1zid23Hn61loLx.jpg", "handle": "nov13-26-0075"}]}, "blow": [{"t": "Absolute Batman #17", "handle": "feb18-26-0005", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/img005_1dfc6f0f-fb5e-4db3-b153-028a8be7e701.jpg", "price": 4.87, "was": 6.49}, {"t": "Absolute Batman #18", "handle": "mar11-26-0012", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/img012_2f1f6a6d-900f-433a-b4b4-3e9da0cdd5db.jpg", "price": 4.87, "was": 6.49}, {"t": "Absolute Batman #22", "handle": "jul08-26-0002", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1Fz9nFXOo3QkgZP2QUz6Sg2I1-MIZh1ON.jpg", "price": 4.87, "was": 6.49}, {"t": "Absolute Catwoman #1", "handle": "jun10-26-0001", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/img001_qzbz7i.jpg", "price": 4.87, "was": 6.49}, {"t": "Absolute Green Arrow #3", "handle": "jul15-26-0013", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/0526DC0038_62046511-002b-4b59-bfba-a7a80fdbc88a.jpg", "price": 4.68, "was": 6.24}, {"t": "Absolute Wonder Woman Annual #1", "handle": "feb11-26-0011", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/img011_5457d4b4-3013-4afa-8c7a-0465c2556e73.jpg", "price": 5.84, "was": 7.79}, {"t": "Skinbreaker #1", "handle": "sep24-25-0264", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/img264_081d82da-d77c-465c-a611-832121502cf3.jpg", "price": 4.5, "was": 6.24}, {"t": "Batman / Spawn #1", "handle": "dec14-22-0026", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/products/img026_34162115-e925-4c98-aff5-ff5a5e52193f.jpg", "price": 5, "was": 6.56}], "foc": [{"title": "Star Wars/Marvel: Hope Assembles #1 Cover A", "handle": "75960621652900111", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/75960621652900111_3c96f90e-92db-48da-8b60-f401d3ed343f.jpg", "price": 7.79}, {"title": "Midnight Spider-Man #3 Cover A", "handle": "75960621681900311", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/75960621681900311_79e515d1-ec66-4f65-af6e-7ed9388bb65a.jpg", "price": 6.49}, {"title": "Midnight X-Men #3 Cover A", "handle": "75960621668000311", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/75960621668000311_cc6951cf-1796-40e0-bd6d-0b8bb09e8842.jpg", "price": 6.49}, {"title": "Midnight Fantastic Four #3 Cover A", "handle": "75960621680200311", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/75960621680200311_0a5078c1-1b04-47f1-81de-70e02d5194de.jpg", "price": 6.49}, {"title": "Star Wars/Marvel: Hope Assembles #1 Cover B Alex Ross Variant", "handle": "75960621652900121", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/IMG_7696.jpg", "price": 7.79}], "soon": [{"title": "Absolute Batman #25 Second Printing Cvr D Nick Dragotta Clay Mann Spot Foil Var", "handle": "1026dc8317", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/0826DC8926_ea2483c3-0112-4b64-ae4b-03c1871bdf61.jpg", "price": 11.69, "sold": 83, "release": ""}, {"title": "Absolute Batman #26 Cvr A Nick Dragotta", "handle": "1126dc0048", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1126DC0048_a825d238-637a-490e-abaf-ae000d7dffe2.jpg", "price": 6.49, "sold": 44, "release": "Jan 13 2027"}, {"title": "Midnight Spider-Man #4 Cover A", "handle": "75960621681900411", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/75960621681900411_a37170ac-9d70-4a58-8b80-ebb9ccf09dae.jpg", "price": 6.49, "sold": 27, "release": "Jan 13 2027"}, {"title": "Dungeon Crawler Carl #1 Cvr A Nathan Gooden", "handle": "1126vl1138", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1126VL1138_9ef623d3-42e4-4454-af38-8e2f82964895.jpg", "price": 5.19, "sold": 20, "release": "Jan 20 2027"}], "merch": [{"title": "Cover Series 001: Captain Canada Tee", "handle": "captcan-cover-series-001-captain-canada-tee", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/captcan-merch-img_9132.jpg", "price": 49.99}, {"title": "Captain Canada Bookmark", "handle": "captain-canada-bookmark", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/captcan-merch-img_9186.jpg", "price": 1.99}, {"title": "CaptCan Comics Logo Tee Black", "handle": "captcan-comics-logo-tee-black", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/captcan-merch-img_9097.jpg", "price": 20.99}, {"title": "CaptCan Sticker Pack", "handle": "captcan-sticker-pack", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/captcan-merch-img_9184.jpg", "price": 4.99}, {"title": "CaptCan Comics Hoodie Black", "handle": "captcan-comics-hoodie-black", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/captcan-merch-img_9195.jpg", "price": 44.99}, {"title": "CaptCan Comics Logo Tee Red", "handle": "captcan-comics-logo-tee-red", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/captcan-merch-img_9152.jpg", "price": 20.99}, {"title": "CaptCan CC Maple Dad Hat Black", "handle": "captcan-cc-maple-dad-hat-black", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/captcan-merch-img_9077.jpg", "price": 29.99}, {"title": "Captain Canada Sticker", "handle": "captain-canada-sticker", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/captcan-merch-img_9178.jpg", "price": 2.49}], "chain": {"monk": [{"t": "Chainkata #1", "v": "Matte foil wraparound \u00b7 /500", "handle": "nov18-26-0082", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1gJDQZww7Kwp0MUb81RxVIhyeYcB__X2r.jpg", "price": 29.99, "inv": 22, "g": "", "title": "Chainkata #1"}, {"t": "Chainkata #1", "v": "Foil virgin \u00b7 /500", "handle": "nov18-26-0083", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1gU6_bYrUxz5jMx81zyUUYTXCAva5Tl7J.jpg", "price": 34.99, "inv": 21, "g": "NM 9.4", "title": "Chainkata #1"}], "covers": [{"t": "Chainkata #1", "v": "Foil incentive \u00b7 Daniel Warren Johnson", "handle": "nov18-26-0093", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1lRMR2xZevJ303pT_kq3XXdEzURxTNAEr.jpg", "price": 100, "inv": 1, "g": "NM 9.4", "title": "Chainkata #1"}, {"t": "Chainkata #1", "v": "Cover C \u00b7 Sword and sorcery variant", "handle": "nov18-26-0086", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/0926IM0265_67db03db-266c-42f3-b657-bf9510b73b2b.jpg", "price": 5.19, "inv": 44, "g": "", "title": "Chainkata #1"}, {"t": "Chainkata #1", "v": "Cover B \u00b7 Black and white variant", "handle": "nov18-26-0085", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/0926IM0264_41d2c1be-628c-40fd-a199-c5ca74d1af7c.jpg", "price": 5.19, "inv": 28, "g": "", "title": "Chainkata #1"}, {"t": "Chainkata #1", "v": "Cover E \u00b7 Rob Liefeld variant", "handle": "nov18-26-0088", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/0926IM0267_ebe12f0d-1e0c-45c3-b9d4-2fec7fa2f09a.jpg", "price": 5.19, "inv": 53, "g": "", "title": "Chainkata #1"}, {"t": "Chainkata #1", "v": "Cover D \u00b7 Riley Rossmo variant", "handle": "nov18-26-0087", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/0926IM0266_df9baaa5-fb9d-4203-9747-c15bd88e858a.jpg", "price": 5.19, "inv": 23, "g": "", "title": "Chainkata #1"}, {"t": "Chainkata #1", "v": "Cover F \u00b7 Blank sketch variant", "handle": "nov18-26-0089", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/0926IM0268_652d4b30-8bfa-408e-89b6-b45a3adc397b.jpg", "price": 6.49, "inv": 26, "g": "", "title": "Chainkata #1"}], "next": [{"t": "Chainkata #2", "v": "Out Dec 23", "handle": "1026im0324", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1026IM0324_00c3dacc-56c2-4f64-a4a7-b9a981c3673f.jpg", "price": 5.19, "inv": 0, "g": "", "title": "Chainkata #2"}, {"t": "Chainkata #3", "v": "Out Jan 20", "handle": "1126im0295", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1126IM0295_a5b24a2d-c624-4414-a253-211983ee77e3.jpg", "price": 5.19, "inv": 0, "g": "", "title": "Chainkata #3"}]}, "inc": [{"t": "Midnight X-Men #1", "v": "Virgin incentive", "handle": "oct06-26-0260", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/19NfOrI1YpF7tjNlyCxM07vusiLSlRP4N_6be42fce-1166-4f91-979c-05f6fff1dcda.jpg", "price": 50, "inv": 3, "g": "NM- 9.2", "title": "Midnight X-Men #1"}, {"t": "Midnight Spider-Man #2", "v": "Virgin incentive", "handle": "nov18-26-0231", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1eLTYkwtRM9yU8wBNH116Z4ay_M7Sh4_z.jpg", "price": 45, "inv": 3, "g": "NM 9.4", "title": "Midnight Spider-Man #2"}, {"t": "Liquid Kill #1", "v": "Homage incentive", "handle": "feb21-23-0275", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/products/img275_3528ea9f-6bb1-4d19-8391-87fd071d458a.jpg", "price": 45, "inv": 2, "g": "NM", "title": "Liquid Kill #1"}, {"t": "Mercy Sparx: Heaven's Devil #1", "v": "UV spot gloss incentive", "handle": "nov18-26-0212", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1tHvMxAA0c3bY_PBeIJtts4BvC4PII1Pk.jpg", "price": 40, "inv": 1, "g": "NM 9.4", "title": "Mercy Sparx: Heaven's Devil #1"}, {"t": "Midnight Fantastic Four #2", "v": "Virgin incentive", "handle": "nov18-26-0220", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1s8AJmvgoegNQKq413WGFrKBrhrUjhEVI.jpg", "price": 40, "inv": 1, "g": "NM- 9.2", "title": "Midnight Fantastic Four #2"}, {"t": "A Quiet Place: Rising Tides #1", "v": "Kirkham virgin incentive", "handle": "nov18-26-0024", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1EngiVAnzL7Vf6ZqhPjIRc43jipE_P3km.jpg", "price": 30, "inv": 1, "g": "NM 9.4", "title": "A Quiet Place: Rising Tides #1"}, {"t": "X-Men: Incursions #1", "v": "Homage incentive", "handle": "nov18-26-0413", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1ZZOCqoXq1pXbeIiC1YOLyZEMBAokeM7u.jpg", "price": 22, "inv": 2, "g": "NM- 9.2", "title": "X-Men: Incursions #1"}, {"t": "BRZRKR: City of Darkness #1", "v": "Hill virgin incentive", "handle": "nov18-26-0071", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/15teVzfXjyy5MnQBTK45wPybz7I5yFpjC.jpg", "price": 20, "inv": 1, "g": "NM 9.4", "title": "BRZRKR: City of Darkness #1"}], "trades": [{"t": "Silver Surfer: The Infinity Gauntlet", "v": "Omnibus HC", "handle": "nov18-26-0310", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/9781302969844_22cb0af8-2afa-4408-a69c-55c2a582d960.jpg", "price": 150, "inv": 2, "g": "", "title": "Silver Surfer: The Infinity Gauntlet"}, {"t": "Batman by Snyder and Capullo", "v": "Omnibus Vol 1 HC", "handle": "nov11-26-0044", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1Vn531G2OIHtKsxMzfWdHyTFKoykR1CgS.jpg", "price": 125, "inv": 2, "g": "", "title": "Batman by Snyder and Capullo"}, {"t": "The Warlord by Mike Grell", "v": "Omnibus Vol 2 HC", "handle": "nov04-26-0367", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/9781799506157_6e356bd3-bbb1-4c7f-8034-a952a0979932.jpg", "price": 100, "inv": 2, "g": "", "title": "The Warlord by Mike Grell"}, {"t": "Absolute Batman", "v": "Vol 1 HC", "handle": "nov11-26-0001", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1z7TzPM_MzrZYpuoD87ePAuprooTooJrL.jpg", "price": 24.99, "inv": 7, "g": "", "title": "Absolute Batman"}, {"t": "Absolute Batman", "v": "Vol 2 HC", "handle": "nov11-26-0003", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1ICuvM4Lm49i5TVDk_OPWxNuuxp7eFe2A.jpg", "price": 29.99, "inv": 3, "g": "", "title": "Absolute Batman"}, {"t": "Absolute Superman", "v": "Vol 3 HC", "handle": "nov04-26-0022", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/0726DC0262_f3280e94-4ecd-455e-97e9-048027752a18.jpg", "price": 29.99, "inv": 12, "g": "", "title": "Absolute Superman"}, {"t": "Batman: H2SH", "v": "HC", "handle": "nov18-26-0046", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/0526DC0218_aeb40a26-5b4a-4618-a806-a0cc63556b79.jpg", "price": 29.99, "inv": 4, "g": "", "title": "Batman: H2SH"}, {"t": "Crisis on Infinite Earths", "v": "DC Finest Vol 3", "handle": "nov18-26-0108", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/0726DC0281_5b904c81-a9d0-4416-a105-908e31afea94.jpg", "price": 39.99, "inv": 4, "g": "", "title": "Crisis on Infinite Earths"}], "monk": [{"t": "Spider-Man: Black Suit & Blood #1", "v": "Blank variant \u00b7 signed and remarqued", "handle": "mar3-26-1042", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/img138_0703c09b-119f-4b87-81c8-c1d5fb1eff9b.jpg", "price": 400, "inv": 1, "g": "CGC 9.8", "title": "Spider-Man: Black Suit & Blood #1"}, {"t": "Spawn #330", "v": "Blank variant \u00b7 signed and remarqued", "handle": "mar3-26-1043", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/img139_d750ca65-95c2-4de7-85f1-844b33b78a90.jpg", "price": 400, "inv": 1, "g": "CGC 9.8", "title": "Spawn #330"}, {"t": "Spawn 30th Anniversary", "v": "Signed and remarqued", "handle": "oct09-26-1043", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1stexHLSOOd1clYjhQD1CE0IG5t1rg_lr.jpg", "price": 400, "inv": 1, "g": "CGC 9.4", "title": "Spawn 30th Anniversary"}, {"t": "Spawn #362", "v": "Spawn sketch cover \u00b7 signed and remarqued", "handle": "oct09-26-1041", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1hngp2QfKVHe6CNfgk97-rLRlSwciIYot.jpg", "price": 225, "inv": 1, "g": "CGC 9.8", "title": "Spawn #362"}, {"t": "Spawn #362", "v": "Gunslinger sketch cover \u00b7 signed and remarqued", "handle": "oct09-26-1042", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1yjC6FcT5vtJKmL8-03w4iRBd5WzyA_fS.jpg", "price": 225, "inv": 1, "g": "CGC 9.8", "title": "Spawn #362"}, {"t": "Something Is Killing the Children #45", "v": "Monk foil virgin \u00b7 /225 \u00b7 signed", "handle": "jun05-26-0532", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/img087_gw4ziu.jpg", "price": 150, "inv": 1, "g": "NM- 9.2", "title": "Something Is Killing the Children #45"}], "chainA": {"t": "Chainkata #1", "v": "Cover A \u00b7 Daniel Warren Johnson", "handle": "nov18-26-0084", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/0926IM0263_a597747e-2ec0-4302-a837-9dac8558fd5f.jpg", "price": 5.19, "inv": 0, "g": "", "title": "Chainkata #1"}, "shop": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/captcan-shop-hero.jpg", "logo": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/Squarelogo2.png"}, "market": {"artists": [["Jack Kirby", "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/img002_by2vfl.jpg"], ["Todd McFarlane", "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1kLWPk4OslP8_VJLxVaq7aywubDGki2JC.jpg"], ["Francesco Francavilla", "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/0926DC0047_8757beca-fdc4-4206-b118-88715fe78a4a.jpg"], ["Daniel Warren Johnson", "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/0926IM0263_12bb76ab-995a-41c1-bc57-282a7b5b6cd1.jpg"], ["Mark Spears", "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/75960623001300621.jpg"], ["Jeff Monk", "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/Chainkata_01_CoverZZ85_Front_GlossFoil.jpg"]], "asOf": "Nov 18", "eras": [["Golden Age", "1930 to 1956", "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/img120_9fa49f5e-3ca5-45af-8418-1eaec4af0a45.jpg", "/collections/golden-age-1930-1956"], ["Silver Age", "1957 to 1970", "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/img167_ea8f1900-5031-4a7d-abb8-83946a4b4f27.jpg", "/collections/silver-age-1957-1970"], ["Bronze Age", "1970 to 1984", "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1sVnt1h4lNLJ8GbJTOEnF3Pzfy3M8qIsN.jpg", "/collections/bronze-age-1970-1984"], ["Modern Age", "1985 to today", "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1suXszSCTFs-npw-9GxuSa4HJJaNqlemT.jpg", "/collections/modern-age-1985-2026"]], "excl": [{"img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/abbam1-ccx-td-1-raw.jpg", "t": "Ark-M #1 Tom Fowler trade dress", "v": "CaptCan x Nefarious \u00b7 ltd 1,000"}, {"img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/abbam1-ccx-vf-1-raw.jpg", "t": "Ark-M #1 Tom Fowler virgin foil", "v": "CaptCan x Nefarious \u00b7 ltd 1,000"}, {"img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/Chainkata_01_CoverZZ85_Front_GlossFoil.jpg", "t": "Chainkata #1 Jeff Monk gloss foil", "v": "CaptCan exclusive \u00b7 /500"}], "hot10": [{"r": 1, "t": "Challenges of Doom: Doctor Strange #1", "v": "Peach Momoko error cover", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/75960621690100131_6e06f4de-5899-48b4-a12f-35b3b2b0673c.jpg", "why": "Printing error. Same art landed on Emperor Doom #1", "s": "in one week", "up": "100+ sold"}, {"r": 2, "t": "Halloween: The Game #1", "v": "Jonathan Wayshak \u00b7 ltd 1,500", "why": "Allocated cover, only 1,500 made", "s": "price jump", "up": "+157%", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/0926MP0984_34bf6e7c-41cb-44b4-b876-69a5600977b3.jpg"}, {"r": 3, "t": "Superman Unlimited #1", "v": "Dan Mora James Gunn cover", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/0325DC015.jpg", "why": "DC Studios shake-up and Man of Tomorrow buzz", "s": "CGC 9.8 jump", "up": "+1,567%"}, {"r": 4, "t": "Exquisite Corpses #1", "v": "Michael Walsh cover", "why": "Tynion's Blumhouse deal. Film rumoured", "s": "signed 9.8s", "up": "+142%", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/0325IM247.jpg"}, {"r": 5, "t": "Horror of Godzilla #1", "v": "Tristan Jones cover", "why": "Riding Godzilla Minus Zero at the box office", "s": "price jump", "up": "+233%", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/82771403545200111.jpg"}, {"r": 6, "t": "Avengers: The Children's Crusade", "v": "2010 run \u00b7 #1 leads", "why": "VisionQuest has fans hunting Young Avengers", "s": "to the list", "up": "New", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/products/scan0098_1f3a5155-9566-42e8-8f06-09b82be34c73.jpg"}, {"r": 7, "t": "Alpha Flight #1", "v": "John Byrne \u00b7 1983", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/products/scan0758_d4d2edb3-d932-4df9-9ae4-c833776a8a4a.jpg", "why": "Alpha Flight movie rumoured", "s": "in one week", "up": "50+ sold"}, {"r": 8, "t": "Uncanny X-Men #121", "v": "1979", "why": "1st full Alpha Flight", "s": "CGC 9.6 jump", "up": "+142%", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/products/scan0128_164c76e9-d867-48c8-ae57-b6599d59cf1e.jpg"}, {"r": 9, "t": "Uncanny X-Men #120", "v": "1979", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/products/img471_70ec5994-60e2-44b0-9078-0a104352e727.jpg", "why": "1st Alpha Flight cameo", "s": "CGC 9.6 jump", "up": "+67%"}, {"r": 10, "t": "Godzilla #1", "v": "Marvel \u00b7 1977", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/img024_6bd77e9f-85d2-43a5-87be-5492b410491e.jpg", "why": "The first Godzilla comic", "s": "CGC 9.2 jump", "up": "+100%"}], "hot10src": "CBSI Hot 10 \u00b7 week of Nov 14 \u00b7 eBay sales", "lesson": {"cpv": {"a": {"img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/img037_16158ae1-b592-45c0-b027-90bc21a5b60e.jpg", "p": 3500, "t": "Amazing Spider-Man #252", "v": "CGC 9.8 \u00b7 Canadian price"}, "b": {"img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1sfm1eheMTaW7QuXq3V-JAIY-Gcc-tAXc.jpg", "p": 2500, "t": "Amazing Spider-Man #252", "v": "CGC 9.8 \u00b7 US newsstand"}}, "inc": {"inc": {"img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1tbjiagCqxaUQ5DfnZp2r3LRCcfN2sTYs.jpg", "p": 20, "t": "Absolute Batman #25", "v": "Larosa incentive"}, "reg": {"img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1AXEAd60V9Zbu_4ngJ_1q061pBTRhLPDx.jpg", "p": 7.79, "t": "Absolute Batman #25", "v": "Regular cover"}}}, "quiz": [{"a": "Doctor Doom", "b": "Fantastic Four #5", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/img167_ea8f1900-5031-4a7d-abb8-83946a4b4f27.jpg", "o": ["Galactus", "Doctor Doom", "Silver Surfer", "Namor"], "sold": 3700, "y": "1962"}, {"a": "The Punisher", "b": "Amazing Spider-Man #129", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1CBmyAotW-8dWKEam73twLwqQ6QFN3Gxx.jpg", "o": ["The Jackal", "Kraven", "The Punisher", "Hobgoblin"], "sold": 2000, "y": "1974"}, {"a": "Ghost Rider", "b": "Marvel Spotlight #5", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1NZTxuuvROOrzuO-pQ-fpUdkxBTRZCwjn.jpg", "o": ["Moon Knight", "Blade", "Morbius", "Ghost Rider"], "sold": 2250, "y": "1972"}, {"a": "Moon Knight", "b": "Werewolf by Night #32", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1sVnt1h4lNLJ8GbJTOEnF3Pzfy3M8qIsN.jpg", "o": ["Moon Knight", "Blade", "Man-Thing", "Morbius"], "sold": 1500, "y": "1975"}, {"a": "Swamp Thing", "b": "House of Secrets #92", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1lZ_cmMdty6O-8ECeWLkhJecMvwrv0mvQ.jpg", "o": ["The Spectre", "Swamp Thing", "Etrigan", "Man-Thing"], "sold": 1450, "y": "1971"}, {"a": "Loki", "b": "Journey into Mystery #85", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1P6JYNRFbFLxU7U0KF6pT5uTJ31dRu_s9.jpg", "o": ["Odin", "Hela", "Loki", "Enchantress"], "sold": 1200, "y": "1962"}, {"a": "Venom", "b": "Amazing Spider-Man #300", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1kLWPk4OslP8_VJLxVaq7aywubDGki2JC.jpg", "o": ["Carnage", "Venom", "Hobgoblin", "Morbius"], "sold": 1500, "y": "1988"}, {"a": "Storm, Colossus & Nightcrawler", "b": "Giant-Size X-Men #1", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1jWHBX3sGQD2wSDkZ3YEhj_TDuEY8Kd_8.jpg", "o": ["Gambit, Rogue & Jubilee", "Storm, Colossus & Nightcrawler", "Cable, Bishop & Psylocke", "Cyclops, Beast & Iceman"], "sold": 4500, "y": "1975"}, {"a": "Jonah Hex", "b": "All-Star Western #10", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1EWeh0a0hwzhaZO4bycqUWyval1lCMP31.jpg", "o": ["Jonah Hex", "Deadman", "Sgt. Rock", "The Phantom Stranger"], "sold": 1500, "y": "1972"}, {"a": "Alpha Flight", "b": "Uncanny X-Men #121", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/products/scan0128_164c76e9-d867-48c8-ae57-b6599d59cf1e.jpg", "note": "Number 8 on this week's hot list", "o": ["Excalibur", "X-Factor", "Alpha Flight", "New Mutants"], "y": "1979"}], "sold": [{"g": "CGC 9.4 \u00b7 signed Stan Lee", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/img067_186f84ae-b988-4874-a4d9-90c8bda705ea.jpg", "p": 9500, "t": "Iron Man #1"}, {"g": "CGC 8.5", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1jWHBX3sGQD2wSDkZ3YEhj_TDuEY8Kd_8.jpg", "p": 4500, "t": "Giant-Size X-Men #1"}, {"g": "CGC 1.5", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/img167_ea8f1900-5031-4a7d-abb8-83946a4b4f27.jpg", "p": 3700, "t": "Fantastic Four #5"}, {"g": "CGC 9.8 \u00b7 Canadian price", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/img037_16158ae1-b592-45c0-b027-90bc21a5b60e.jpg", "p": 3500, "t": "Amazing Spider-Man #252"}, {"g": "CGC 4.0 \u00b7 1952", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/img030_7e749664-e602-4abe-85bb-2652d0ba4ddd.jpg", "p": 3250, "t": "Mad #1"}, {"g": "CGC 9.8 \u00b7 1982", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/img143_eeb36546-d564-4e30-b110-1b46107d9031.jpg", "p": 2500, "t": "Creepshow"}, {"g": "FN 6.0 \u00b7 signed Dave Sim", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/img001_34d74aa1-489d-4f88-91a6-934cbb18f501.jpg", "p": 2500, "t": "Cerebus #1"}, {"g": "CGC 9.8 \u00b7 newsstand", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1sfm1eheMTaW7QuXq3V-JAIY-Gcc-tAXc.jpg", "p": 2500, "t": "Amazing Spider-Man #252"}], "spot": {"eye": "Market spotlight \u00b7 Canada's team", "h": "Alpha Flight <em>is heating up<\/em>", "txt": "A movie is rumoured, and three Alpha Flight keys made this week's hot list. Canadian price copies sell for the most.", "pts": [["Uncanny X-Men #120", "1st Alpha Flight cameo. 9.6 copies up 67%"], ["Uncanny X-Men #121", "1st full Alpha Flight. 9.6 copies up 142%"], ["Alpha Flight #1", "50+ copies sold in one week"]], "cta": "Got one?", "ctaTxt": "Ask us what yours is worth. We buy keys and consign graded books."}, "timeline": [[{"d": "Dec 18 2026", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/img167_ea8f1900-5031-4a7d-abb8-83946a4b4f27.jpg", "k": "Fantastic Four #5", "kn": "1st Doctor Doom", "t": "Avengers: Doomsday"}, {"d": "Jan 13 2027", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/img083_45640545-b264-4b0e-80d9-4f660ffe677a.jpg", "k": "Amazing Fantasy #15", "kn": "1st Spider-Man", "t": "Friendly Neighborhood Spider-Man S2"}, {"d": "Mar 2027", "k": "Daredevil #1", "kn": "1st Daredevil \u00b7 1964", "t": "Daredevil: Born Again S3"}, {"d": "Jul 9 2027", "k": "Action Comics #242", "kn": "1st Brainiac", "t": "Man of Tomorrow"}, {"d": "Dec 17 2027", "k": "Secret Wars #8", "kn": "1st black suit symbiote", "t": "Avengers: Secret Wars"}], [{"d": "Feb 18 2028", "k": "Batman #1", "kn": "1st Joker and Catwoman", "t": "The Batman Part II"}, {"d": "May 5 2028", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1jWHBX3sGQD2wSDkZ3YEhj_TDuEY8Kd_8.jpg", "k": "Giant-Size X-Men #1", "kn": "1st new X-Men", "t": "X-Men"}, {"d": "Jul 28 2028", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1NZTxuuvROOrzuO-pQ-fpUdkxBTRZCwjn.jpg", "k": "Marvel Spotlight #5", "kn": "1st Ghost Rider", "t": "Ghost Rider"}, {"d": "Dec 15 2028", "k": "Fantastic Four #52", "kn": "1st Black Panther", "t": "Black Panther 3"}, {"d": "Out now", "k": "Avengers #57", "kn": "1st Vision", "t": "VisionQuest on Disney+"}]], "trailers": [{"id": "irVNGjRFZGk", "kw": "Doom", "t": "Avengers: Doomsday", "when": "In theatres December 18", "rel": "2026-12-18"}, {"id": "X1aFkAkFASk", "kw": "Doom", "sub": "Special look", "t": "Avengers: Doomsday", "when": "In theatres December 18", "rel": "2026-12-18"}, {"id": "UfNu7pcR0e8", "kw": "Doom", "sub": "Teaser", "t": "Avengers: Doomsday", "when": "In theatres December 18", "rel": "2026-12-18"}], "vel": [{"img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/abbam1-ccx-td-1-raw.jpg", "n": 327, "ours": 1, "t": "Ark-M #1 exclusives", "v": "CaptCan x Nefarious \u00b7 Tom Fowler"}, {"img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1EOrED04KnYUNjJB8rRkU2BCOFM9wfST.jpg", "n": 324, "t": "Absolute Batman #25", "v": "Clay Mann foil"}, {"img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/75960621380100141_a8df7880-c79f-4266-9c37-fca353bd42c2.jpg", "n": 264, "t": "Avengers #1", "v": "True Believers blind sealed"}, {"img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/0926DC0047_8757beca-fdc4-4206-b118-88715fe78a4a.jpg", "n": 247, "t": "Ark-M #1", "v": "Francesco Francavilla Cover A"}, {"img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/0926IM0263_a597747e-2ec0-4302-a837-9dac8558fd5f.jpg", "n": 200, "t": "Chainkata #1", "v": "Daniel Warren Johnson"}, {"img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/1AXEAd60V9Zbu_4ngJ_1q061pBTRhLPDx.jpg", "n": 168, "t": "Absolute Batman #25", "v": "Nick Dragotta Cover A"}, {"img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/0926DC0048_d6de5a9e-81fc-4db7-9415-e708301f4b38.jpg", "n": 117, "t": "Ark-M #1", "v": "Dustin Nguyen card stock"}], "news": [{"eye": "Marvel, out this week", "h": "Midnight takes over", "txt": "Marvel's new Midnight line hits #2 with X-Men, Spider-Man and Fantastic Four. All three sit near the top of this week's most-wanted lists.", "kw": "Midnight X-Men"}, {"eye": "X-Men, no spoilers", "h": "DNX #5 has everyone talking", "txt": "The big moment for Cyclops and the Beast lands in DNX #5. Grab it before someone spoils it for you.", "kw": "DNX"}, {"eye": "In theatres December 18", "h": "Doom is coming", "txt": "Avengers: Doomsday brings Doctor Doom to the big screen. His first appearance is Fantastic Four #5 from 1962, and a CGC 1.5 sold here last month for $3,700.", "img": "https://cdn.shopify.com/s/files/1/0273/9870/1140/files/img167_ea8f1900-5031-4a7d-abb8-83946a4b4f27.jpg"}]}}</script>
 
-<script src="../qrlib/package/qrcode.min.js"></script>
+<script>//---------------------------------------------------------------------
+//
+// QR Code Generator for JavaScript
+//
+// Copyright (c) 2009 Kazuhiko Arase
+//
+// URL: http://www.d-project.com/
+//
+// Licensed under the MIT license:
+//  http://www.opensource.org/licenses/mit-license.php
+//
+// The word 'QR Code' is registered trademark of
+// DENSO WAVE INCORPORATED
+//  http://www.denso-wave.com/qrcode/faqpatent-e.html
+//
+//---------------------------------------------------------------------
+
+var qrcode = function() {
+
+  //---------------------------------------------------------------------
+  // qrcode
+  //---------------------------------------------------------------------
+
+  /**
+   * qrcode
+   * @param typeNumber 1 to 40
+   * @param errorCorrectionLevel 'L','M','Q','H'
+   */
+  var qrcode = function(typeNumber, errorCorrectionLevel) {
+
+    var PAD0 = 0xEC;
+    var PAD1 = 0x11;
+
+    var _typeNumber = typeNumber;
+    var _errorCorrectionLevel = QRErrorCorrectionLevel[errorCorrectionLevel];
+    var _modules = null;
+    var _moduleCount = 0;
+    var _dataCache = null;
+    var _dataList = [];
+
+    var _this = {};
+
+    var makeImpl = function(test, maskPattern) {
+
+      _moduleCount = _typeNumber * 4 + 17;
+      _modules = function(moduleCount) {
+        var modules = new Array(moduleCount);
+        for (var row = 0; row < moduleCount; row += 1) {
+          modules[row] = new Array(moduleCount);
+          for (var col = 0; col < moduleCount; col += 1) {
+            modules[row][col] = null;
+          }
+        }
+        return modules;
+      }(_moduleCount);
+
+      setupPositionProbePattern(0, 0);
+      setupPositionProbePattern(_moduleCount - 7, 0);
+      setupPositionProbePattern(0, _moduleCount - 7);
+      setupPositionAdjustPattern();
+      setupTimingPattern();
+      setupTypeInfo(test, maskPattern);
+
+      if (_typeNumber >= 7) {
+        setupTypeNumber(test);
+      }
+
+      if (_dataCache == null) {
+        _dataCache = createData(_typeNumber, _errorCorrectionLevel, _dataList);
+      }
+
+      mapData(_dataCache, maskPattern);
+    };
+
+    var setupPositionProbePattern = function(row, col) {
+
+      for (var r = -1; r <= 7; r += 1) {
+
+        if (row + r <= -1 || _moduleCount <= row + r) continue;
+
+        for (var c = -1; c <= 7; c += 1) {
+
+          if (col + c <= -1 || _moduleCount <= col + c) continue;
+
+          if ( (0 <= r && r <= 6 && (c == 0 || c == 6) )
+              || (0 <= c && c <= 6 && (r == 0 || r == 6) )
+              || (2 <= r && r <= 4 && 2 <= c && c <= 4) ) {
+            _modules[row + r][col + c] = true;
+          } else {
+            _modules[row + r][col + c] = false;
+          }
+        }
+      }
+    };
+
+    var getBestMaskPattern = function() {
+
+      var minLostPoint = 0;
+      var pattern = 0;
+
+      for (var i = 0; i < 8; i += 1) {
+
+        makeImpl(true, i);
+
+        var lostPoint = QRUtil.getLostPoint(_this);
+
+        if (i == 0 || minLostPoint > lostPoint) {
+          minLostPoint = lostPoint;
+          pattern = i;
+        }
+      }
+
+      return pattern;
+    };
+
+    var setupTimingPattern = function() {
+
+      for (var r = 8; r < _moduleCount - 8; r += 1) {
+        if (_modules[r][6] != null) {
+          continue;
+        }
+        _modules[r][6] = (r % 2 == 0);
+      }
+
+      for (var c = 8; c < _moduleCount - 8; c += 1) {
+        if (_modules[6][c] != null) {
+          continue;
+        }
+        _modules[6][c] = (c % 2 == 0);
+      }
+    };
+
+    var setupPositionAdjustPattern = function() {
+
+      var pos = QRUtil.getPatternPosition(_typeNumber);
+
+      for (var i = 0; i < pos.length; i += 1) {
+
+        for (var j = 0; j < pos.length; j += 1) {
+
+          var row = pos[i];
+          var col = pos[j];
+
+          if (_modules[row][col] != null) {
+            continue;
+          }
+
+          for (var r = -2; r <= 2; r += 1) {
+
+            for (var c = -2; c <= 2; c += 1) {
+
+              if (r == -2 || r == 2 || c == -2 || c == 2
+                  || (r == 0 && c == 0) ) {
+                _modules[row + r][col + c] = true;
+              } else {
+                _modules[row + r][col + c] = false;
+              }
+            }
+          }
+        }
+      }
+    };
+
+    var setupTypeNumber = function(test) {
+
+      var bits = QRUtil.getBCHTypeNumber(_typeNumber);
+
+      for (var i = 0; i < 18; i += 1) {
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+        _modules[Math.floor(i / 3)][i % 3 + _moduleCount - 8 - 3] = mod;
+      }
+
+      for (var i = 0; i < 18; i += 1) {
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+        _modules[i % 3 + _moduleCount - 8 - 3][Math.floor(i / 3)] = mod;
+      }
+    };
+
+    var setupTypeInfo = function(test, maskPattern) {
+
+      var data = (_errorCorrectionLevel << 3) | maskPattern;
+      var bits = QRUtil.getBCHTypeInfo(data);
+
+      // vertical
+      for (var i = 0; i < 15; i += 1) {
+
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+
+        if (i < 6) {
+          _modules[i][8] = mod;
+        } else if (i < 8) {
+          _modules[i + 1][8] = mod;
+        } else {
+          _modules[_moduleCount - 15 + i][8] = mod;
+        }
+      }
+
+      // horizontal
+      for (var i = 0; i < 15; i += 1) {
+
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+
+        if (i < 8) {
+          _modules[8][_moduleCount - i - 1] = mod;
+        } else if (i < 9) {
+          _modules[8][15 - i - 1 + 1] = mod;
+        } else {
+          _modules[8][15 - i - 1] = mod;
+        }
+      }
+
+      // fixed module
+      _modules[_moduleCount - 8][8] = (!test);
+    };
+
+    var mapData = function(data, maskPattern) {
+
+      var inc = -1;
+      var row = _moduleCount - 1;
+      var bitIndex = 7;
+      var byteIndex = 0;
+      var maskFunc = QRUtil.getMaskFunction(maskPattern);
+
+      for (var col = _moduleCount - 1; col > 0; col -= 2) {
+
+        if (col == 6) col -= 1;
+
+        while (true) {
+
+          for (var c = 0; c < 2; c += 1) {
+
+            if (_modules[row][col - c] == null) {
+
+              var dark = false;
+
+              if (byteIndex < data.length) {
+                dark = ( ( (data[byteIndex] >>> bitIndex) & 1) == 1);
+              }
+
+              var mask = maskFunc(row, col - c);
+
+              if (mask) {
+                dark = !dark;
+              }
+
+              _modules[row][col - c] = dark;
+              bitIndex -= 1;
+
+              if (bitIndex == -1) {
+                byteIndex += 1;
+                bitIndex = 7;
+              }
+            }
+          }
+
+          row += inc;
+
+          if (row < 0 || _moduleCount <= row) {
+            row -= inc;
+            inc = -inc;
+            break;
+          }
+        }
+      }
+    };
+
+    var createBytes = function(buffer, rsBlocks) {
+
+      var offset = 0;
+
+      var maxDcCount = 0;
+      var maxEcCount = 0;
+
+      var dcdata = new Array(rsBlocks.length);
+      var ecdata = new Array(rsBlocks.length);
+
+      for (var r = 0; r < rsBlocks.length; r += 1) {
+
+        var dcCount = rsBlocks[r].dataCount;
+        var ecCount = rsBlocks[r].totalCount - dcCount;
+
+        maxDcCount = Math.max(maxDcCount, dcCount);
+        maxEcCount = Math.max(maxEcCount, ecCount);
+
+        dcdata[r] = new Array(dcCount);
+
+        for (var i = 0; i < dcdata[r].length; i += 1) {
+          dcdata[r][i] = 0xff & buffer.getBuffer()[i + offset];
+        }
+        offset += dcCount;
+
+        var rsPoly = QRUtil.getErrorCorrectPolynomial(ecCount);
+        var rawPoly = qrPolynomial(dcdata[r], rsPoly.getLength() - 1);
+
+        var modPoly = rawPoly.mod(rsPoly);
+        ecdata[r] = new Array(rsPoly.getLength() - 1);
+        for (var i = 0; i < ecdata[r].length; i += 1) {
+          var modIndex = i + modPoly.getLength() - ecdata[r].length;
+          ecdata[r][i] = (modIndex >= 0)? modPoly.getAt(modIndex) : 0;
+        }
+      }
+
+      var totalCodeCount = 0;
+      for (var i = 0; i < rsBlocks.length; i += 1) {
+        totalCodeCount += rsBlocks[i].totalCount;
+      }
+
+      var data = new Array(totalCodeCount);
+      var index = 0;
+
+      for (var i = 0; i < maxDcCount; i += 1) {
+        for (var r = 0; r < rsBlocks.length; r += 1) {
+          if (i < dcdata[r].length) {
+            data[index] = dcdata[r][i];
+            index += 1;
+          }
+        }
+      }
+
+      for (var i = 0; i < maxEcCount; i += 1) {
+        for (var r = 0; r < rsBlocks.length; r += 1) {
+          if (i < ecdata[r].length) {
+            data[index] = ecdata[r][i];
+            index += 1;
+          }
+        }
+      }
+
+      return data;
+    };
+
+    var createData = function(typeNumber, errorCorrectionLevel, dataList) {
+
+      var rsBlocks = QRRSBlock.getRSBlocks(typeNumber, errorCorrectionLevel);
+
+      var buffer = qrBitBuffer();
+
+      for (var i = 0; i < dataList.length; i += 1) {
+        var data = dataList[i];
+        buffer.put(data.getMode(), 4);
+        buffer.put(data.getLength(), QRUtil.getLengthInBits(data.getMode(), typeNumber) );
+        data.write(buffer);
+      }
+
+      // calc num max data.
+      var totalDataCount = 0;
+      for (var i = 0; i < rsBlocks.length; i += 1) {
+        totalDataCount += rsBlocks[i].dataCount;
+      }
+
+      if (buffer.getLengthInBits() > totalDataCount * 8) {
+        throw 'code length overflow. ('
+          + buffer.getLengthInBits()
+          + '>'
+          + totalDataCount * 8
+          + ')';
+      }
+
+      // end code
+      if (buffer.getLengthInBits() + 4 <= totalDataCount * 8) {
+        buffer.put(0, 4);
+      }
+
+      // padding
+      while (buffer.getLengthInBits() % 8 != 0) {
+        buffer.putBit(false);
+      }
+
+      // padding
+      while (true) {
+
+        if (buffer.getLengthInBits() >= totalDataCount * 8) {
+          break;
+        }
+        buffer.put(PAD0, 8);
+
+        if (buffer.getLengthInBits() >= totalDataCount * 8) {
+          break;
+        }
+        buffer.put(PAD1, 8);
+      }
+
+      return createBytes(buffer, rsBlocks);
+    };
+
+    _this.addData = function(data, mode) {
+
+      mode = mode || 'Byte';
+
+      var newData = null;
+
+      switch(mode) {
+      case 'Numeric' :
+        newData = qrNumber(data);
+        break;
+      case 'Alphanumeric' :
+        newData = qrAlphaNum(data);
+        break;
+      case 'Byte' :
+        newData = qr8BitByte(data);
+        break;
+      case 'Kanji' :
+        newData = qrKanji(data);
+        break;
+      default :
+        throw 'mode:' + mode;
+      }
+
+      _dataList.push(newData);
+      _dataCache = null;
+    };
+
+    _this.isDark = function(row, col) {
+      if (row < 0 || _moduleCount <= row || col < 0 || _moduleCount <= col) {
+        throw row + ',' + col;
+      }
+      return _modules[row][col];
+    };
+
+    _this.getModuleCount = function() {
+      return _moduleCount;
+    };
+
+    _this.make = function() {
+      if (_typeNumber < 1) {
+        var typeNumber = 1;
+
+        for (; typeNumber < 40; typeNumber++) {
+          var rsBlocks = QRRSBlock.getRSBlocks(typeNumber, _errorCorrectionLevel);
+          var buffer = qrBitBuffer();
+
+          for (var i = 0; i < _dataList.length; i++) {
+            var data = _dataList[i];
+            buffer.put(data.getMode(), 4);
+            buffer.put(data.getLength(), QRUtil.getLengthInBits(data.getMode(), typeNumber) );
+            data.write(buffer);
+          }
+
+          var totalDataCount = 0;
+          for (var i = 0; i < rsBlocks.length; i++) {
+            totalDataCount += rsBlocks[i].dataCount;
+          }
+
+          if (buffer.getLengthInBits() <= totalDataCount * 8) {
+            break;
+          }
+        }
+
+        _typeNumber = typeNumber;
+      }
+
+      makeImpl(false, getBestMaskPattern() );
+    };
+
+    _this.createTableTag = function(cellSize, margin) {
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      var qrHtml = '';
+
+      qrHtml += '<table style="';
+      qrHtml += ' border-width: 0px; border-style: none;';
+      qrHtml += ' border-collapse: collapse;';
+      qrHtml += ' padding: 0px; margin: ' + margin + 'px;';
+      qrHtml += '">';
+      qrHtml += '<tbody>';
+
+      for (var r = 0; r < _this.getModuleCount(); r += 1) {
+
+        qrHtml += '<tr>';
+
+        for (var c = 0; c < _this.getModuleCount(); c += 1) {
+          qrHtml += '<td style="';
+          qrHtml += ' border-width: 0px; border-style: none;';
+          qrHtml += ' border-collapse: collapse;';
+          qrHtml += ' padding: 0px; margin: 0px;';
+          qrHtml += ' width: ' + cellSize + 'px;';
+          qrHtml += ' height: ' + cellSize + 'px;';
+          qrHtml += ' background-color: ';
+          qrHtml += _this.isDark(r, c)? '#000000' : '#ffffff';
+          qrHtml += ';';
+          qrHtml += '"/>';
+        }
+
+        qrHtml += '</tr>';
+      }
+
+      qrHtml += '</tbody>';
+      qrHtml += '</table>';
+
+      return qrHtml;
+    };
+
+    _this.createSvgTag = function(cellSize, margin, alt, title) {
+
+      var opts = {};
+      if (typeof arguments[0] == 'object') {
+        // Called by options.
+        opts = arguments[0];
+        // overwrite cellSize and margin.
+        cellSize = opts.cellSize;
+        margin = opts.margin;
+        alt = opts.alt;
+        title = opts.title;
+      }
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      // Compose alt property surrogate
+      alt = (typeof alt === 'string') ? {text: alt} : alt || {};
+      alt.text = alt.text || null;
+      alt.id = (alt.text) ? alt.id || 'qrcode-description' : null;
+
+      // Compose title property surrogate
+      title = (typeof title === 'string') ? {text: title} : title || {};
+      title.text = title.text || null;
+      title.id = (title.text) ? title.id || 'qrcode-title' : null;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var c, mc, r, mr, qrSvg='', rect;
+
+      rect = 'l' + cellSize + ',0 0,' + cellSize +
+        ' -' + cellSize + ',0 0,-' + cellSize + 'z ';
+
+      qrSvg += '<svg version="1.1" xmlns="http://www.w3.org/2000/svg"';
+      qrSvg += !opts.scalable ? ' width="' + size + 'px" height="' + size + 'px"' : '';
+      qrSvg += ' viewBox="0 0 ' + size + ' ' + size + '" ';
+      qrSvg += ' preserveAspectRatio="xMinYMin meet"';
+      qrSvg += (title.text || alt.text) ? ' role="img" aria-labelledby="' +
+          escapeXml([title.id, alt.id].join(' ').trim() ) + '"' : '';
+      qrSvg += '>';
+      qrSvg += (title.text) ? '<title id="' + escapeXml(title.id) + '">' +
+          escapeXml(title.text) + '</title>' : '';
+      qrSvg += (alt.text) ? '<description id="' + escapeXml(alt.id) + '">' +
+          escapeXml(alt.text) + '</description>' : '';
+      qrSvg += '<rect width="100%" height="100%" fill="white" cx="0" cy="0"/>';
+      qrSvg += '<path d="';
+
+      for (r = 0; r < _this.getModuleCount(); r += 1) {
+        mr = r * cellSize + margin;
+        for (c = 0; c < _this.getModuleCount(); c += 1) {
+          if (_this.isDark(r, c) ) {
+            mc = c*cellSize+margin;
+            qrSvg += 'M' + mc + ',' + mr + rect;
+          }
+        }
+      }
+
+      qrSvg += '" stroke="transparent" fill="black"/>';
+      qrSvg += '</svg>';
+
+      return qrSvg;
+    };
+
+    _this.createDataURL = function(cellSize, margin) {
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var min = margin;
+      var max = size - margin;
+
+      return createDataURL(size, size, function(x, y) {
+        if (min <= x && x < max && min <= y && y < max) {
+          var c = Math.floor( (x - min) / cellSize);
+          var r = Math.floor( (y - min) / cellSize);
+          return _this.isDark(r, c)? 0 : 1;
+        } else {
+          return 1;
+        }
+      } );
+    };
+
+    _this.createImgTag = function(cellSize, margin, alt) {
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+
+      var img = '';
+      img += '<img';
+      img += '\u0020src="';
+      img += _this.createDataURL(cellSize, margin);
+      img += '"';
+      img += '\u0020width="';
+      img += size;
+      img += '"';
+      img += '\u0020height="';
+      img += size;
+      img += '"';
+      if (alt) {
+        img += '\u0020alt="';
+        img += escapeXml(alt);
+        img += '"';
+      }
+      img += '/>';
+
+      return img;
+    };
+
+    var escapeXml = function(s) {
+      var escaped = '';
+      for (var i = 0; i < s.length; i += 1) {
+        var c = s.charAt(i);
+        switch(c) {
+        case '<': escaped += '&lt;'; break;
+        case '>': escaped += '&gt;'; break;
+        case '&': escaped += '&amp;'; break;
+        case '"': escaped += '&quot;'; break;
+        default : escaped += c; break;
+        }
+      }
+      return escaped;
+    };
+
+    var _createHalfASCII = function(margin) {
+      var cellSize = 1;
+      margin = (typeof margin == 'undefined')? cellSize * 2 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var min = margin;
+      var max = size - margin;
+
+      var y, x, r1, r2, p;
+
+      var blocks = {
+        '██': '█',
+        '█ ': '▀',
+        ' █': '▄',
+        '  ': ' '
+      };
+
+      var blocksLastLineNoMargin = {
+        '██': '▀',
+        '█ ': '▀',
+        ' █': ' ',
+        '  ': ' '
+      };
+
+      var ascii = '';
+      for (y = 0; y < size; y += 2) {
+        r1 = Math.floor((y - min) / cellSize);
+        r2 = Math.floor((y + 1 - min) / cellSize);
+        for (x = 0; x < size; x += 1) {
+          p = '█';
+
+          if (min <= x && x < max && min <= y && y < max && _this.isDark(r1, Math.floor((x - min) / cellSize))) {
+            p = ' ';
+          }
+
+          if (min <= x && x < max && min <= y+1 && y+1 < max && _this.isDark(r2, Math.floor((x - min) / cellSize))) {
+            p += ' ';
+          }
+          else {
+            p += '█';
+          }
+
+          // Output 2 characters per pixel, to create full square. 1 character per pixels gives only half width of square.
+          ascii += (margin < 1 && y+1 >= max) ? blocksLastLineNoMargin[p] : blocks[p];
+        }
+
+        ascii += '\n';
+      }
+
+      if (size % 2 && margin > 0) {
+        return ascii.substring(0, ascii.length - size - 1) + Array(size+1).join('▀');
+      }
+
+      return ascii.substring(0, ascii.length-1);
+    };
+
+    _this.createASCII = function(cellSize, margin) {
+      cellSize = cellSize || 1;
+
+      if (cellSize < 2) {
+        return _createHalfASCII(margin);
+      }
+
+      cellSize -= 1;
+      margin = (typeof margin == 'undefined')? cellSize * 2 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var min = margin;
+      var max = size - margin;
+
+      var y, x, r, p;
+
+      var white = Array(cellSize+1).join('██');
+      var black = Array(cellSize+1).join('  ');
+
+      var ascii = '';
+      var line = '';
+      for (y = 0; y < size; y += 1) {
+        r = Math.floor( (y - min) / cellSize);
+        line = '';
+        for (x = 0; x < size; x += 1) {
+          p = 1;
+
+          if (min <= x && x < max && min <= y && y < max && _this.isDark(r, Math.floor((x - min) / cellSize))) {
+            p = 0;
+          }
+
+          // Output 2 characters per pixel, to create full square. 1 character per pixels gives only half width of square.
+          line += p ? white : black;
+        }
+
+        for (r = 0; r < cellSize; r += 1) {
+          ascii += line + '\n';
+        }
+      }
+
+      return ascii.substring(0, ascii.length-1);
+    };
+
+    _this.renderTo2dContext = function(context, cellSize) {
+      cellSize = cellSize || 2;
+      var length = _this.getModuleCount();
+      for (var row = 0; row < length; row++) {
+        for (var col = 0; col < length; col++) {
+          context.fillStyle = _this.isDark(row, col) ? 'black' : 'white';
+          context.fillRect(row * cellSize, col * cellSize, cellSize, cellSize);
+        }
+      }
+    }
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrcode.stringToBytes
+  //---------------------------------------------------------------------
+
+  qrcode.stringToBytesFuncs = {
+    'default' : function(s) {
+      var bytes = [];
+      for (var i = 0; i < s.length; i += 1) {
+        var c = s.charCodeAt(i);
+        bytes.push(c & 0xff);
+      }
+      return bytes;
+    }
+  };
+
+  qrcode.stringToBytes = qrcode.stringToBytesFuncs['default'];
+
+  //---------------------------------------------------------------------
+  // qrcode.createStringToBytes
+  //---------------------------------------------------------------------
+
+  /**
+   * @param unicodeData base64 string of byte array.
+   * [16bit Unicode],[16bit Bytes], ...
+   * @param numChars
+   */
+  qrcode.createStringToBytes = function(unicodeData, numChars) {
+
+    // create conversion map.
+
+    var unicodeMap = function() {
+
+      var bin = base64DecodeInputStream(unicodeData);
+      var read = function() {
+        var b = bin.read();
+        if (b == -1) throw 'eof';
+        return b;
+      };
+
+      var count = 0;
+      var unicodeMap = {};
+      while (true) {
+        var b0 = bin.read();
+        if (b0 == -1) break;
+        var b1 = read();
+        var b2 = read();
+        var b3 = read();
+        var k = String.fromCharCode( (b0 << 8) | b1);
+        var v = (b2 << 8) | b3;
+        unicodeMap[k] = v;
+        count += 1;
+      }
+      if (count != numChars) {
+        throw count + ' != ' + numChars;
+      }
+
+      return unicodeMap;
+    }();
+
+    var unknownChar = '?'.charCodeAt(0);
+
+    return function(s) {
+      var bytes = [];
+      for (var i = 0; i < s.length; i += 1) {
+        var c = s.charCodeAt(i);
+        if (c < 128) {
+          bytes.push(c);
+        } else {
+          var b = unicodeMap[s.charAt(i)];
+          if (typeof b == 'number') {
+            if ( (b & 0xff) == b) {
+              // 1byte
+              bytes.push(b);
+            } else {
+              // 2bytes
+              bytes.push(b >>> 8);
+              bytes.push(b & 0xff);
+            }
+          } else {
+            bytes.push(unknownChar);
+          }
+        }
+      }
+      return bytes;
+    };
+  };
+
+  //---------------------------------------------------------------------
+  // QRMode
+  //---------------------------------------------------------------------
+
+  var QRMode = {
+    MODE_NUMBER :    1 << 0,
+    MODE_ALPHA_NUM : 1 << 1,
+    MODE_8BIT_BYTE : 1 << 2,
+    MODE_KANJI :     1 << 3
+  };
+
+  //---------------------------------------------------------------------
+  // QRErrorCorrectionLevel
+  //---------------------------------------------------------------------
+
+  var QRErrorCorrectionLevel = {
+    L : 1,
+    M : 0,
+    Q : 3,
+    H : 2
+  };
+
+  //---------------------------------------------------------------------
+  // QRMaskPattern
+  //---------------------------------------------------------------------
+
+  var QRMaskPattern = {
+    PATTERN000 : 0,
+    PATTERN001 : 1,
+    PATTERN010 : 2,
+    PATTERN011 : 3,
+    PATTERN100 : 4,
+    PATTERN101 : 5,
+    PATTERN110 : 6,
+    PATTERN111 : 7
+  };
+
+  //---------------------------------------------------------------------
+  // QRUtil
+  //---------------------------------------------------------------------
+
+  var QRUtil = function() {
+
+    var PATTERN_POSITION_TABLE = [
+      [],
+      [6, 18],
+      [6, 22],
+      [6, 26],
+      [6, 30],
+      [6, 34],
+      [6, 22, 38],
+      [6, 24, 42],
+      [6, 26, 46],
+      [6, 28, 50],
+      [6, 30, 54],
+      [6, 32, 58],
+      [6, 34, 62],
+      [6, 26, 46, 66],
+      [6, 26, 48, 70],
+      [6, 26, 50, 74],
+      [6, 30, 54, 78],
+      [6, 30, 56, 82],
+      [6, 30, 58, 86],
+      [6, 34, 62, 90],
+      [6, 28, 50, 72, 94],
+      [6, 26, 50, 74, 98],
+      [6, 30, 54, 78, 102],
+      [6, 28, 54, 80, 106],
+      [6, 32, 58, 84, 110],
+      [6, 30, 58, 86, 114],
+      [6, 34, 62, 90, 118],
+      [6, 26, 50, 74, 98, 122],
+      [6, 30, 54, 78, 102, 126],
+      [6, 26, 52, 78, 104, 130],
+      [6, 30, 56, 82, 108, 134],
+      [6, 34, 60, 86, 112, 138],
+      [6, 30, 58, 86, 114, 142],
+      [6, 34, 62, 90, 118, 146],
+      [6, 30, 54, 78, 102, 126, 150],
+      [6, 24, 50, 76, 102, 128, 154],
+      [6, 28, 54, 80, 106, 132, 158],
+      [6, 32, 58, 84, 110, 136, 162],
+      [6, 26, 54, 82, 110, 138, 166],
+      [6, 30, 58, 86, 114, 142, 170]
+    ];
+    var G15 = (1 << 10) | (1 << 8) | (1 << 5) | (1 << 4) | (1 << 2) | (1 << 1) | (1 << 0);
+    var G18 = (1 << 12) | (1 << 11) | (1 << 10) | (1 << 9) | (1 << 8) | (1 << 5) | (1 << 2) | (1 << 0);
+    var G15_MASK = (1 << 14) | (1 << 12) | (1 << 10) | (1 << 4) | (1 << 1);
+
+    var _this = {};
+
+    var getBCHDigit = function(data) {
+      var digit = 0;
+      while (data != 0) {
+        digit += 1;
+        data >>>= 1;
+      }
+      return digit;
+    };
+
+    _this.getBCHTypeInfo = function(data) {
+      var d = data << 10;
+      while (getBCHDigit(d) - getBCHDigit(G15) >= 0) {
+        d ^= (G15 << (getBCHDigit(d) - getBCHDigit(G15) ) );
+      }
+      return ( (data << 10) | d) ^ G15_MASK;
+    };
+
+    _this.getBCHTypeNumber = function(data) {
+      var d = data << 12;
+      while (getBCHDigit(d) - getBCHDigit(G18) >= 0) {
+        d ^= (G18 << (getBCHDigit(d) - getBCHDigit(G18) ) );
+      }
+      return (data << 12) | d;
+    };
+
+    _this.getPatternPosition = function(typeNumber) {
+      return PATTERN_POSITION_TABLE[typeNumber - 1];
+    };
+
+    _this.getMaskFunction = function(maskPattern) {
+
+      switch (maskPattern) {
+
+      case QRMaskPattern.PATTERN000 :
+        return function(i, j) { return (i + j) % 2 == 0; };
+      case QRMaskPattern.PATTERN001 :
+        return function(i, j) { return i % 2 == 0; };
+      case QRMaskPattern.PATTERN010 :
+        return function(i, j) { return j % 3 == 0; };
+      case QRMaskPattern.PATTERN011 :
+        return function(i, j) { return (i + j) % 3 == 0; };
+      case QRMaskPattern.PATTERN100 :
+        return function(i, j) { return (Math.floor(i / 2) + Math.floor(j / 3) ) % 2 == 0; };
+      case QRMaskPattern.PATTERN101 :
+        return function(i, j) { return (i * j) % 2 + (i * j) % 3 == 0; };
+      case QRMaskPattern.PATTERN110 :
+        return function(i, j) { return ( (i * j) % 2 + (i * j) % 3) % 2 == 0; };
+      case QRMaskPattern.PATTERN111 :
+        return function(i, j) { return ( (i * j) % 3 + (i + j) % 2) % 2 == 0; };
+
+      default :
+        throw 'bad maskPattern:' + maskPattern;
+      }
+    };
+
+    _this.getErrorCorrectPolynomial = function(errorCorrectLength) {
+      var a = qrPolynomial([1], 0);
+      for (var i = 0; i < errorCorrectLength; i += 1) {
+        a = a.multiply(qrPolynomial([1, QRMath.gexp(i)], 0) );
+      }
+      return a;
+    };
+
+    _this.getLengthInBits = function(mode, type) {
+
+      if (1 <= type && type < 10) {
+
+        // 1 - 9
+
+        switch(mode) {
+        case QRMode.MODE_NUMBER    : return 10;
+        case QRMode.MODE_ALPHA_NUM : return 9;
+        case QRMode.MODE_8BIT_BYTE : return 8;
+        case QRMode.MODE_KANJI     : return 8;
+        default :
+          throw 'mode:' + mode;
+        }
+
+      } else if (type < 27) {
+
+        // 10 - 26
+
+        switch(mode) {
+        case QRMode.MODE_NUMBER    : return 12;
+        case QRMode.MODE_ALPHA_NUM : return 11;
+        case QRMode.MODE_8BIT_BYTE : return 16;
+        case QRMode.MODE_KANJI     : return 10;
+        default :
+          throw 'mode:' + mode;
+        }
+
+      } else if (type < 41) {
+
+        // 27 - 40
+
+        switch(mode) {
+        case QRMode.MODE_NUMBER    : return 14;
+        case QRMode.MODE_ALPHA_NUM : return 13;
+        case QRMode.MODE_8BIT_BYTE : return 16;
+        case QRMode.MODE_KANJI     : return 12;
+        default :
+          throw 'mode:' + mode;
+        }
+
+      } else {
+        throw 'type:' + type;
+      }
+    };
+
+    _this.getLostPoint = function(qrcode) {
+
+      var moduleCount = qrcode.getModuleCount();
+
+      var lostPoint = 0;
+
+      // LEVEL1
+
+      for (var row = 0; row < moduleCount; row += 1) {
+        for (var col = 0; col < moduleCount; col += 1) {
+
+          var sameCount = 0;
+          var dark = qrcode.isDark(row, col);
+
+          for (var r = -1; r <= 1; r += 1) {
+
+            if (row + r < 0 || moduleCount <= row + r) {
+              continue;
+            }
+
+            for (var c = -1; c <= 1; c += 1) {
+
+              if (col + c < 0 || moduleCount <= col + c) {
+                continue;
+              }
+
+              if (r == 0 && c == 0) {
+                continue;
+              }
+
+              if (dark == qrcode.isDark(row + r, col + c) ) {
+                sameCount += 1;
+              }
+            }
+          }
+
+          if (sameCount > 5) {
+            lostPoint += (3 + sameCount - 5);
+          }
+        }
+      };
+
+      // LEVEL2
+
+      for (var row = 0; row < moduleCount - 1; row += 1) {
+        for (var col = 0; col < moduleCount - 1; col += 1) {
+          var count = 0;
+          if (qrcode.isDark(row, col) ) count += 1;
+          if (qrcode.isDark(row + 1, col) ) count += 1;
+          if (qrcode.isDark(row, col + 1) ) count += 1;
+          if (qrcode.isDark(row + 1, col + 1) ) count += 1;
+          if (count == 0 || count == 4) {
+            lostPoint += 3;
+          }
+        }
+      }
+
+      // LEVEL3
+
+      for (var row = 0; row < moduleCount; row += 1) {
+        for (var col = 0; col < moduleCount - 6; col += 1) {
+          if (qrcode.isDark(row, col)
+              && !qrcode.isDark(row, col + 1)
+              &&  qrcode.isDark(row, col + 2)
+              &&  qrcode.isDark(row, col + 3)
+              &&  qrcode.isDark(row, col + 4)
+              && !qrcode.isDark(row, col + 5)
+              &&  qrcode.isDark(row, col + 6) ) {
+            lostPoint += 40;
+          }
+        }
+      }
+
+      for (var col = 0; col < moduleCount; col += 1) {
+        for (var row = 0; row < moduleCount - 6; row += 1) {
+          if (qrcode.isDark(row, col)
+              && !qrcode.isDark(row + 1, col)
+              &&  qrcode.isDark(row + 2, col)
+              &&  qrcode.isDark(row + 3, col)
+              &&  qrcode.isDark(row + 4, col)
+              && !qrcode.isDark(row + 5, col)
+              &&  qrcode.isDark(row + 6, col) ) {
+            lostPoint += 40;
+          }
+        }
+      }
+
+      // LEVEL4
+
+      var darkCount = 0;
+
+      for (var col = 0; col < moduleCount; col += 1) {
+        for (var row = 0; row < moduleCount; row += 1) {
+          if (qrcode.isDark(row, col) ) {
+            darkCount += 1;
+          }
+        }
+      }
+
+      var ratio = Math.abs(100 * darkCount / moduleCount / moduleCount - 50) / 5;
+      lostPoint += ratio * 10;
+
+      return lostPoint;
+    };
+
+    return _this;
+  }();
+
+  //---------------------------------------------------------------------
+  // QRMath
+  //---------------------------------------------------------------------
+
+  var QRMath = function() {
+
+    var EXP_TABLE = new Array(256);
+    var LOG_TABLE = new Array(256);
+
+    // initialize tables
+    for (var i = 0; i < 8; i += 1) {
+      EXP_TABLE[i] = 1 << i;
+    }
+    for (var i = 8; i < 256; i += 1) {
+      EXP_TABLE[i] = EXP_TABLE[i - 4]
+        ^ EXP_TABLE[i - 5]
+        ^ EXP_TABLE[i - 6]
+        ^ EXP_TABLE[i - 8];
+    }
+    for (var i = 0; i < 255; i += 1) {
+      LOG_TABLE[EXP_TABLE[i] ] = i;
+    }
+
+    var _this = {};
+
+    _this.glog = function(n) {
+
+      if (n < 1) {
+        throw 'glog(' + n + ')';
+      }
+
+      return LOG_TABLE[n];
+    };
+
+    _this.gexp = function(n) {
+
+      while (n < 0) {
+        n += 255;
+      }
+
+      while (n >= 256) {
+        n -= 255;
+      }
+
+      return EXP_TABLE[n];
+    };
+
+    return _this;
+  }();
+
+  //---------------------------------------------------------------------
+  // qrPolynomial
+  //---------------------------------------------------------------------
+
+  function qrPolynomial(num, shift) {
+
+    if (typeof num.length == 'undefined') {
+      throw num.length + '/' + shift;
+    }
+
+    var _num = function() {
+      var offset = 0;
+      while (offset < num.length && num[offset] == 0) {
+        offset += 1;
+      }
+      var _num = new Array(num.length - offset + shift);
+      for (var i = 0; i < num.length - offset; i += 1) {
+        _num[i] = num[i + offset];
+      }
+      return _num;
+    }();
+
+    var _this = {};
+
+    _this.getAt = function(index) {
+      return _num[index];
+    };
+
+    _this.getLength = function() {
+      return _num.length;
+    };
+
+    _this.multiply = function(e) {
+
+      var num = new Array(_this.getLength() + e.getLength() - 1);
+
+      for (var i = 0; i < _this.getLength(); i += 1) {
+        for (var j = 0; j < e.getLength(); j += 1) {
+          num[i + j] ^= QRMath.gexp(QRMath.glog(_this.getAt(i) ) + QRMath.glog(e.getAt(j) ) );
+        }
+      }
+
+      return qrPolynomial(num, 0);
+    };
+
+    _this.mod = function(e) {
+
+      if (_this.getLength() - e.getLength() < 0) {
+        return _this;
+      }
+
+      var ratio = QRMath.glog(_this.getAt(0) ) - QRMath.glog(e.getAt(0) );
+
+      var num = new Array(_this.getLength() );
+      for (var i = 0; i < _this.getLength(); i += 1) {
+        num[i] = _this.getAt(i);
+      }
+
+      for (var i = 0; i < e.getLength(); i += 1) {
+        num[i] ^= QRMath.gexp(QRMath.glog(e.getAt(i) ) + ratio);
+      }
+
+      // recursive call
+      return qrPolynomial(num, 0).mod(e);
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // QRRSBlock
+  //---------------------------------------------------------------------
+
+  var QRRSBlock = function() {
+
+    var RS_BLOCK_TABLE = [
+
+      // L
+      // M
+      // Q
+      // H
+
+      // 1
+      [1, 26, 19],
+      [1, 26, 16],
+      [1, 26, 13],
+      [1, 26, 9],
+
+      // 2
+      [1, 44, 34],
+      [1, 44, 28],
+      [1, 44, 22],
+      [1, 44, 16],
+
+      // 3
+      [1, 70, 55],
+      [1, 70, 44],
+      [2, 35, 17],
+      [2, 35, 13],
+
+      // 4
+      [1, 100, 80],
+      [2, 50, 32],
+      [2, 50, 24],
+      [4, 25, 9],
+
+      // 5
+      [1, 134, 108],
+      [2, 67, 43],
+      [2, 33, 15, 2, 34, 16],
+      [2, 33, 11, 2, 34, 12],
+
+      // 6
+      [2, 86, 68],
+      [4, 43, 27],
+      [4, 43, 19],
+      [4, 43, 15],
+
+      // 7
+      [2, 98, 78],
+      [4, 49, 31],
+      [2, 32, 14, 4, 33, 15],
+      [4, 39, 13, 1, 40, 14],
+
+      // 8
+      [2, 121, 97],
+      [2, 60, 38, 2, 61, 39],
+      [4, 40, 18, 2, 41, 19],
+      [4, 40, 14, 2, 41, 15],
+
+      // 9
+      [2, 146, 116],
+      [3, 58, 36, 2, 59, 37],
+      [4, 36, 16, 4, 37, 17],
+      [4, 36, 12, 4, 37, 13],
+
+      // 10
+      [2, 86, 68, 2, 87, 69],
+      [4, 69, 43, 1, 70, 44],
+      [6, 43, 19, 2, 44, 20],
+      [6, 43, 15, 2, 44, 16],
+
+      // 11
+      [4, 101, 81],
+      [1, 80, 50, 4, 81, 51],
+      [4, 50, 22, 4, 51, 23],
+      [3, 36, 12, 8, 37, 13],
+
+      // 12
+      [2, 116, 92, 2, 117, 93],
+      [6, 58, 36, 2, 59, 37],
+      [4, 46, 20, 6, 47, 21],
+      [7, 42, 14, 4, 43, 15],
+
+      // 13
+      [4, 133, 107],
+      [8, 59, 37, 1, 60, 38],
+      [8, 44, 20, 4, 45, 21],
+      [12, 33, 11, 4, 34, 12],
+
+      // 14
+      [3, 145, 115, 1, 146, 116],
+      [4, 64, 40, 5, 65, 41],
+      [11, 36, 16, 5, 37, 17],
+      [11, 36, 12, 5, 37, 13],
+
+      // 15
+      [5, 109, 87, 1, 110, 88],
+      [5, 65, 41, 5, 66, 42],
+      [5, 54, 24, 7, 55, 25],
+      [11, 36, 12, 7, 37, 13],
+
+      // 16
+      [5, 122, 98, 1, 123, 99],
+      [7, 73, 45, 3, 74, 46],
+      [15, 43, 19, 2, 44, 20],
+      [3, 45, 15, 13, 46, 16],
+
+      // 17
+      [1, 135, 107, 5, 136, 108],
+      [10, 74, 46, 1, 75, 47],
+      [1, 50, 22, 15, 51, 23],
+      [2, 42, 14, 17, 43, 15],
+
+      // 18
+      [5, 150, 120, 1, 151, 121],
+      [9, 69, 43, 4, 70, 44],
+      [17, 50, 22, 1, 51, 23],
+      [2, 42, 14, 19, 43, 15],
+
+      // 19
+      [3, 141, 113, 4, 142, 114],
+      [3, 70, 44, 11, 71, 45],
+      [17, 47, 21, 4, 48, 22],
+      [9, 39, 13, 16, 40, 14],
+
+      // 20
+      [3, 135, 107, 5, 136, 108],
+      [3, 67, 41, 13, 68, 42],
+      [15, 54, 24, 5, 55, 25],
+      [15, 43, 15, 10, 44, 16],
+
+      // 21
+      [4, 144, 116, 4, 145, 117],
+      [17, 68, 42],
+      [17, 50, 22, 6, 51, 23],
+      [19, 46, 16, 6, 47, 17],
+
+      // 22
+      [2, 139, 111, 7, 140, 112],
+      [17, 74, 46],
+      [7, 54, 24, 16, 55, 25],
+      [34, 37, 13],
+
+      // 23
+      [4, 151, 121, 5, 152, 122],
+      [4, 75, 47, 14, 76, 48],
+      [11, 54, 24, 14, 55, 25],
+      [16, 45, 15, 14, 46, 16],
+
+      // 24
+      [6, 147, 117, 4, 148, 118],
+      [6, 73, 45, 14, 74, 46],
+      [11, 54, 24, 16, 55, 25],
+      [30, 46, 16, 2, 47, 17],
+
+      // 25
+      [8, 132, 106, 4, 133, 107],
+      [8, 75, 47, 13, 76, 48],
+      [7, 54, 24, 22, 55, 25],
+      [22, 45, 15, 13, 46, 16],
+
+      // 26
+      [10, 142, 114, 2, 143, 115],
+      [19, 74, 46, 4, 75, 47],
+      [28, 50, 22, 6, 51, 23],
+      [33, 46, 16, 4, 47, 17],
+
+      // 27
+      [8, 152, 122, 4, 153, 123],
+      [22, 73, 45, 3, 74, 46],
+      [8, 53, 23, 26, 54, 24],
+      [12, 45, 15, 28, 46, 16],
+
+      // 28
+      [3, 147, 117, 10, 148, 118],
+      [3, 73, 45, 23, 74, 46],
+      [4, 54, 24, 31, 55, 25],
+      [11, 45, 15, 31, 46, 16],
+
+      // 29
+      [7, 146, 116, 7, 147, 117],
+      [21, 73, 45, 7, 74, 46],
+      [1, 53, 23, 37, 54, 24],
+      [19, 45, 15, 26, 46, 16],
+
+      // 30
+      [5, 145, 115, 10, 146, 116],
+      [19, 75, 47, 10, 76, 48],
+      [15, 54, 24, 25, 55, 25],
+      [23, 45, 15, 25, 46, 16],
+
+      // 31
+      [13, 145, 115, 3, 146, 116],
+      [2, 74, 46, 29, 75, 47],
+      [42, 54, 24, 1, 55, 25],
+      [23, 45, 15, 28, 46, 16],
+
+      // 32
+      [17, 145, 115],
+      [10, 74, 46, 23, 75, 47],
+      [10, 54, 24, 35, 55, 25],
+      [19, 45, 15, 35, 46, 16],
+
+      // 33
+      [17, 145, 115, 1, 146, 116],
+      [14, 74, 46, 21, 75, 47],
+      [29, 54, 24, 19, 55, 25],
+      [11, 45, 15, 46, 46, 16],
+
+      // 34
+      [13, 145, 115, 6, 146, 116],
+      [14, 74, 46, 23, 75, 47],
+      [44, 54, 24, 7, 55, 25],
+      [59, 46, 16, 1, 47, 17],
+
+      // 35
+      [12, 151, 121, 7, 152, 122],
+      [12, 75, 47, 26, 76, 48],
+      [39, 54, 24, 14, 55, 25],
+      [22, 45, 15, 41, 46, 16],
+
+      // 36
+      [6, 151, 121, 14, 152, 122],
+      [6, 75, 47, 34, 76, 48],
+      [46, 54, 24, 10, 55, 25],
+      [2, 45, 15, 64, 46, 16],
+
+      // 37
+      [17, 152, 122, 4, 153, 123],
+      [29, 74, 46, 14, 75, 47],
+      [49, 54, 24, 10, 55, 25],
+      [24, 45, 15, 46, 46, 16],
+
+      // 38
+      [4, 152, 122, 18, 153, 123],
+      [13, 74, 46, 32, 75, 47],
+      [48, 54, 24, 14, 55, 25],
+      [42, 45, 15, 32, 46, 16],
+
+      // 39
+      [20, 147, 117, 4, 148, 118],
+      [40, 75, 47, 7, 76, 48],
+      [43, 54, 24, 22, 55, 25],
+      [10, 45, 15, 67, 46, 16],
+
+      // 40
+      [19, 148, 118, 6, 149, 119],
+      [18, 75, 47, 31, 76, 48],
+      [34, 54, 24, 34, 55, 25],
+      [20, 45, 15, 61, 46, 16]
+    ];
+
+    var qrRSBlock = function(totalCount, dataCount) {
+      var _this = {};
+      _this.totalCount = totalCount;
+      _this.dataCount = dataCount;
+      return _this;
+    };
+
+    var _this = {};
+
+    var getRsBlockTable = function(typeNumber, errorCorrectionLevel) {
+
+      switch(errorCorrectionLevel) {
+      case QRErrorCorrectionLevel.L :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 0];
+      case QRErrorCorrectionLevel.M :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 1];
+      case QRErrorCorrectionLevel.Q :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 2];
+      case QRErrorCorrectionLevel.H :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 3];
+      default :
+        return undefined;
+      }
+    };
+
+    _this.getRSBlocks = function(typeNumber, errorCorrectionLevel) {
+
+      var rsBlock = getRsBlockTable(typeNumber, errorCorrectionLevel);
+
+      if (typeof rsBlock == 'undefined') {
+        throw 'bad rs block @ typeNumber:' + typeNumber +
+            '/errorCorrectionLevel:' + errorCorrectionLevel;
+      }
+
+      var length = rsBlock.length / 3;
+
+      var list = [];
+
+      for (var i = 0; i < length; i += 1) {
+
+        var count = rsBlock[i * 3 + 0];
+        var totalCount = rsBlock[i * 3 + 1];
+        var dataCount = rsBlock[i * 3 + 2];
+
+        for (var j = 0; j < count; j += 1) {
+          list.push(qrRSBlock(totalCount, dataCount) );
+        }
+      }
+
+      return list;
+    };
+
+    return _this;
+  }();
+
+  //---------------------------------------------------------------------
+  // qrBitBuffer
+  //---------------------------------------------------------------------
+
+  var qrBitBuffer = function() {
+
+    var _buffer = [];
+    var _length = 0;
+
+    var _this = {};
+
+    _this.getBuffer = function() {
+      return _buffer;
+    };
+
+    _this.getAt = function(index) {
+      var bufIndex = Math.floor(index / 8);
+      return ( (_buffer[bufIndex] >>> (7 - index % 8) ) & 1) == 1;
+    };
+
+    _this.put = function(num, length) {
+      for (var i = 0; i < length; i += 1) {
+        _this.putBit( ( (num >>> (length - i - 1) ) & 1) == 1);
+      }
+    };
+
+    _this.getLengthInBits = function() {
+      return _length;
+    };
+
+    _this.putBit = function(bit) {
+
+      var bufIndex = Math.floor(_length / 8);
+      if (_buffer.length <= bufIndex) {
+        _buffer.push(0);
+      }
+
+      if (bit) {
+        _buffer[bufIndex] |= (0x80 >>> (_length % 8) );
+      }
+
+      _length += 1;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrNumber
+  //---------------------------------------------------------------------
+
+  var qrNumber = function(data) {
+
+    var _mode = QRMode.MODE_NUMBER;
+    var _data = data;
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return _data.length;
+    };
+
+    _this.write = function(buffer) {
+
+      var data = _data;
+
+      var i = 0;
+
+      while (i + 2 < data.length) {
+        buffer.put(strToNum(data.substring(i, i + 3) ), 10);
+        i += 3;
+      }
+
+      if (i < data.length) {
+        if (data.length - i == 1) {
+          buffer.put(strToNum(data.substring(i, i + 1) ), 4);
+        } else if (data.length - i == 2) {
+          buffer.put(strToNum(data.substring(i, i + 2) ), 7);
+        }
+      }
+    };
+
+    var strToNum = function(s) {
+      var num = 0;
+      for (var i = 0; i < s.length; i += 1) {
+        num = num * 10 + chatToNum(s.charAt(i) );
+      }
+      return num;
+    };
+
+    var chatToNum = function(c) {
+      if ('0' <= c && c <= '9') {
+        return c.charCodeAt(0) - '0'.charCodeAt(0);
+      }
+      throw 'illegal char :' + c;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrAlphaNum
+  //---------------------------------------------------------------------
+
+  var qrAlphaNum = function(data) {
+
+    var _mode = QRMode.MODE_ALPHA_NUM;
+    var _data = data;
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return _data.length;
+    };
+
+    _this.write = function(buffer) {
+
+      var s = _data;
+
+      var i = 0;
+
+      while (i + 1 < s.length) {
+        buffer.put(
+          getCode(s.charAt(i) ) * 45 +
+          getCode(s.charAt(i + 1) ), 11);
+        i += 2;
+      }
+
+      if (i < s.length) {
+        buffer.put(getCode(s.charAt(i) ), 6);
+      }
+    };
+
+    var getCode = function(c) {
+
+      if ('0' <= c && c <= '9') {
+        return c.charCodeAt(0) - '0'.charCodeAt(0);
+      } else if ('A' <= c && c <= 'Z') {
+        return c.charCodeAt(0) - 'A'.charCodeAt(0) + 10;
+      } else {
+        switch (c) {
+        case ' ' : return 36;
+        case '$' : return 37;
+        case '%' : return 38;
+        case '*' : return 39;
+        case '+' : return 40;
+        case '-' : return 41;
+        case '.' : return 42;
+        case '/' : return 43;
+        case ':' : return 44;
+        default :
+          throw 'illegal char :' + c;
+        }
+      }
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qr8BitByte
+  //---------------------------------------------------------------------
+
+  var qr8BitByte = function(data) {
+
+    var _mode = QRMode.MODE_8BIT_BYTE;
+    var _data = data;
+    var _bytes = qrcode.stringToBytes(data);
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return _bytes.length;
+    };
+
+    _this.write = function(buffer) {
+      for (var i = 0; i < _bytes.length; i += 1) {
+        buffer.put(_bytes[i], 8);
+      }
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrKanji
+  //---------------------------------------------------------------------
+
+  var qrKanji = function(data) {
+
+    var _mode = QRMode.MODE_KANJI;
+    var _data = data;
+
+    var stringToBytes = qrcode.stringToBytesFuncs['SJIS'];
+    if (!stringToBytes) {
+      throw 'sjis not supported.';
+    }
+    !function(c, code) {
+      // self test for sjis support.
+      var test = stringToBytes(c);
+      if (test.length != 2 || ( (test[0] << 8) | test[1]) != code) {
+        throw 'sjis not supported.';
+      }
+    }('\u53cb', 0x9746);
+
+    var _bytes = stringToBytes(data);
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return ~~(_bytes.length / 2);
+    };
+
+    _this.write = function(buffer) {
+
+      var data = _bytes;
+
+      var i = 0;
+
+      while (i + 1 < data.length) {
+
+        var c = ( (0xff & data[i]) << 8) | (0xff & data[i + 1]);
+
+        if (0x8140 <= c && c <= 0x9FFC) {
+          c -= 0x8140;
+        } else if (0xE040 <= c && c <= 0xEBBF) {
+          c -= 0xC140;
+        } else {
+          throw 'illegal char at ' + (i + 1) + '/' + c;
+        }
+
+        c = ( (c >>> 8) & 0xff) * 0xC0 + (c & 0xff);
+
+        buffer.put(c, 13);
+
+        i += 2;
+      }
+
+      if (i < data.length) {
+        throw 'illegal char at ' + (i + 1);
+      }
+    };
+
+    return _this;
+  };
+
+  //=====================================================================
+  // GIF Support etc.
+  //
+
+  //---------------------------------------------------------------------
+  // byteArrayOutputStream
+  //---------------------------------------------------------------------
+
+  var byteArrayOutputStream = function() {
+
+    var _bytes = [];
+
+    var _this = {};
+
+    _this.writeByte = function(b) {
+      _bytes.push(b & 0xff);
+    };
+
+    _this.writeShort = function(i) {
+      _this.writeByte(i);
+      _this.writeByte(i >>> 8);
+    };
+
+    _this.writeBytes = function(b, off, len) {
+      off = off || 0;
+      len = len || b.length;
+      for (var i = 0; i < len; i += 1) {
+        _this.writeByte(b[i + off]);
+      }
+    };
+
+    _this.writeString = function(s) {
+      for (var i = 0; i < s.length; i += 1) {
+        _this.writeByte(s.charCodeAt(i) );
+      }
+    };
+
+    _this.toByteArray = function() {
+      return _bytes;
+    };
+
+    _this.toString = function() {
+      var s = '';
+      s += '[';
+      for (var i = 0; i < _bytes.length; i += 1) {
+        if (i > 0) {
+          s += ',';
+        }
+        s += _bytes[i];
+      }
+      s += ']';
+      return s;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // base64EncodeOutputStream
+  //---------------------------------------------------------------------
+
+  var base64EncodeOutputStream = function() {
+
+    var _buffer = 0;
+    var _buflen = 0;
+    var _length = 0;
+    var _base64 = '';
+
+    var _this = {};
+
+    var writeEncoded = function(b) {
+      _base64 += String.fromCharCode(encode(b & 0x3f) );
+    };
+
+    var encode = function(n) {
+      if (n < 0) {
+        // error.
+      } else if (n < 26) {
+        return 0x41 + n;
+      } else if (n < 52) {
+        return 0x61 + (n - 26);
+      } else if (n < 62) {
+        return 0x30 + (n - 52);
+      } else if (n == 62) {
+        return 0x2b;
+      } else if (n == 63) {
+        return 0x2f;
+      }
+      throw 'n:' + n;
+    };
+
+    _this.writeByte = function(n) {
+
+      _buffer = (_buffer << 8) | (n & 0xff);
+      _buflen += 8;
+      _length += 1;
+
+      while (_buflen >= 6) {
+        writeEncoded(_buffer >>> (_buflen - 6) );
+        _buflen -= 6;
+      }
+    };
+
+    _this.flush = function() {
+
+      if (_buflen > 0) {
+        writeEncoded(_buffer << (6 - _buflen) );
+        _buffer = 0;
+        _buflen = 0;
+      }
+
+      if (_length % 3 != 0) {
+        // padding
+        var padlen = 3 - _length % 3;
+        for (var i = 0; i < padlen; i += 1) {
+          _base64 += '=';
+        }
+      }
+    };
+
+    _this.toString = function() {
+      return _base64;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // base64DecodeInputStream
+  //---------------------------------------------------------------------
+
+  var base64DecodeInputStream = function(str) {
+
+    var _str = str;
+    var _pos = 0;
+    var _buffer = 0;
+    var _buflen = 0;
+
+    var _this = {};
+
+    _this.read = function() {
+
+      while (_buflen < 8) {
+
+        if (_pos >= _str.length) {
+          if (_buflen == 0) {
+            return -1;
+          }
+          throw 'unexpected end of file./' + _buflen;
+        }
+
+        var c = _str.charAt(_pos);
+        _pos += 1;
+
+        if (c == '=') {
+          _buflen = 0;
+          return -1;
+        } else if (c.match(/^\s$/) ) {
+          // ignore if whitespace.
+          continue;
+        }
+
+        _buffer = (_buffer << 6) | decode(c.charCodeAt(0) );
+        _buflen += 6;
+      }
+
+      var n = (_buffer >>> (_buflen - 8) ) & 0xff;
+      _buflen -= 8;
+      return n;
+    };
+
+    var decode = function(c) {
+      if (0x41 <= c && c <= 0x5a) {
+        return c - 0x41;
+      } else if (0x61 <= c && c <= 0x7a) {
+        return c - 0x61 + 26;
+      } else if (0x30 <= c && c <= 0x39) {
+        return c - 0x30 + 52;
+      } else if (c == 0x2b) {
+        return 62;
+      } else if (c == 0x2f) {
+        return 63;
+      } else {
+        throw 'c:' + c;
+      }
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // gifImage (B/W)
+  //---------------------------------------------------------------------
+
+  var gifImage = function(width, height) {
+
+    var _width = width;
+    var _height = height;
+    var _data = new Array(width * height);
+
+    var _this = {};
+
+    _this.setPixel = function(x, y, pixel) {
+      _data[y * _width + x] = pixel;
+    };
+
+    _this.write = function(out) {
+
+      //---------------------------------
+      // GIF Signature
+
+      out.writeString('GIF87a');
+
+      //---------------------------------
+      // Screen Descriptor
+
+      out.writeShort(_width);
+      out.writeShort(_height);
+
+      out.writeByte(0x80); // 2bit
+      out.writeByte(0);
+      out.writeByte(0);
+
+      //---------------------------------
+      // Global Color Map
+
+      // black
+      out.writeByte(0x00);
+      out.writeByte(0x00);
+      out.writeByte(0x00);
+
+      // white
+      out.writeByte(0xff);
+      out.writeByte(0xff);
+      out.writeByte(0xff);
+
+      //---------------------------------
+      // Image Descriptor
+
+      out.writeString(',');
+      out.writeShort(0);
+      out.writeShort(0);
+      out.writeShort(_width);
+      out.writeShort(_height);
+      out.writeByte(0);
+
+      //---------------------------------
+      // Local Color Map
+
+      //---------------------------------
+      // Raster Data
+
+      var lzwMinCodeSize = 2;
+      var raster = getLZWRaster(lzwMinCodeSize);
+
+      out.writeByte(lzwMinCodeSize);
+
+      var offset = 0;
+
+      while (raster.length - offset > 255) {
+        out.writeByte(255);
+        out.writeBytes(raster, offset, 255);
+        offset += 255;
+      }
+
+      out.writeByte(raster.length - offset);
+      out.writeBytes(raster, offset, raster.length - offset);
+      out.writeByte(0x00);
+
+      //---------------------------------
+      // GIF Terminator
+      out.writeString(';');
+    };
+
+    var bitOutputStream = function(out) {
+
+      var _out = out;
+      var _bitLength = 0;
+      var _bitBuffer = 0;
+
+      var _this = {};
+
+      _this.write = function(data, length) {
+
+        if ( (data >>> length) != 0) {
+          throw 'length over';
+        }
+
+        while (_bitLength + length >= 8) {
+          _out.writeByte(0xff & ( (data << _bitLength) | _bitBuffer) );
+          length -= (8 - _bitLength);
+          data >>>= (8 - _bitLength);
+          _bitBuffer = 0;
+          _bitLength = 0;
+        }
+
+        _bitBuffer = (data << _bitLength) | _bitBuffer;
+        _bitLength = _bitLength + length;
+      };
+
+      _this.flush = function() {
+        if (_bitLength > 0) {
+          _out.writeByte(_bitBuffer);
+        }
+      };
+
+      return _this;
+    };
+
+    var getLZWRaster = function(lzwMinCodeSize) {
+
+      var clearCode = 1 << lzwMinCodeSize;
+      var endCode = (1 << lzwMinCodeSize) + 1;
+      var bitLength = lzwMinCodeSize + 1;
+
+      // Setup LZWTable
+      var table = lzwTable();
+
+      for (var i = 0; i < clearCode; i += 1) {
+        table.add(String.fromCharCode(i) );
+      }
+      table.add(String.fromCharCode(clearCode) );
+      table.add(String.fromCharCode(endCode) );
+
+      var byteOut = byteArrayOutputStream();
+      var bitOut = bitOutputStream(byteOut);
+
+      // clear code
+      bitOut.write(clearCode, bitLength);
+
+      var dataIndex = 0;
+
+      var s = String.fromCharCode(_data[dataIndex]);
+      dataIndex += 1;
+
+      while (dataIndex < _data.length) {
+
+        var c = String.fromCharCode(_data[dataIndex]);
+        dataIndex += 1;
+
+        if (table.contains(s + c) ) {
+
+          s = s + c;
+
+        } else {
+
+          bitOut.write(table.indexOf(s), bitLength);
+
+          if (table.size() < 0xfff) {
+
+            if (table.size() == (1 << bitLength) ) {
+              bitLength += 1;
+            }
+
+            table.add(s + c);
+          }
+
+          s = c;
+        }
+      }
+
+      bitOut.write(table.indexOf(s), bitLength);
+
+      // end code
+      bitOut.write(endCode, bitLength);
+
+      bitOut.flush();
+
+      return byteOut.toByteArray();
+    };
+
+    var lzwTable = function() {
+
+      var _map = {};
+      var _size = 0;
+
+      var _this = {};
+
+      _this.add = function(key) {
+        if (_this.contains(key) ) {
+          throw 'dup key:' + key;
+        }
+        _map[key] = _size;
+        _size += 1;
+      };
+
+      _this.size = function() {
+        return _size;
+      };
+
+      _this.indexOf = function(key) {
+        return _map[key];
+      };
+
+      _this.contains = function(key) {
+        return typeof _map[key] != 'undefined';
+      };
+
+      return _this;
+    };
+
+    return _this;
+  };
+
+  var createDataURL = function(width, height, getPixel) {
+    var gif = gifImage(width, height);
+    for (var y = 0; y < height; y += 1) {
+      for (var x = 0; x < width; x += 1) {
+        gif.setPixel(x, y, getPixel(x, y) );
+      }
+    }
+
+    var b = byteArrayOutputStream();
+    gif.write(b);
+
+    var base64 = base64EncodeOutputStream();
+    var bytes = b.toByteArray();
+    for (var i = 0; i < bytes.length; i += 1) {
+      base64.writeByte(bytes[i]);
+    }
+    base64.flush();
+
+    return 'data:image/gif;base64,' + base64;
+  };
+
+  //---------------------------------------------------------------------
+  // returns qrcode function.
+
+  return qrcode;
+}();
+
+// multibyte support
+!function() {
+
+  qrcode.stringToBytesFuncs['UTF-8'] = function(s) {
+    // http://stackoverflow.com/questions/18729405/how-to-convert-utf8-string-to-byte-array
+    function toUTF8Array(str) {
+      var utf8 = [];
+      for (var i=0; i < str.length; i++) {
+        var charcode = str.charCodeAt(i);
+        if (charcode < 0x80) utf8.push(charcode);
+        else if (charcode < 0x800) {
+          utf8.push(0xc0 | (charcode >> 6),
+              0x80 | (charcode & 0x3f));
+        }
+        else if (charcode < 0xd800 || charcode >= 0xe000) {
+          utf8.push(0xe0 | (charcode >> 12),
+              0x80 | ((charcode>>6) & 0x3f),
+              0x80 | (charcode & 0x3f));
+        }
+        // surrogate pair
+        else {
+          i++;
+          // UTF-16 encodes 0x10000-0x10FFFF by
+          // subtracting 0x10000 and splitting the
+          // 20 bits of 0x0-0xFFFFF into two halves
+          charcode = 0x10000 + (((charcode & 0x3ff)<<10)
+            | (str.charCodeAt(i) & 0x3ff));
+          utf8.push(0xf0 | (charcode >>18),
+              0x80 | ((charcode>>12) & 0x3f),
+              0x80 | ((charcode>>6) & 0x3f),
+              0x80 | (charcode & 0x3f));
+        }
+      }
+      return utf8;
+    }
+    return toUTF8Array(s);
+  };
+
+}();
+
+(function (factory) {
+  if (typeof define === 'function' && define.amd) {
+      define([], factory);
+  } else if (typeof exports === 'object') {
+      module.exports = factory();
+  }
+}(function () {
+    return qrcode;
+}));
+</script>
 <script src="https://www.youtube.com/iframe_api" async></script>
 <script>
 /* CaptCan TV v6 (hosted). FEED = built-in copy of the store data; it refreshes itself from the live CaptCan storefront every 30 minutes. MARKET = this week's market, sales and news data. */
@@ -679,10 +2995,11 @@ function nextMonday8pm(){const n=new Date(),t=new Date(n);t.setHours(20,0,0,0);w
 const utm=(u,c)=>u+(u.includes("?")?"&":"?")+`utm_source=store_tv&utm_medium=qr&utm_campaign=${c}`;
 const link=(p,c)=>utm(p&&p.handle?`${SITE}/products/${p.handle}`:`${SITE}/search?q=${encodeURIComponent(splitT(p.title)[0])}`,c);
 const QRC=new Map();
-function qrURL(text){if(QRC.has(text))return QRC.get(text);let u="";try{const d=document.createElement("div");new QRCode(d,{text,width:272,height:272,colorDark:"#121212",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M});const c=d.querySelector("canvas");u=c?c.toDataURL("image/png"):(d.querySelector("img")||{}).src||"";}catch(e){}QRC.set(text,u);return u;}
+function qrURL(text){if(QRC.has(text))return QRC.get(text);let u="";try{const q=qrcode(0,"M");q.addData(unescape(encodeURIComponent(text)));q.make();const n=q.getModuleCount(),cs=Math.max(4,Math.floor(272/(n+8)));u=q.createDataURL(cs,cs*4);}catch(e){}QRC.set(text,u);return u;}
 const chip=(url,big,small)=>{const u=qrURL(url);return u?`<div class="qrc"><img src="${u}" alt=""><div><b>${big}</b><span>${small}</span></div></div>`:"";};
 const amb=u=>u?`<div class="amb" style="background-image:url('${img(u,240)}')"></div>`:"";
 let SIG={mode:"auto",back:""},FEAT=[],SERVE=0,TVOL=70,TRBAD=0,CURPL=null,CURV=null,GEST=false,UTR=[],FORCEYT=false,YTHOST="https://www.youtube-nocookie.com",TRT0=0;
+function goFull(){try{const d=document.documentElement;if(!(document.fullscreenElement||document.webkitFullscreenElement)){const f=d.requestFullscreen||d.webkitRequestFullscreen;if(f){const r=f.call(d);if(r&&r.catch)r.catch(()=>{});}}}catch(x){}}
 function hardReload(){try{const u=location.href.split("#")[0].replace(/[?&]v=\d+/,"");location.replace(u+(u.includes("?")?"&":"?")+"v="+Date.now()+(location.hash||""));}catch(x){location.reload();}}
 const trlog=(ev,d)=>{if(!FORCEYT)return;try{post(Object.assign({cmd:"trlog",ev,w:WEAKTV,t:Date.now()-TRT0},d||{}),"-ack");}catch(x){}};
 function trVol(){if(CURV){try{CURV.volume=Math.max(0,Math.min(1,TVOL/100));CURV.muted=TVOL<=0;if(CURV.paused)CURV.play().catch(()=>{});}catch(x){}}const p=CURPL;if(!p)return;try{if(TVOL>0){p.unMute();p.setVolume(TVOL);}else p.mute();}catch(x){}}
@@ -749,6 +3066,10 @@ const S={
     return {id:"sold",dur:13,el:$(`<section class="scene sold">${head("Sold at CaptCan · last 30 days","Just sold <em>at CaptCan</em>","Real sale prices<br>Canadian dollars")}<div class="cards8">${L.map((p,i)=>`<div class="k in" style="animation-delay:${.12+i*.06}s"><img src="${img(p.img,400)}" alt=""><div><b>${esc(p.t)}</b><span>${esc(p.g)}</span><em>${money(p.p)}</em></div></div>`).join("")}</div><div class="strip in d4"><p>Sitting on books like these? <em>We buy and consign.</em></p>${chip(utm(SITE+"/pages/sell-your-collection","sold"),"Scan to sell","Free evaluation")}</div></section>`)};},
   vel(){const L=[...MARKET.vel].sort((a,b)=>b.n-a.n),max=Math.max(...L.map(v=>v.n));
     return {id:"vel",dur:13,el:$(`<section class="scene vel">${head("Modern velocity · last 30 days","Moving <em>fastest</em>","Copies sold at CaptCan<br>Updated "+esc(MARKET.asOf))}${L.map((v,i)=>`<div class="vrow ${v.ours?"ours":""} in" style="animation-delay:${.12+i*.07}s"><img src="${img(v.img,200)}" alt=""><div><b>${esc(v.t)}</b><span>${esc(v.v)}</span></div><div class="bar"><i style="width:${Math.round(v.n/max*1000)}px;animation-delay:${.3+i*.07}s"></i><s>${v.n}</s></div></div>`).join("")}</section>`)};},
+  news(){const N=(MARKET.news||[]).slice(0,3);if(N.length<2)return null;
+    const pool=[...(FEED.hot||[]),...(FEED.keys||[]),...(FEED.chain?[]:[])];
+    const find=kw=>{if(!kw)return null;const k=kw.toLowerCase();return pool.find(p=>p.img&&(p.title||p.t||"").toLowerCase().includes(k))||null;};
+    return {id:"news",dur:16,el:$(`<section class="scene news">${head("What fans are talking about this week","Comic <em>news</em>","Updated "+esc(MARKET.asOf||""))}<div class="ncols">${N.map((n,i)=>{const p=n.img?{img:n.img,price:n.p}:find(n.kw);return `<article class="in" style="animation-delay:${.12+i*.1}s">${p&&p.img?`<div class="nimg"><img src="${img(p.img,500)}" alt=""></div>`:`<div class="nimg none"></div>`}<p class="neye">${esc(n.eye||"")}</p><h2>${esc(n.h)}</h2><p class="ntx">${esc(n.txt||"")}</p>${p&&p.price?`<p class="np">In the shop <b>${money(p.price)}</b></p>`:""}</article>`;}).join("")}</div></section>`)};},
   excl(){const seen={},L=(MARKET.excl||[]).filter(p=>{const k=(p.v||p.t||"");return p.img&&!seen[p.img]&&!seen[k]&&(seen[p.img]=seen[k]=1);});
     return {id:"excl",dur:11,el:$(`<section class="scene excl"><div class="copy"><p class="eye in">Only at CaptCan</p><h1 class="H in d1">Our <em>exclusives</em></h1><p class="txt in d2">Covers made for CaptCan, in limited runs. 327 copies of our Ark-M exclusives sold out in weeks.</p><div class="in d3">${chip(utm(CONFIG.join,"exclusive"),"Get the next one first","Free account · we email you")}</div></div><div class="covers">${L.map(p=>`<figure><img src="${img(p.img,600)}" alt=""><figcaption>${esc(p.v)}</figcaption></figure>`).join("")}</div></section>`)};},
   timeline(part){const L=MARKET.timeline[part];
@@ -908,12 +3229,12 @@ const MODES={mix:"Full mix",event:"Signing day",sell:"Selling",line:"Line-up",ma
 const SIGNDAY=()=>now().toLocaleDateString("en-CA")==="2026-11-18";
 function playlist(){DAY=DAYNOW();
   const day={1:[S.presale,S.soon],2:[S.board,S.presale],3:[S.hero,S.board],4:[S.story,S.soon],5:[S.keys,S.story],6:[S.keys,S.merch],0:[S.keys,S.merch]}[DAY];
-  if(MODE==="event"||(MODE==="mix"&&SIGNDAY()))return [S.sign,S.chain,S.board,S.trailer,S.chainall,S.cgcss,S.hero,S.feat,S.sign,S.dwj,S.trailer,S.monk,S.wall,S.chain,S.inc,S.join,S.trailer,S.sign,S.chainall,S.hero,S.trades,S.cgcss,S.feat,S.app,S.sign,S.trailer,S.chain,S.market.bind(null,0),S.monk,S.about,S.hero,S.trailer,S.sign,S.dwj,S.chainall,S.run,S.inc,S.trailer,S.sign,S.chain,S.excl,S.sold,S.blow,S.keys,S.feat,S.svc,S.about,S.presale,S.join];
+  if(MODE==="event"||(MODE==="mix"&&SIGNDAY()))return [S.sign,S.chain,S.board,S.trailer,S.chainall,S.cgcss,S.hero,S.feat,S.sign,S.dwj,S.trailer,S.monk,S.wall,S.chain,S.inc,S.join,S.trailer,S.sign,S.chainall,S.hero,S.trades,S.cgcss,S.feat,S.app,S.sign,S.trailer,S.chain,S.market.bind(null,0),S.news,S.monk,S.about,S.hero,S.trailer,S.sign,S.dwj,S.chainall,S.run,S.inc,S.trailer,S.sign,S.chain,S.excl,S.sold,S.blow,S.keys,S.feat,S.svc,S.about,S.presale,S.join];
   if(MODE==="sell")return [S.chain,S.board,S.hero,S.wall,S.hero,S.run,S.blow,S.keys,S.inc,S.hero,day[0],S.trades,S.presale,S.soon,S.excl,S.hero,S.feat,S.wall,S.chainall,S.monk,S.merch,S.app,S.join,S.story,S.blow,day[1]];
   if(MODE==="line")return [S.quizFirst,S.hero,S.join,S.chain,S.quizPrice,S.wall,S.lesson,S.about,S.hero,S.howto,S.inc,S.quizFirst,S.sold,S.join,S.run,S.lesson,S.trades,S.school,S.hero];
-  if(MODE==="market")return [S.market.bind(null,0),S.market.bind(null,1),S.alpha,S.sold,S.vel,S.trailer,S.timeline.bind(null,0),S.timeline.bind(null,1),S.quizFirst,S.trailer,S.join];
+  if(MODE==="market")return [S.market.bind(null,0),S.news,S.market.bind(null,1),S.alpha,S.sold,S.vel,S.trailer,S.timeline.bind(null,0),S.timeline.bind(null,1),S.quizFirst,S.trailer,S.join];
   if(MODE==="trailers")return [S.trailer,S.hero,S.trailer,S.wall,S.trailer,S.join,S.trailer,S.timeline.bind(null,0)];
-  return [...(loop%4===0?[S.open]:[]),S.board,S.feat,S.hero,S.wall,S.market.bind(null,0),S.quizFirst,S.run,S.hero,S.chain,S.trailer,S.sold,S.inc,S.blow,day[0],S.lesson,S.vel,S.join,S.about,S.hero,S.wall,S.market.bind(null,1),S.trades,S.keys,S.svc,S.excl,S.chainall,S.presale,S.trailer,S.timeline.bind(null,loop%2),S.quizFirst,S.run,S.story,day[1],S.soon,S.blow,S.eras,S.alpha,S.hero,S.quizPrice,S.artists,S.howto,S.app,S.monk,S.merch,S.feat,S.svc,S.school,S.join,S.event.bind(null,0)];}
+  return [...(loop%4===0?[S.open]:[]),S.board,S.feat,S.hero,S.wall,S.market.bind(null,0),S.news,S.quizFirst,S.run,S.hero,S.chain,S.trailer,S.sold,S.inc,S.blow,day[0],S.lesson,S.vel,S.join,S.about,S.hero,S.wall,S.market.bind(null,1),S.trades,S.keys,S.svc,S.excl,S.chainall,S.presale,S.trailer,S.timeline.bind(null,loop%2),S.quizFirst,S.run,S.story,day[1],S.soon,S.blow,S.eras,S.alpha,S.hero,S.quizPrice,S.artists,S.howto,S.app,S.monk,S.merch,S.feat,S.svc,S.school,S.join,S.event.bind(null,0)];}
 /* engine: auto-plays, keeps a history so staff can step back and forward, can be paused, and can take a pushed screen from the desk */
 const host=document.getElementById("host"),cut=document.getElementById("cut");let queue=[],current=null,lastId="",timer=null,paused=false,busy=false,hist=[],hpos=-1,curMs=10000,startedAt=0,remain=0;
 const clone=o=>JSON.parse(JSON.stringify(o));
@@ -924,7 +3245,7 @@ const prog=()=>document.getElementById("prog");
 function progress(ms){const p=prog();if(!p)return;p.getAnimations().forEach(a=>a.cancel());if(ms==null){p.style.transform="scaleX(0)";return;}p.animate([{transform:`scaleX(${Math.max(0,1-ms/curMs)})`},{transform:"scaleX(1)"}],{duration:ms,fill:"forwards"});}
 function schedule(ms){clearTimeout(timer);if(paused){remain=ms;progress(null);return;}startedAt=Date.now();remain=ms;timer=setTimeout(()=>go(1),ms);progress(ms);}
 const BOOT=Date.now();
-async function show(sc,hold){if(!IS_REMOTE&&Date.now()-BOOT>3*3600e3&&!hold){hardReload();return;}await ready(sc.el);
+async function show(sc,hold){await ready(sc.el);
   cut.classList.remove("go");void cut.offsetWidth;cut.classList.add("go");
   await new Promise(r=>setTimeout(r,300));
   if(current){current._cleanup&&current._cleanup();current.remove();}
@@ -940,7 +3261,7 @@ async function go(dir,push){if(busy)return;busy=true;clearTimeout(timer);
 function setPaused(p){paused=p;document.body.classList.toggle("paused",p);if(p){clearTimeout(timer);remain=Math.max(1000,remain-(Date.now()-startedAt));progress(null);}else schedule(remain||curMs);}
 const next=()=>go(1);
 /* push a specific screen (from the desk remote) */
-const PUSH={book:p=>S.book(p),msg:m=>S.msg(m),join:()=>S.join(),cash:()=>S.svc(0),sell:()=>S.svc(1),consign:()=>S.svc(2),pressing:()=>S.svc(3),holdbox:()=>S.svc(4),presale:()=>S.presale(),wall:()=>S.wall(),board:()=>S.board(),hero:()=>S.hero(),run:()=>S.run(),blow:()=>S.blow(),keys:()=>S.keys(),soon:()=>S.soon(),excl:()=>S.excl(),merch:()=>S.merch(),market:()=>S.market(0),market2:()=>S.market(1),alpha:()=>S.alpha(),sold:()=>S.sold(),vel:()=>S.vel(),timeline:()=>S.timeline(0),timeline2:()=>S.timeline(1),quiz:()=>S.quizFirst(),quizprice:()=>S.quizPrice(),ratio:()=>S.lesson(0),cpv:()=>S.lesson(1),cgc:()=>S.school(),eras:()=>S.eras(),artists:()=>S.artists(),howto:()=>S.howto(),trailer:i=>S.trailer(i),open:()=>S.open(),chain:()=>S.chain(),chainall:()=>S.chainall(),inc:()=>S.inc(),trades:()=>S.trades(),about:()=>S.about(0),about2:()=>S.about(1),sign:()=>S.sign(),cgcss:()=>S.cgcss(),dwj:()=>S.dwj(),monk:()=>S.monk(),app:()=>S.app(),feat:()=>S.feat()};
+const PUSH={book:p=>S.book(p),msg:m=>S.msg(m),join:()=>S.join(),cash:()=>S.svc(0),sell:()=>S.svc(1),consign:()=>S.svc(2),pressing:()=>S.svc(3),holdbox:()=>S.svc(4),presale:()=>S.presale(),wall:()=>S.wall(),board:()=>S.board(),hero:()=>S.hero(),run:()=>S.run(),blow:()=>S.blow(),keys:()=>S.keys(),soon:()=>S.soon(),excl:()=>S.excl(),merch:()=>S.merch(),market:()=>S.market(0),market2:()=>S.market(1),alpha:()=>S.alpha(),sold:()=>S.sold(),vel:()=>S.vel(),timeline:()=>S.timeline(0),timeline2:()=>S.timeline(1),quiz:()=>S.quizFirst(),quizprice:()=>S.quizPrice(),ratio:()=>S.lesson(0),cpv:()=>S.lesson(1),cgc:()=>S.school(),eras:()=>S.eras(),artists:()=>S.artists(),howto:()=>S.howto(),trailer:i=>S.trailer(i),open:()=>S.open(),chain:()=>S.chain(),chainall:()=>S.chainall(),inc:()=>S.inc(),trades:()=>S.trades(),about:()=>S.about(0),about2:()=>S.about(1),sign:()=>S.sign(),cgcss:()=>S.cgcss(),dwj:()=>S.dwj(),monk:()=>S.monk(),app:()=>S.app(),feat:()=>S.feat(),news:()=>S.news()};
 function pushScreen(name,arg,hold){const f=PUSH[name];if(!f)return;let sc=null;try{sc=f(arg);}catch(e){}if(!sc)return;go(0,{sc,hold:hold||(sc.manual?null:sc.dur)}).then(()=>{});}
 function buildTicker(){const lead={1:"Pre-sales close tonight at 8pm",2:"This week's new releases go up today",3:"New comic book day",5:"New back issues go up today"}[DAYNOW()];
   const mk=MARKET.hot10.slice(0,3).map(m=>`Market: ${m.t} ${m.up}`);
@@ -954,18 +3275,18 @@ let YTREADY=false;window.onYouTubeIframeAPIReady=()=>{YTREADY=true;};
 addEventListener("resize",fit);fit();clock();setInterval(clock,1e4);
 /* at your own pace: click right = next, left = back; keyboard or Fire TV remote arrows; OK / space = pause */
 document.getElementById("stage").addEventListener("click",e=>{Radio.unlock();soundUnlock();if(!document.fullscreenElement){try{document.documentElement.requestFullscreen().catch(()=>{});}catch(x){}return;}go(e.clientX>innerWidth/2?1:-1);});
-addEventListener("keydown",e=>{const k=e.key;const tg=e.target;if(IS_REMOTE||(tg&&(/^(INPUT|TEXTAREA|SELECT|BUTTON)$/.test(tg.tagName)||tg.isContentEditable)))return;Radio.unlock();soundUnlock();if(["ArrowRight","ArrowDown","PageDown","MediaTrackNext","MediaFastForward"].includes(k)){e.preventDefault();go(1);}else if(["ArrowLeft","ArrowUp","PageUp","MediaTrackPrevious","MediaRewind"].includes(k)){e.preventDefault();go(-1);}else if([" ","Enter","MediaPlayPause","Select"].includes(k)){e.preventDefault();if(SOUNDWAIT()){return;}setPaused(!paused);}});
+addEventListener("keydown",e=>{const k=e.key;const tg=e.target;if(IS_REMOTE||(tg&&(/^(INPUT|TEXTAREA|SELECT|BUTTON)$/.test(tg.tagName)||tg.isContentEditable)))return;goFull();Radio.unlock();soundUnlock();if(["ArrowRight","ArrowDown","PageDown","MediaTrackNext","MediaFastForward"].includes(k)){e.preventDefault();go(1);}else if(["ArrowLeft","ArrowUp","PageUp","MediaTrackPrevious","MediaRewind"].includes(k)){e.preventDefault();go(-1);}else if([" ","Enter","MediaPlayPause","Select"].includes(k)){e.preventDefault();if(SOUNDWAIT()){return;}setPaused(!paused);}});
 const wake=()=>{try{navigator.wakeLock&&navigator.wakeLock.request("screen").catch(()=>{});}catch(e){}};wake();document.addEventListener("visibilitychange",()=>{if(!document.hidden)wake();});
 /* ===== shared channel between the TV and the desk remote (ntfy.sh, a free open message relay; the topic name is the secret) ===== */
 const TOPIC="captcan-tv-r7k2m9q4x8v3n5w1",RELAY="https://ntfy.sh/"+TOPIC;
 const IS_REMOTE=location.hash==="#remote"||location.hash==="#r";addEventListener("hashchange",()=>hardReload());
 let RELAYFULL=0;const post=(o,t)=>fetch(RELAY+(t||""),{method:"POST",body:JSON.stringify(Object.assign({at:Date.now()},o))}).then(r=>{if(r.status===429){RELAYFULL=Date.now();try{window.onRelayFull&&window.onRelayFull();}catch(x){}}else RELAYFULL=0;return r;}).catch(()=>{});
 /* ===== radio ===== */
-const DEFST=[{id:"groovesalad",name:"Groove Salad",url:"https://ice2.somafm.com/groovesalad-128-mp3"},{id:"indiepop",name:"Indie Pop Rocks",url:"https://ice2.somafm.com/indiepop-128-mp3"},{id:"u80s",name:"Underground 80s",url:"https://ice2.somafm.com/u80s-128-mp3"},{id:"seventies",name:"Left Coast 70s",url:"https://ice2.somafm.com/seventies-128-mp3"},{id:"poptron",name:"PopTron",url:"https://ice2.somafm.com/poptron-128-mp3"}];const stationUrl=id=>{const x=DEFST.find(s=>s.id===id);return x?x.url:"";};
+const DEFST=[{id:"rpmain",name:"Radio Paradise",url:"https://stream.radioparadise.com/mp3-192"},{id:"rprock",name:"Rock Mix",url:"https://stream.radioparadise.com/rock-320"},{id:"rpmellow",name:"Mellow Mix",url:"https://stream.radioparadise.com/mellow-320"},{id:"rpglobal",name:"World Mix",url:"https://stream.radioparadise.com/global-320"}];const stationUrl=id=>{const x=DEFST.find(s=>s.id===id)||DEFST[0];return x.url;};
 const WEAKTV=/Tizen|Web0S|webOS|SMART-TV|SmartTV/i.test(navigator.userAgent);
 const Radio={a:null,on:false,url:"",name:"",vol:.35,ducked:false,locked:true,
   el(){if(!this.a){this.a=new Audio();this.a.preload="none";this.a.addEventListener("error",()=>{if(this.on)setTimeout(()=>this.play(),5000);});}return this.a;},
-  apply(r){if(!r)return;this.vol=r.vol!=null?r.vol:this.vol;const url=r.url||(r.id?stationUrl(r.id):"");const changed=url&&url!==this.url;this.url=url||this.url;this.name=r.name||this.name;this.on=!!r.on&&!!this.url;
+  apply(r){if(!r)return;if(r.url&&/somafm\.com/.test(r.url)){r=Object.assign({},r,{url:DEFST[0].url,name:DEFST[0].name});}this.vol=r.vol!=null?r.vol:this.vol;const url=r.url||(r.id?stationUrl(r.id):"");const changed=url&&url!==this.url;this.url=url||this.url;this.name=r.name||this.name;this.on=!!r.on&&!!this.url;
     if(!this.on){this.fade(0,()=>this.el().pause());return;}const a=this.el();if(changed){a.src=this.url;this.play();return;}if(!a.paused&&!this.ducked&&!this.locked){this.fade(this.vol);return;}this.play();},
   play(){if(!this.on||this.ducked)return;const a=this.el();if(!a.src||a.src!==this.url)a.src=this.url;if(!a.paused&&!this.locked){this.fade(this.vol);return;}a.volume=0;a.play().then(()=>{this.locked=false;this.fade(this.vol);}).catch(()=>{this.locked=true;});},
   fade(to,done){const a=this.el();clearInterval(this.fi);const step=()=>{const d=to-a.volume;if(Math.abs(d)<.02){a.volume=to;clearInterval(this.fi);done&&done();}else a.volume=Math.max(0,Math.min(1,a.volume+d*.2));};this.fi=setInterval(step,60);},
@@ -984,7 +3305,7 @@ function ackMsg(){const u=navigator.userAgent,m=u.match(/Chrom(?:e|ium)\/(\d+)/)
 function listen(){try{const es=new EventSource(RELAY+"/sse");es.onmessage=e=>{try{const d=JSON.parse(e.data);if(d.event==="message")handle(JSON.parse(d.message));}catch(x){}};es.onerror=()=>{};}catch(x){}}
 async function restore(){try{const t=await fetch(RELAY+"/json?poll=1&since=48h").then(r=>r.text());let last=null;t.trim().split("\n").forEach(l=>{try{const d=JSON.parse(l);const m=JSON.parse(d.message);if(m.cmd==="state")last=m;}catch(x){}});if(last)applyState(Object.assign({},last,{sigPush:false}));}catch(x){}}
 /* ===== desk remote: phone or desk computer, PIN protected ===== */
-const NAMES={open:"CaptCan intro",board:"Hot this week",hero:"#1 seller",wall:"New this week",run:"Friday's big run",blow:"25% off blowout",market:"Market Hot 10",alpha:"Market spotlight",sold:"Just sold at CaptCan",vel:"Moving fastest",excl:"Our exclusives",timeline:"Movie keys",eras:"Every era",artists:"Cover artists",svc:"CaptCan services",lesson:"Collector school",school:"How CGC grades",quiz:"Collector quiz",soon:"Coming soon",join:"Make an account",howto:"How the site works",keys:"Just landed",presale:"Pre-sales",merch:"Merch",event:"Event",trailer:"Trailer",book:"A book you pushed",msg:"Your message",chain:"Monk exclusives",chainall:"Every Chainkata cover",inc:"Incentive covers",trades:"Trades and hardcovers",about:"About CaptCan",sign:"Signing status",cgcss:"CGC yellow label",dwj:"Why Chainkata",monk:"Monk originals",app:"The CaptCan app",feat:"Staff picks",story:"Key issue"};
+const NAMES={open:"CaptCan intro",board:"Hot this week",hero:"#1 seller",wall:"New this week",run:"Friday's big run",blow:"25% off blowout",market:"Market Hot 10",alpha:"Market spotlight",sold:"Just sold at CaptCan",vel:"Moving fastest",excl:"Our exclusives",timeline:"Movie keys",eras:"Every era",artists:"Cover artists",svc:"CaptCan services",lesson:"Collector school",school:"How CGC grades",quiz:"Collector quiz",soon:"Coming soon",join:"Make an account",howto:"How the site works",keys:"Just landed",presale:"Pre-sales",merch:"Merch",event:"Event",trailer:"Trailer",book:"A book you pushed",msg:"Your message",chain:"Monk exclusives",chainall:"Every Chainkata cover",inc:"Incentive covers",trades:"Trades and hardcovers",about:"About CaptCan",sign:"Signing status",news:"Comic news",cgcss:"CGC yellow label",dwj:"Why Chainkata",monk:"Monk originals",app:"The CaptCan app",feat:"Staff picks",story:"Key issue"};
 const PV={open:()=>S.open(),board:()=>S.board(),hero:()=>S.hero(),wall:()=>S.wall(),run:()=>S.run(),blow:()=>S.blow(),market:()=>S.market(0),alpha:()=>S.alpha(),sold:()=>S.sold(),vel:()=>S.vel(),excl:()=>S.excl(),timeline:()=>S.timeline(0),eras:()=>S.eras(),artists:()=>S.artists(),svc:()=>S.svc(0),lesson:()=>S.lesson(0),school:()=>S.school(),quiz:()=>S.quizFirst(0),soon:()=>S.soon(),join:()=>S.join(),keys:()=>S.keys(),presale:()=>S.presale(),merch:()=>S.merch(),event:()=>S.event(0),chain:()=>S.chain(),chainall:()=>S.chainall(),inc:()=>S.inc(),trades:()=>S.trades(),about:()=>S.about(0),sign:()=>S.sign(),cgcss:()=>S.cgcss(),dwj:()=>S.dwj(),monk:()=>S.monk(),app:()=>S.app(),feat:()=>S.feat(),story:()=>S.story()};
 function remoteUI(){
   document.getElementById("stage").style.display="none";
@@ -1096,7 +3417,7 @@ function remoteUI(){
   const mark=()=>{W.querySelectorAll("[data-hold]").forEach(b=>b.classList.toggle("on",+b.dataset.hold===HOLD));W.querySelectorAll("#speed button").forEach(b=>b.classList.toggle("on",+b.dataset.s===S0.speed));W.querySelectorAll("#mode button").forEach(b=>b.classList.toggle("on",b.dataset.m===S0.mode));
     const sm=S0.sig&&S0.sig.mode||"auto";W.querySelectorAll("#sig button").forEach(b=>{b.classList.toggle("on",b.dataset.sig===sm&&sm!=="break");b.classList.toggle("y",b.dataset.sig===sm&&sm==="break");});W.querySelector("#back").value=S0.sig&&S0.sig.back||"";
     W.querySelector("#tn").textContent=S0.serve>0?"#"+S0.serve:"Off";
-    {const tl=W.querySelector("#trl");if(tl)tl.innerHTML=(S0.trailers||[]).length?(S0.trailers||[]).map((x,i)=>`<div class="row" style="justify-content:space-between;padding:8px 0;border-bottom:1px solid #2A2A2F"><span><b>${esc(x.t)}</b><br><small style="color:#A9A9B0">${esc(x.rel||"no date")}</small></span><span style="display:flex;gap:8px"><button data-trp="${i}">Play now</button><button data-trdel="${i}">Remove</button></span></div>`).join(""):`<p class="note" style="margin:0 0 6px">No clips yet. YouTube trailers do not play on this Samsung, so add MP4 clips here.</p>`;}if(!S0.stations||!S0.stations.length)S0.stations=DEFST.map(x=>({name:x.name,url:x.url}));W.querySelector("#stations").innerHTML=(S0.stations||[]).map((x,i)=>`<button data-st="${i}" class="${S0.radio.on&&S0.radio.url===x.url?"on":""}">${esc(x.name)}<small data-del="${i}" style="display:block;font-weight:400;color:#B5B5BC;font-size:11px;margin-top:4px">Remove</small></button>`).join("");
+    {const tl=W.querySelector("#trl");if(tl)tl.innerHTML=(S0.trailers||[]).length?(S0.trailers||[]).map((x,i)=>`<div class="row" style="justify-content:space-between;padding:8px 0;border-bottom:1px solid #2A2A2F"><span><b>${esc(x.t)}</b><br><small style="color:#A9A9B0">${esc(x.rel||"no date")}</small></span><span style="display:flex;gap:8px"><button data-trp="${i}">Play now</button><button data-trdel="${i}">Remove</button></span></div>`).join(""):`<p class="note" style="margin:0 0 6px">No clips yet. YouTube trailers do not play on this Samsung, so add MP4 clips here.</p>`;}S0.stations=(S0.stations||[]).filter(x=>!/somafm\.com/.test(x.url||""));if(S0.radio&&/somafm\.com/.test(S0.radio.url||"")){S0.radio=Object.assign(S0.radio,{url:DEFST[0].url,name:DEFST[0].name});}DEFST.forEach(d=>{if(!S0.stations.some(x=>x.url===d.url))S0.stations.push({name:d.name,url:d.url});});if(!S0.stations.length)S0.stations=DEFST.map(x=>({name:x.name,url:x.url}));W.querySelector("#stations").innerHTML=(S0.stations||[]).map((x,i)=>`<button data-st="${i}" class="${S0.radio.on&&S0.radio.url===x.url?"on":""}">${esc(x.name)}<small data-del="${i}" style="display:block;font-weight:400;color:#B5B5BC;font-size:11px;margin-top:4px">Remove</small></button>`).join("");
     const r=W.querySelector("#ron");r.textContent=S0.radio.on?`Radio on · ${S0.radio.name}`:"Radio off";r.classList.toggle("on",S0.radio.on);W.querySelector("#vol").value=S0.radio.vol;W.querySelector("#bn").value=S0.banner||"";
     W.querySelector("#tvol").value=S0.tvol;W.querySelector("#tvl").textContent=S0.tvol>0?"Trailer volume "+S0.tvol+"%":"Trailers play muted";W.querySelector("#tmute").textContent=S0.tvol>0?"Mute trailers":"Unmute trailers";
     W.querySelector("#picks").innerHTML=(S0.feat||[]).length?S0.feat.map((p,i)=>`<div><img src="${img(p.img,200)}" alt=""><button data-unpick="${i}">Remove</button></div>`).join(""):`<p class="note" style="margin:0">None yet. Search a book and tap Pick.</p>`;};
@@ -1159,7 +3480,7 @@ if(ART)(async()=>{try{if(!window.claude)return;const db=await claude.use("db");i
   db.doc("tv/market").onSnapshot(s=>{if(s.exists){const d=s.data();if(d&&d.hot10&&d.hot10.length>=10){MARKET=Object.assign({},MARKET,d);buildTicker();}}},()=>{});
 }catch(e){}})();
 setInterval(()=>{const d=now();if(d.getHours()===4&&d.getMinutes()<1)hardReload();},45000);
-if(!IS_REMOTE){try{const o=JSON.parse(localStorage.getItem("cctvTV")||"null");if(o)applyState(o);}catch(x){}}
+if(!IS_REMOTE){document.documentElement.classList.add("tvmode");try{const o=JSON.parse(localStorage.getItem("cctvTV")||"null");if(o)applyState(o);}catch(x){}}
 
 </script>
 </body></html>
