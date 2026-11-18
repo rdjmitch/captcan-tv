@@ -676,6 +676,58 @@ html,body{background:#0B0B0D}
 .fact .qmark{position:absolute;right:150px;top:50%;transform:translateY(-54%);font-family:var(--head);font-weight:900;font-size:620px;line-height:1;color:var(--red)}
 .fact .copy{position:absolute!important;left:130px!important;right:700px!important;top:50%!important;transform:translateY(-50%)!important;display:flex!important;flex-direction:column}
 .fact .qmark{top:auto!important;bottom:150px;transform:none!important;line-height:.75;font-size:560px}
+/* v12 fun formats */
+.cotd{background:var(--ink);overflow:hidden}
+.cotd .blur{position:absolute;inset:-60px;background-size:cover;background-position:center;filter:blur(48px) brightness(.35) saturate(1.2)}
+.cotd .art{position:absolute;right:150px;top:70px;bottom:150px;width:760px;display:flex;align-items:center;justify-content:center}
+.cotd .art img{max-width:100%;max-height:100%;object-fit:contain;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.cotd .copy{position:absolute;left:130px;width:820px;top:0;bottom:80px;display:flex;flex-direction:column;justify-content:center;gap:26px}
+.cotd h1{font-size:110px;line-height:.95;margin:0;text-wrap:balance}
+.cotd .sub{font-size:38px;color:#D6D6DA;margin:0}
+.cotd .meta{display:flex;align-items:baseline;gap:26px}
+.cotd .meta b{font-family:var(--head);font-weight:900;font-size:84px}
+.cotd .meta span{font-weight:700;font-size:26px;color:var(--gold)}
+.vote{background:radial-gradient(ellipse at 70% 50%,#1E1E24 0%,var(--ink) 70%)}
+.vote .copy{position:absolute;left:130px;width:640px;top:0;bottom:80px;display:flex;flex-direction:column;justify-content:center;gap:28px}
+.vote h1{font-size:100px;line-height:.95;margin:0;text-wrap:balance}
+.vote .txt{font-size:34px;line-height:1.35;color:#D6D6DA;margin:0}
+.vote .pair{position:absolute;right:110px;top:80px;bottom:150px;width:1080px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.vote figure{margin:0;position:relative;flex:0 0 450px;width:450px;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px}
+.vote figure img{max-width:100%;max-height:calc(100% - 90px);object-fit:contain;box-shadow:0 24px 60px rgba(0,0,0,.55)}
+.vote .ab{position:absolute;top:0;left:0;width:76px;height:76px;background:var(--red);font-family:var(--head);font-weight:900;font-size:52px;display:flex;align-items:center;justify-content:center;z-index:2}
+.vote figcaption{text-align:center}
+.vote figcaption b{display:block;font-family:var(--head);font-weight:800;font-size:28px;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:440px}
+.vote figcaption span{font-size:26px;color:var(--gold);font-weight:700}
+.vote .or{font-family:var(--head);font-weight:900;font-size:56px;color:var(--mute);text-transform:uppercase}
+.spot{background:linear-gradient(90deg,#1A0E10 0%,var(--ink) 55%)}
+.spot .copy{position:absolute;left:130px;width:600px;top:0;bottom:80px;display:flex;flex-direction:column;justify-content:center;gap:24px}
+.spot h1{font-size:112px;line-height:.92;margin:0;text-wrap:balance}
+.spot .txt{font-size:36px;line-height:1.35;color:#D6D6DA;margin:0}
+.spot .txt.sm{font-weight:700;font-size:24px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);border-top:6px solid var(--red);padding-top:20px;width:fit-content}
+.spot .row3{position:absolute;right:110px;top:90px;bottom:150px;left:800px;display:flex;align-items:flex-end;justify-content:flex-end;gap:36px}
+.spot figure{margin:0;flex:0 1 310px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.spot figure img{width:100%;aspect-ratio:2/3;object-fit:contain;background:#000;box-shadow:0 20px 50px rgba(0,0,0,.5)}
+.spot figcaption b{display:block;font-family:var(--head);font-weight:800;font-size:26px;text-transform:uppercase;line-height:1.05;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.spot figcaption small{display:block;font-size:19px;color:var(--mute);margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.spot figcaption span{display:block;font-size:26px;font-weight:700;color:var(--gold);margin-top:6px}
+.upload{background:radial-gradient(ellipse at 78% 50%,#2B1416 0%,var(--ink) 70%)}
+.upload .copy{position:absolute;left:130px;width:820px;top:0;bottom:80px;display:flex;flex-direction:column;justify-content:center;gap:28px}
+.upload h1{font-size:108px;line-height:.95;margin:0;text-wrap:balance}
+.upload .txt{font-size:36px;line-height:1.35;color:#D6D6DA;margin:0;max-width:30ch}
+.upload .cd{position:absolute;right:140px;top:0;bottom:80px;display:flex;align-items:center;gap:26px}
+.upload .cd div{width:230px;background:var(--panel);border-top:8px solid var(--red);padding:30px 0 26px;text-align:center}
+.upload .cd b{display:block;font-family:var(--head);font-weight:900;font-size:150px;line-height:1}
+.upload .cd span{display:block;font-weight:700;font-size:24px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);margin-top:10px}
+/* v12 fixes */
+.cotd .art img{height:100%;width:auto;max-width:100%}
+.cotd .art{right:120px;top:60px;bottom:140px;width:820px}
+.vote .copy{width:540px}.vote h1{font-size:88px}.vote .txt{font-size:31px}
+.vote .pair{width:1100px;right:100px}
+.vote figcaption{background:transparent!important;padding:0!important}
+.spot figure{flex:0 1 340px}
+.spot figcaption b{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;font-size:24px}
+.upload .copy{width:700px}.upload h1{font-size:96px}
+.upload .cd{right:120px;gap:22px}.upload .cd div{width:210px}.upload .cd b{font-size:136px}
 
 </style></head><body>
 <div id="stage">
@@ -3101,6 +3153,23 @@ const S={
     return {id:"news",dur:16,el:$(`<section class="scene news">${head("What fans are talking about this week",part?"More comic <em>news</em>":"Comic <em>news</em>","Updated "+esc(MARKET.asOf||""))}<div class="ncols">${N.map((n,i)=>{const p=n.img?{img:n.img,price:n.p}:find(n.kw);return `<article class="in" style="animation-delay:${.12+i*.1}s">${p&&p.img?`<div class="nimg"><img src="${img(p.img,500)}" alt=""></div>`:`<div class="nimg none"></div>`}<p class="neye">${esc(n.eye||"")}</p><h2>${esc(n.h)}</h2><p class="ntx">${esc(n.txt||"")}</p>${p&&p.price?`<p class="np">In the shop <b>${money(p.price)}</b></p>`:""}</article>`;}).join("")}</div></section>`)};},
   fact(){const F=MARKET.facts||[];if(!F.length)return null;const f=F[nx("fact",F.length)];
     return {id:"fact",dur:10,el:$(`<section class="scene fact"><div class="copy"><p class="eye in">Did you know?</p><h1 class="H in d1">${esc(f[0])}</h1><p class="txt in d2">${esc(f[1])}</p><p class="key in d3"><span>Key issue</span><b>${esc(f[2])}</b></p></div><div class="qmark in d2">?</div></section>`)};},
+  cotd(){const L=(FEED.hot||[]).slice(0,10).filter(p=>p.img);if(!L.length)return null;const d=Math.floor((now()-new Date(2026,0,1))/864e5),p=L[d%L.length],[a,b]=splitT(p.title);
+    return {id:"cotd",dur:11,el:$(`<section class="scene cotd"><div class="blur" style="background-image:url('${img(p.img,500)}')"></div><div class="art in"><img src="${img(p.img,1200)}" alt=""></div><div class="copy"><p class="eye in">Cover of the day</p><h1 class="H in d1">${esc(a)}</h1>${b?`<p class="sub in d2">${esc(b)}</p>`:""}<div class="meta in d3"><b>${money(p.price)}</b>${p.inv?`<span>${p.inv<=5?"Only "+p.inv+" left":"In stock now"}</span>`:""}</div><div class="in d4">${chip(link(p,"cotd"),"Scan to buy","Or grab it off the wall")}</div></div></section>`)};},
+  vote(){const G={};(FEED.hot||[]).concat(FEED.keys||[]).forEach(p=>{if(!p.img)return;const k=splitT(p.title)[0];(G[k]=G[k]||[]);if(!G[k].some(q=>q.img===p.img))G[k].push(p);});
+    const ks=Object.keys(G).filter(k=>G[k].length>=2);if(!ks.length)return null;const k=ks[nx("vote",ks.length)],L=G[k].slice(0,2);
+    const lab=p=>splitT(p.title)[1]||"Main cover";
+    return {id:"vote",dur:12,el:$(`<section class="scene vote"><div class="copy"><p class="eye in">You pick</p><h1 class="H in d1">Which cover would you pick?</h1><p class="txt in d2">${esc(k)}. Tell us at the counter, then take it home.</p></div><div class="pair">${L.map((p,i)=>`<figure class="in" style="animation-delay:${.25+i*.18}s"><span class="ab">${i?"B":"A"}</span><img src="${img(p.img,800)}" alt=""><figcaption><b>${esc(lab(p))}</b><span>${money(p.price)}</span></figcaption></figure>`).join(`<div class="or in d3">or</div>`)}</div></section>`)};},
+  spot(){const C=[["spider-man","Spider-Man","First swung into Amazing Fantasy #15 in 1962"],["x-men","The X-Men","The team first showed up in X-Men #1 in 1963"],["fantastic four","The Fantastic Four","Marvel's first family, from Fantastic Four #1 in 1961"],["batman","Batman","First appeared in Detective Comics #27 in 1939"],["detective comics","Batman","First appeared in Detective Comics #27 in 1939"],["flash","The Flash","Barry Allen first ran in Showcase #4 in 1956"],["punisher","The Punisher","First appeared in Amazing Spider-Man #129 in 1974"],["lobo","Lobo","First appeared in Omega Men #3 in 1983"]];
+    const pool=[...(FEED.hot||[]),...(FEED.keys||[]),...(FEED.trades||[]),...(FEED.blow||[])].filter(p=>p.img&&p.inv!==0);
+    const opts=[];const used={};C.forEach(c=>{if(used[c[1]])return;const seen={},bk=pool.filter(p=>(p.title||p.t||"").toLowerCase().includes(c[0])&&!seen[p.img]&&(seen[p.img]=1)).slice(0,3);if(bk.length>=2){opts.push([c,bk]);used[c[1]]=1;}});
+    if(!opts.length)return null;const [c,bk]=opts[nx("spot",opts.length)];
+    return {id:"spot",dur:12,el:$(`<section class="scene spot"><div class="copy"><p class="eye in">Character spotlight</p><h1 class="H in d1">${esc(c[1])}</h1><p class="txt in d2">${esc(c[2])}.</p><p class="txt sm in d3">On our shelves right now</p></div><div class="row3">${bk.map((p,i)=>{const [a,b]=splitT(p.title||p.t||"");return `<figure class="in" style="animation-delay:${.2+i*.14}s"><img src="${img(p.img,600)}" alt=""><figcaption><b>${esc(a)}</b>${b?`<small>${esc(b)}</small>`:""}<span>${money(p.price)}</span></figcaption></figure>`;}).join("")}</div></section>`)};},
+  upload(){const n=now(),t=new Date(n);t.setHours(17,0,0,0);while(t.getDay()!==5||t<=n){t.setDate(t.getDate()+1);t.setHours(17,0,0,0);}
+    const live=n.getDay()===5&&n.getHours()>=17;
+    const el=$(`<section class="scene upload"><div class="copy"><p class="eye in">Back issues</p><h1 class="H in d1">${live?"The Friday upload is live":"Next Friday upload"}</h1><p class="txt in d2">${live?"Fresh back issues just went up on the site. The good ones go fast.":"Fresh back issues go up on the site every Friday around 5pm. New releases land every Tuesday."}</p><div class="in d3">${chip(utm(CONFIG.join,"upload"),"Make a free account","So you're ready when it drops")}</div></div>${live?"":`<div class="cd in d2"><div><b data-k="d">0</b><span>days</span></div><div><b data-k="h">0</b><span>hours</span></div><div><b data-k="m">0</b><span>minutes</span></div></div>`}</section>`);
+    const tick=()=>{if(!el.isConnected&&el._t){clearInterval(el._t);return;}let s=Math.max(0,(t-now())/1e3);const v={d:Math.floor(s/86400),h:Math.floor(s%86400/3600),m:Math.floor(s%3600/60)};el.querySelectorAll(".cd b").forEach(b=>b.textContent=v[b.dataset.k]);};
+    tick();el._t=setInterval(tick,15000);
+    return {id:"upload",dur:10,el};},
   excl(){const seen={},L=(MARKET.excl||[]).filter(p=>{const k=(p.v||p.t||"");return p.img&&!seen[p.img]&&!seen[k]&&(seen[p.img]=seen[k]=1);});
     return {id:"excl",dur:11,el:$(`<section class="scene excl"><div class="copy"><p class="eye in">Only at CaptCan</p><h1 class="H in d1">Our <em>exclusives</em></h1><p class="txt in d2">Covers made for CaptCan, in limited runs. 327 copies of our Ark-M exclusives sold out in weeks.</p><div class="in d3">${chip(utm(CONFIG.join,"exclusive"),"Get the next one first","Free account · we email you")}</div></div><div class="covers">${L.map(p=>`<figure><img src="${img(p.img,600)}" alt=""><figcaption>${esc(p.v)}</figcaption></figure>`).join("")}</div></section>`)};},
   timeline(part){const L=MARKET.timeline[part];
@@ -3260,12 +3329,12 @@ const MODES={mix:"Full mix",event:"Signing day",sell:"Selling",line:"Line-up",ma
 const SIGNDAY=()=>now().toLocaleDateString("en-CA")==="2026-11-18";
 function playlist(){DAY=DAYNOW();
   const day={1:[S.presale,S.soon],2:[S.board,S.presale],3:[S.hero,S.board],4:[S.story,S.soon],5:[S.keys,S.story],6:[S.keys,S.merch],0:[S.keys,S.merch]}[DAY];
-  if(MODE==="event"||(MODE==="mix"&&SIGNDAY()))return [S.sign,S.chain,S.board,S.trailer,S.chainall,S.cgcss,S.hero,S.feat,S.sign,S.dwj,S.trailer,S.monk,S.wall,S.chain,S.inc,S.join,S.trailer,S.sign,S.chainall,S.hero,S.trades,S.cgcss,S.feat,S.app,S.sign,S.trailer,S.chain,S.market.bind(null,0),S.news,S.fact,S.monk,S.about,S.news.bind(null,1),S.fact,S.hero,S.trailer,S.sign,S.dwj,S.chainall,S.run,S.inc,S.trailer,S.sign,S.chain,S.excl,S.sold,S.blow,S.keys,S.feat,S.svc,S.about,S.presale,S.join];
+  if(MODE==="event"||(MODE==="mix"&&SIGNDAY()))return [S.sign,S.chain,S.board,S.trailer,S.chainall,S.cgcss,S.hero,S.feat,S.sign,S.dwj,S.trailer,S.monk,S.wall,S.chain,S.inc,S.join,S.trailer,S.sign,S.chainall,S.hero,S.trades,S.cgcss,S.feat,S.app,S.sign,S.trailer,S.chain,S.cotd,S.market.bind(null,0),S.news,S.fact,S.vote,S.monk,S.about,S.news.bind(null,1),S.fact,S.spot,S.hero,S.trailer,S.sign,S.dwj,S.chainall,S.run,S.inc,S.trailer,S.sign,S.chain,S.excl,S.sold,S.blow,S.keys,S.feat,S.svc,S.about,S.presale,S.join];
   if(MODE==="sell")return [S.chain,S.board,S.hero,S.wall,S.hero,S.run,S.blow,S.keys,S.inc,S.hero,day[0],S.trades,S.presale,S.soon,S.excl,S.hero,S.feat,S.wall,S.chainall,S.monk,S.merch,S.app,S.join,S.story,S.blow,day[1]];
   if(MODE==="line")return [S.quizFirst,S.hero,S.join,S.chain,S.quizPrice,S.wall,S.lesson,S.about,S.hero,S.howto,S.inc,S.quizFirst,S.sold,S.join,S.run,S.lesson,S.trades,S.school,S.hero];
-  if(MODE==="market")return [S.market.bind(null,0),S.news,S.fact,S.market.bind(null,1),S.news.bind(null,1),S.alpha,S.fact,S.sold,S.vel,S.trailer,S.timeline.bind(null,0),S.timeline.bind(null,1),S.quizFirst,S.trailer,S.join];
+  if(MODE==="market")return [S.market.bind(null,0),S.news,S.fact,S.market.bind(null,1),S.news.bind(null,1),S.alpha,S.fact,S.vote,S.sold,S.vel,S.trailer,S.timeline.bind(null,0),S.timeline.bind(null,1),S.quizFirst,S.trailer,S.join];
   if(MODE==="trailers")return [S.trailer,S.hero,S.trailer,S.wall,S.trailer,S.join,S.trailer,S.timeline.bind(null,0)];
-  return [...(loop%4===0?[S.open]:[]),S.board,S.feat,S.hero,S.wall,S.market.bind(null,0),S.news,S.fact,S.quizFirst,S.run,S.hero,S.chain,S.trailer,S.sold,S.inc,S.blow,day[0],S.lesson,S.vel,S.join,S.about,S.hero,S.wall,S.market.bind(null,1),S.trades,S.news.bind(null,1),S.fact,S.keys,S.svc,S.excl,S.chainall,S.presale,S.trailer,S.timeline.bind(null,loop%2),S.quizFirst,S.run,S.story,day[1],S.soon,S.blow,S.eras,S.alpha,S.hero,S.quizPrice,S.artists,S.howto,S.app,S.monk,S.merch,S.feat,S.svc,S.school,S.join,S.event.bind(null,0)];}
+  return [...(loop%4===0?[S.open]:[]),S.board,S.feat,S.hero,S.wall,S.cotd,S.market.bind(null,0),S.news,S.fact,S.vote,S.quizFirst,S.run,S.hero,S.chain,S.trailer,S.sold,S.inc,S.blow,day[0],S.lesson,S.vel,S.join,S.about,S.hero,S.wall,S.market.bind(null,1),S.trades,S.news.bind(null,1),S.fact,S.spot,S.keys,S.upload,S.svc,S.excl,S.chainall,S.presale,S.trailer,S.timeline.bind(null,loop%2),S.quizFirst,S.run,S.story,day[1],S.soon,S.blow,S.eras,S.alpha,S.vote,S.hero,S.spot,S.quizPrice,S.artists,S.howto,S.app,S.monk,S.merch,S.feat,S.svc,S.school,S.join,S.event.bind(null,0)];}
 /* engine: auto-plays, keeps a history so staff can step back and forward, can be paused, and can take a pushed screen from the desk */
 const host=document.getElementById("host"),cut=document.getElementById("cut");let queue=[],current=null,lastId="",timer=null,paused=false,busy=false,hist=[],hpos=-1,curMs=10000,startedAt=0,remain=0;
 const clone=o=>JSON.parse(JSON.stringify(o));
@@ -3292,7 +3361,7 @@ async function go(dir,push){if(busy)return;busy=true;clearTimeout(timer);
 function setPaused(p){paused=p;document.body.classList.toggle("paused",p);if(p){clearTimeout(timer);remain=Math.max(1000,remain-(Date.now()-startedAt));progress(null);}else schedule(remain||curMs);}
 const next=()=>go(1);
 /* push a specific screen (from the desk remote) */
-const PUSH={book:p=>S.book(p),msg:m=>S.msg(m),join:()=>S.join(),cash:()=>S.svc(0),sell:()=>S.svc(1),consign:()=>S.svc(2),pressing:()=>S.svc(3),holdbox:()=>S.svc(4),presale:()=>S.presale(),wall:()=>S.wall(),board:()=>S.board(),hero:()=>S.hero(),run:()=>S.run(),blow:()=>S.blow(),keys:()=>S.keys(),soon:()=>S.soon(),excl:()=>S.excl(),merch:()=>S.merch(),market:()=>S.market(0),market2:()=>S.market(1),alpha:()=>S.alpha(),sold:()=>S.sold(),vel:()=>S.vel(),timeline:()=>S.timeline(0),timeline2:()=>S.timeline(1),quiz:()=>S.quizFirst(),quizprice:()=>S.quizPrice(),ratio:()=>S.lesson(0),cpv:()=>S.lesson(1),cgc:()=>S.school(),eras:()=>S.eras(),artists:()=>S.artists(),howto:()=>S.howto(),trailer:i=>S.trailer(i),open:()=>S.open(),chain:()=>S.chain(),chainall:()=>S.chainall(),inc:()=>S.inc(),trades:()=>S.trades(),about:()=>S.about(0),about2:()=>S.about(1),sign:()=>S.sign(),cgcss:()=>S.cgcss(),dwj:()=>S.dwj(),monk:()=>S.monk(),app:()=>S.app(),feat:()=>S.feat(),news:()=>S.news(0),news2:()=>S.news(1),fact:()=>S.fact()};
+const PUSH={book:p=>S.book(p),msg:m=>S.msg(m),join:()=>S.join(),cash:()=>S.svc(0),sell:()=>S.svc(1),consign:()=>S.svc(2),pressing:()=>S.svc(3),holdbox:()=>S.svc(4),presale:()=>S.presale(),wall:()=>S.wall(),board:()=>S.board(),hero:()=>S.hero(),run:()=>S.run(),blow:()=>S.blow(),keys:()=>S.keys(),soon:()=>S.soon(),excl:()=>S.excl(),merch:()=>S.merch(),market:()=>S.market(0),market2:()=>S.market(1),alpha:()=>S.alpha(),sold:()=>S.sold(),vel:()=>S.vel(),timeline:()=>S.timeline(0),timeline2:()=>S.timeline(1),quiz:()=>S.quizFirst(),quizprice:()=>S.quizPrice(),ratio:()=>S.lesson(0),cpv:()=>S.lesson(1),cgc:()=>S.school(),eras:()=>S.eras(),artists:()=>S.artists(),howto:()=>S.howto(),trailer:i=>S.trailer(i),open:()=>S.open(),chain:()=>S.chain(),chainall:()=>S.chainall(),inc:()=>S.inc(),trades:()=>S.trades(),about:()=>S.about(0),about2:()=>S.about(1),sign:()=>S.sign(),cgcss:()=>S.cgcss(),dwj:()=>S.dwj(),monk:()=>S.monk(),app:()=>S.app(),feat:()=>S.feat(),news:()=>S.news(0),news2:()=>S.news(1),fact:()=>S.fact(),cotd:()=>S.cotd(),vote:()=>S.vote(),spot:()=>S.spot(),upload:()=>S.upload()};
 function pushScreen(name,arg,hold){const f=PUSH[name];if(!f)return;let sc=null;try{sc=f(arg);}catch(e){}if(!sc)return;go(0,{sc,hold:hold||(sc.manual?null:sc.dur)}).then(()=>{});}
 function buildTicker(){const lead={1:"Pre-sales close tonight at 8pm",2:"This week's new releases go up today",3:"New comic book day",5:"New back issues go up today"}[DAYNOW()];
   const mk=MARKET.hot10.slice(0,3).map(m=>`Market: ${m.t} ${m.up}`);
@@ -3336,8 +3405,8 @@ function ackMsg(){const u=navigator.userAgent,m=u.match(/Chrom(?:e|ium)\/(\d+)/)
 function listen(){try{const es=new EventSource(RELAY+"/sse");es.onmessage=e=>{try{const d=JSON.parse(e.data);if(d.event==="message")handle(JSON.parse(d.message));}catch(x){}};es.onerror=()=>{};}catch(x){}}
 async function restore(){try{const t=await fetch(RELAY+"/json?poll=1&since=48h").then(r=>r.text());let last=null;t.trim().split("\n").forEach(l=>{try{const d=JSON.parse(l);const m=JSON.parse(d.message);if(m.cmd==="state")last=m;}catch(x){}});if(last)applyState(Object.assign({},last,{sigPush:false}));}catch(x){}}
 /* ===== desk remote: phone or desk computer, PIN protected ===== */
-const NAMES={open:"CaptCan intro",board:"Hot this week",hero:"#1 seller",wall:"New this week",run:"Friday's big run",blow:"25% off blowout",market:"Market Hot 10",alpha:"Market spotlight",sold:"Just sold at CaptCan",vel:"Moving fastest",excl:"Our exclusives",timeline:"Movie keys",eras:"Every era",artists:"Cover artists",svc:"CaptCan services",lesson:"Collector school",school:"How CGC grades",quiz:"Collector quiz",soon:"Coming soon",join:"Make an account",howto:"How the site works",keys:"Just landed",presale:"Pre-sales",merch:"Merch",event:"Event",trailer:"Trailer",book:"A book you pushed",msg:"Your message",chain:"Monk exclusives",chainall:"Every Chainkata cover",inc:"Incentive covers",trades:"Trades and hardcovers",about:"About CaptCan",sign:"Signing status",news:"Comic news",news2:"More comic news",fact:"Did you know",cgcss:"CGC yellow label",dwj:"Why Chainkata",monk:"Monk originals",app:"The CaptCan app",feat:"Staff picks",story:"Key issue"};
-const PV={open:()=>S.open(),board:()=>S.board(),hero:()=>S.hero(),wall:()=>S.wall(),run:()=>S.run(),blow:()=>S.blow(),market:()=>S.market(0),alpha:()=>S.alpha(),sold:()=>S.sold(),vel:()=>S.vel(),excl:()=>S.excl(),timeline:()=>S.timeline(0),eras:()=>S.eras(),artists:()=>S.artists(),svc:()=>S.svc(0),lesson:()=>S.lesson(0),school:()=>S.school(),quiz:()=>S.quizFirst(0),soon:()=>S.soon(),join:()=>S.join(),keys:()=>S.keys(),presale:()=>S.presale(),merch:()=>S.merch(),event:()=>S.event(0),chain:()=>S.chain(),chainall:()=>S.chainall(),inc:()=>S.inc(),trades:()=>S.trades(),about:()=>S.about(0),sign:()=>S.sign(),cgcss:()=>S.cgcss(),dwj:()=>S.dwj(),monk:()=>S.monk(),app:()=>S.app(),feat:()=>S.feat(),story:()=>S.story()};
+const NAMES={open:"CaptCan intro",board:"Hot this week",hero:"#1 seller",wall:"New this week",run:"Friday's big run",blow:"25% off blowout",market:"Market Hot 10",alpha:"Market spotlight",sold:"Just sold at CaptCan",vel:"Moving fastest",excl:"Our exclusives",timeline:"Movie keys",eras:"Every era",artists:"Cover artists",svc:"CaptCan services",lesson:"Collector school",school:"How CGC grades",quiz:"Collector quiz",soon:"Coming soon",join:"Make an account",howto:"How the site works",keys:"Just landed",presale:"Pre-sales",merch:"Merch",event:"Event",trailer:"Trailer",book:"A book you pushed",msg:"Your message",chain:"Monk exclusives",chainall:"Every Chainkata cover",inc:"Incentive covers",trades:"Trades and hardcovers",about:"About CaptCan",sign:"Signing status",news:"Comic news",news2:"More comic news",fact:"Did you know",cotd:"Cover of the day",vote:"Which cover would you pick",spot:"Character spotlight",upload:"Friday upload countdown",cgcss:"CGC yellow label",dwj:"Why Chainkata",monk:"Monk originals",app:"The CaptCan app",feat:"Staff picks",story:"Key issue"};
+const PV={open:()=>S.open(),board:()=>S.board(),hero:()=>S.hero(),wall:()=>S.wall(),run:()=>S.run(),blow:()=>S.blow(),market:()=>S.market(0),alpha:()=>S.alpha(),sold:()=>S.sold(),vel:()=>S.vel(),excl:()=>S.excl(),timeline:()=>S.timeline(0),eras:()=>S.eras(),artists:()=>S.artists(),svc:()=>S.svc(0),lesson:()=>S.lesson(0),school:()=>S.school(),quiz:()=>S.quizFirst(0),soon:()=>S.soon(),join:()=>S.join(),keys:()=>S.keys(),presale:()=>S.presale(),merch:()=>S.merch(),event:()=>S.event(0),chain:()=>S.chain(),chainall:()=>S.chainall(),inc:()=>S.inc(),trades:()=>S.trades(),about:()=>S.about(0),sign:()=>S.sign(),cgcss:()=>S.cgcss(),dwj:()=>S.dwj(),monk:()=>S.monk(),app:()=>S.app(),feat:()=>S.feat(),story:()=>S.story(),news:()=>S.news(0),fact:()=>S.fact(),cotd:()=>S.cotd(),vote:()=>S.vote(),spot:()=>S.spot(),upload:()=>S.upload()};
 function remoteUI(){
   document.getElementById("stage").style.display="none";
   const css=`html,body{height:auto!important;overflow:auto!important}body{display:block!important;cursor:auto!important;background:#0B0B0D!important;color:#fff;font-family:var(--body);-webkit-text-size-adjust:100%}
