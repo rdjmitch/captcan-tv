@@ -587,6 +587,25 @@ p,.txt,.sm,.lead,.after,.pts div,.tl5 span,.stats3 span{text-wrap:pretty}
 .trailer.still .card{background:radial-gradient(ellipse at 78% 45%,#2B1416 0%,#171213 45%,var(--ink) 75%)}
 .trailer.still .card::after{display:none}
 .trailer.still .tie{opacity:1}
+/* ===== v11 layout system: one grid, balanced vertically ===== */
+#bug{display:none!important}
+header{padding-right:0!important}
+.scene.hd{display:flex!important;flex-direction:column;justify-content:center;padding:40px 112px 48px!important;box-sizing:border-box}
+.scene.hd>header{flex:none;margin-bottom:34px!important}
+.scene.hd>*:not(header){flex:none;margin-top:0!important}
+.excl,.svc,.lesson,.mc,.app{padding:0 130px!important}
+.mrow .w{font-family:var(--body);font-weight:500;font-size:20px;letter-spacing:.02em;text-transform:none;color:#A9A9B0}
+.blow .g6 img{height:auto;max-height:440px;width:100%;object-fit:contain}
+.open .veil{background:linear-gradient(90deg,rgba(14,14,15,.97) 0,rgba(14,14,15,.9) 50%,rgba(14,14,15,.62) 100%)}
+.open .logo{width:860px!important}
+.excl{grid-template-columns:640px minmax(0,1fr)!important;gap:90px!important}
+.excl .covers{grid-template-columns:none!important;grid-auto-flow:column;grid-auto-columns:minmax(0,340px);justify-content:end;gap:28px!important}
+.excl .covers figcaption{font-size:20px}
+.trailer.still .dd{position:absolute;right:130px;top:50%;transform:translateY(-58%);z-index:4;text-align:right;display:flex;flex-direction:column;align-items:flex-end}
+.trailer.still .dd b{font-family:var(--head);font-weight:900;font-size:380px;line-height:.82;color:var(--red);letter-spacing:-.02em}
+.trailer.still .dd b.now{font-size:240px}
+.trailer.still .dd span{font-weight:700;font-size:34px;letter-spacing:.14em;text-transform:uppercase;color:#fff;margin-top:18px}
+.excl .covers{grid-auto-columns:minmax(0,420px)!important}
 
 </style></head><body>
 <div id="stage">
@@ -699,14 +718,14 @@ const S={
     return {id:"blow",dur:12,el:$(`<section class="scene blow"><header><div><p class="eye in">Recent release blowout</p><h1 class="H in d1">25% off <em>recent releases</em></h1></div><div class="bigq in d2"><div class="num">40,000+<small>books on sale</small></div>${chip(utm(SITE+"/collections/back-issue-blowout","blowout"),"Scan to shop","Online and in store")}</div></header><div class="g6">${L.map((p,i)=>`<div class="cv" style="animation-delay:${.1+i*.05}s"><img src="${img(p.img,500)}" alt=""><div class="cap"><b>${esc(p.t)}</b><span>${money(p.price)}<em><s>${money(p.was)}</s></em></span></div></div>`).join("")}</div></section>`)};},
   /* market */
   market(part){const L=MARKET.hot10.slice(part*5,part*5+5);
-    return {id:"market",dur:15,el:$(`<section class="scene mk">${head(`The market this week${part?" · 6 to 10":" · 1 to 5"}`,"Hottest <em>comics</em>",esc(MARKET.hot10src).replace(" · eBay","<br>eBay"))}${L.map((m,i)=>`<div class="mrow ${m.r<=3?"top":""} in" style="animation-delay:${.15+i*.09}s"><div class="n">${m.r}</div>${m.img?`<img class="c" src="${img(m.img,300)}" alt="">`:`<div class="c blank">${m.r}</div>`}<div style="min-width:0"><b>${esc(m.t)}</b><span class="w"><i>${esc(m.v)}</i>${esc(m.why)}</span></div><div class="ms"><b>${esc(m.up)}</b><span>${esc(m.s)}</span></div></div>`).join("")}</section>`)};},
+    return {id:"market",dur:15,el:$(`<section class="scene mk">${head(`The market this week${part?" · 6 to 10":" · 1 to 5"}`,"Hottest <em>comics</em>",esc(MARKET.hot10src).replace(" · eBay","<br>eBay"))}${L.map((m,i)=>`<div class="mrow ${m.r<=3?"top":""} in" style="animation-delay:${.15+i*.09}s"><div class="n">${m.r}</div>${m.img?`<img class="c" src="${img(m.img,300)}" alt="">`:`<div class="c blank">${m.r}</div>`}<div style="min-width:0"><b>${esc(m.t)}</b><span class="w">${esc(m.v)}</span></div><div class="ms"><b>${esc(m.up)}</b><span>${esc(m.s)}</span></div></div>`).join("")}</section>`)};},
   alpha(){const s=MARKET.spot;if(!s||!s.h)return null;
     return {id:"alpha",dur:11,el:$(`<section class="scene svc"><div class="copy"><p class="eye in">${esc(s.eye)}</p><h1 class="H in d1">${s.h}</h1><p class="txt in d2">${esc(s.txt)}</p><div class="pts in d3">${(s.pts||[]).map(p=>`<div><b>${esc(p[0])}</b> · ${esc(p[1])}</div>`).join("")}</div></div><div class="big in d2"><div class="lab">${esc(s.cta||"Got one?")}</div><div class="sm">${esc(s.ctaTxt||"Ask us what yours is worth.")}</div>${chip(utm(SITE+"/pages/sell-your-collection","spotlight"),"Scan to sell","Paid by e-Transfer")}</div></section>`)};},
   sold(){const L=MARKET.sold.slice(0,8);
     return {id:"sold",dur:13,el:$(`<section class="scene sold">${head("Sold at CaptCan · last 30 days","Just sold <em>at CaptCan</em>","Real sale prices<br>Canadian dollars")}<div class="cards8">${L.map((p,i)=>`<div class="k in" style="animation-delay:${.12+i*.06}s"><img src="${img(p.img,400)}" alt=""><div><b>${esc(p.t)}</b><span>${esc(p.g)}</span><em>${money(p.p)}</em></div></div>`).join("")}</div><div class="strip in d4"><p>Sitting on books like these? <em>We buy and consign.</em></p>${chip(utm(SITE+"/pages/sell-your-collection","sold"),"Scan to sell","Free evaluation")}</div></section>`)};},
   vel(){const L=[...MARKET.vel].sort((a,b)=>b.n-a.n),max=Math.max(...L.map(v=>v.n));
     return {id:"vel",dur:13,el:$(`<section class="scene vel">${head("Modern velocity · last 30 days","Moving <em>fastest</em>","Copies sold at CaptCan<br>Updated "+esc(MARKET.asOf))}${L.map((v,i)=>`<div class="vrow ${v.ours?"ours":""} in" style="animation-delay:${.12+i*.07}s"><img src="${img(v.img,200)}" alt=""><div><b>${esc(v.t)}</b><span>${esc(v.v)}</span></div><div class="bar"><i style="width:${Math.round(v.n/max*1000)}px;animation-delay:${.3+i*.07}s"></i><s>${v.n}</s></div></div>`).join("")}</section>`)};},
-  excl(){const L=MARKET.excl;
+  excl(){const seen={},L=(MARKET.excl||[]).filter(p=>{const k=(p.v||p.t||"");return p.img&&!seen[p.img]&&!seen[k]&&(seen[p.img]=seen[k]=1);});
     return {id:"excl",dur:11,el:$(`<section class="scene excl"><div class="copy"><p class="eye in">Only at CaptCan</p><h1 class="H in d1">Our <em>exclusives</em></h1><p class="txt in d2">Covers made for CaptCan, in limited runs. 327 copies of our Ark-M exclusives sold out in weeks.</p><div class="in d3">${chip(utm(CONFIG.join,"exclusive"),"Get the next one first","Free account · we email you")}</div></div><div class="covers">${L.map(p=>`<figure><img src="${img(p.img,600)}" alt=""><figcaption>${esc(p.v)}</figcaption></figure>`).join("")}</div></section>`)};},
   timeline(part){const L=MARKET.timeline[part];
     return {id:"timeline",dur:14,el:$(`<section class="scene tl">${head("Coming to screens","The key <em>to own</em>",part?"2028 and streaming now":"Next 12 months")}<div class="tline">${L.map((t,i)=>`<div class="tn in" style="animation-delay:${.15+i*.1}s"><div class="d">${esc(t.d)}</div><h3>${esc(t.t)}</h3><div class="k">${t.img?`<img src="${img(t.img,300)}" alt="">`:""}<div><i>Key to own</i><b>${esc(t.k)}</b><span>${esc(t.kn)}</span></div></div></div>`).join("")}</div><div class="strip in d4" style="margin-top:44px"><p>Hunting a key? <em>Search every book we have.</em></p>${chip(utm(SITE+"/pages/advanced-search","timeline"),"Scan to search","Wishlist it if it's gone")}</div></section>`)};},
@@ -758,7 +777,7 @@ const S={
     const w=e.title.split(" "),l=w.pop();
     return {id:"event",dur:9,el:$(`<section class="scene event"><div class="photo" style="background-image:url('${img(FEED.shop,1920)}')"></div><div class="veil"></div><div class="copy"><p class="eye in">${esc(eye)}</p><h1 class="H in d1">${esc(w.join(" "))} <em>${esc(l)}</em></h1><p class="txt in d2">${esc(e.text)}</p></div></section>`)};},
   trailer(i){const T=(MARKET.trailers||[]).filter(x=>!x.rel||now()<=new Date(new Date(x.rel+"T12:00:00").getTime()+14*864e5));if(!T.length)return null;const t=T[i!=null?i%T.length:nx("tr",T.length)];
-    if(WEAKTV||!YTREADY||(TRBAD>=2&&i==null)){const el=$(`<section class="scene trailer still"><div class="card"><p class="eye in">${esc(t.sub2||"Coming to theatres")}</p><h1 class="H in d1">${esc(t.t)}</h1><p class="when in d2">${esc(t.when)}</p></div><div class="tie"></div></section>`);findBooks(t.kw,8).then(bs=>{bs=bs.filter(p=>p.price>=5).sort((a,b)=>b.price-a.price);if(!bs.length)return;const p=bs[0],u=qrURL(link(p,"trailer"));el.querySelector(".tie").innerHTML=`<img class="tc" src="${img(p.img,400)}" alt=""><div><span>In the shop now</span><b>${esc(splitT(p.title)[0])}</b><em>${money(p.price)}</em></div>${u?`<img class="tq" src="${u}" alt="">`:""}`;}).catch(()=>{});return {id:"trailer",dur:11,el};}
+    if(WEAKTV||!YTREADY||(TRBAD>=2&&i==null)){const el=$(`<section class="scene trailer still"><div class="card"><p class="eye in">${esc(t.sub2||"Coming to theatres")}</p><h1 class="H in d1">${esc(t.t)}</h1><p class="when in d2">${esc(t.when)}</p></div>${t.rel?(()=>{const d=Math.ceil((new Date(t.rel+"T19:00:00")-now())/864e5);return d>0?`<div class="dd in d2"><b>${d}</b><span>${d===1?"day to go":"days to go"}</span></div>`:`<div class="dd in d2"><b class="now">Now</b><span>in theatres</span></div>`;})():""}<div class="tie"></div></section>`);findBooks(t.kw,8).then(bs=>{bs=bs.filter(p=>p.price>=5).sort((a,b)=>b.price-a.price);if(!bs.length)return;const p=bs[0],u=qrURL(link(p,"trailer"));el.querySelector(".tie").innerHTML=`<img class="tc" src="${img(p.img,400)}" alt=""><div><span>In the shop now</span><b>${esc(splitT(p.title)[0])}</b><em>${money(p.price)}</em></div>${u?`<img class="tq" src="${u}" alt="">`:""}`;}).catch(()=>{});return {id:"trailer",dur:11,el};}
     const el=$(`<section class="scene trailer"><div id="ytw"><div id="yt"></div></div><div class="card"><p class="eye">${esc(t.sub||"Official trailer")}</p><h1 class="H">${esc(t.t)}</h1><p class="when">${esc(t.when)}</p></div><div class="tie"></div></section>`);
     let player=null,done=false,T2=[],bufN=0,bufMs=0,bufT=0;T2.push(setInterval(()=>{if(bufT&&Date.now()-bufT>6000){TRBAD++;finish();}},1000));const sc={id:"trailer",chrome:"cinema",dur:150,el,manual:true};
     const finish=()=>{if(done)return;done=true;T2.forEach(clearTimeout);sc.onEnd&&sc.onEnd();};
@@ -864,7 +883,7 @@ const host=document.getElementById("host"),cut=document.getElementById("cut");le
 const clone=o=>JSON.parse(JSON.stringify(o));
 function buildNext(){for(let g=0;g<60;g++){if(!queue.length){loop++;queue=playlist();}const f=queue.shift();const snap=clone(IX);let sc=null;try{sc=f();}catch(e){console.warn(e);}if(sc&&sc.id!==lastId)return {sc,f,snap};}return null;}
 function rebuild(h){const cur=clone(IX);IX=clone(h.snap);let sc=null;try{sc=h.f();}catch(e){}IX=cur;return sc;}
-function ready(el){const imgs=[...el.querySelectorAll("img")];return Promise.race([Promise.all(imgs.map(i=>i.decode?i.decode().catch(()=>{i.style.visibility="hidden";}):Promise.resolve())),new Promise(r=>setTimeout(r,3000))]);}
+function ready(el){try{if(el.querySelector(":scope>header"))el.classList.add("hd");}catch(x){}const imgs=[...el.querySelectorAll("img")];return Promise.race([Promise.all(imgs.map(i=>i.decode?i.decode().catch(()=>{i.style.visibility="hidden";}):Promise.resolve())),new Promise(r=>setTimeout(r,3000))]);}
 const prog=()=>document.getElementById("prog");
 function progress(ms){const p=prog();if(!p)return;p.getAnimations().forEach(a=>a.cancel());if(ms==null){p.style.transform="scaleX(0)";return;}p.animate([{transform:`scaleX(${Math.max(0,1-ms/curMs)})`},{transform:"scaleX(1)"}],{duration:ms,fill:"forwards"});}
 function schedule(ms){clearTimeout(timer);if(paused){remain=ms;progress(null);return;}startedAt=Date.now();remain=ms;timer=setTimeout(()=>go(1),ms);progress(ms);}
