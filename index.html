@@ -606,6 +606,18 @@ header{padding-right:0!important}
 .trailer.still .dd b.now{font-size:240px}
 .trailer.still .dd span{font-weight:700;font-size:34px;letter-spacing:.14em;text-transform:uppercase;color:#fff;margin-top:18px}
 .excl .covers{grid-auto-columns:minmax(0,420px)!important}
+/* slower TV browsers: no wipe, simple fades, so changes look clean instead of glitchy */
+.weak #cut{display:none!important}
+.weak .in{animation:fade .45s ease both!important}
+.weak .scene{animation:fade .35s ease both}
+/* ticker: bigger type that fills the bar */
+#bar .run{font-size:38px!important;letter-spacing:.04em!important}
+#bar .run span{gap:48px!important;padding-right:48px!important}
+#bar .run span::after{width:12px!important;height:12px!important}
+#bar .track{height:100%;align-items:center}
+#bar .run{font-size:34px!important;line-height:1!important;align-items:center;height:auto}
+#bar .run span{line-height:1}
+#bar .run{padding:0!important;margin:0!important}
 
 </style></head><body>
 <div id="stage">
@@ -660,8 +672,8 @@ const QRC=new Map();
 function qrURL(text){if(QRC.has(text))return QRC.get(text);let u="";try{const d=document.createElement("div");new QRCode(d,{text,width:272,height:272,colorDark:"#121212",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M});const c=d.querySelector("canvas");u=c?c.toDataURL("image/png"):(d.querySelector("img")||{}).src||"";}catch(e){}QRC.set(text,u);return u;}
 const chip=(url,big,small)=>{const u=qrURL(url);return u?`<div class="qrc"><img src="${u}" alt=""><div><b>${big}</b><span>${small}</span></div></div>`:"";};
 const amb=u=>u?`<div class="amb" style="background-image:url('${img(u,240)}')"></div>`:"";
-let SIG={mode:"auto",back:""},FEAT=[],SERVE=0,TVOL=70,TRBAD=0,CURPL=null,GEST=false;
-function trVol(){const p=CURPL;if(!p)return;try{if(TVOL>0){p.unMute();p.setVolume(TVOL);}else p.mute();}catch(x){}}
+let SIG={mode:"auto",back:""},FEAT=[],SERVE=0,TVOL=70,TRBAD=0,CURPL=null,CURV=null,GEST=false,UTR=[];
+function trVol(){if(CURV){try{CURV.volume=Math.max(0,Math.min(1,TVOL/100));CURV.muted=TVOL<=0;if(CURV.paused)CURV.play().catch(()=>{});}catch(x){}}const p=CURPL;if(!p)return;try{if(TVOL>0){p.unMute();p.setVolume(TVOL);}else p.mute();}catch(x){}}
 function SOUNDWAIT(){return !GEST&&((Radio.on&&Radio.locked)||(CURPL&&TVOL>0&&(()=>{try{return CURPL.isMuted();}catch(x){return false;}})()));}
 function soundUnlock(){GEST=true;trVol();}
 const EVDAY="2026-11-18";
@@ -776,25 +788,37 @@ const S={
     const e=live[(loop+j)%live.length];let eye=(e.day&&now().toLocaleDateString("en-CA")===e.day&&e.eyeDay)?e.eyeDay:e.eye;if(e.countdown){const d=Math.ceil((new Date(e.countdown)-now())/864e5);eye=d>1?`${d} days to go`:d==1?"Tomorrow":"Out now";}
     const w=e.title.split(" "),l=w.pop();
     return {id:"event",dur:9,el:$(`<section class="scene event"><div class="photo" style="background-image:url('${img(FEED.shop,1920)}')"></div><div class="veil"></div><div class="copy"><p class="eye in">${esc(eye)}</p><h1 class="H in d1">${esc(w.join(" "))} <em>${esc(l)}</em></h1><p class="txt in d2">${esc(e.text)}</p></div></section>`)};},
-  trailer(i){const T=(MARKET.trailers||[]).filter(x=>!x.rel||now()<=new Date(new Date(x.rel+"T12:00:00").getTime()+14*864e5));if(!T.length)return null;const t=T[i!=null?i%T.length:nx("tr",T.length)];
-    if(WEAKTV||!YTREADY||(TRBAD>=2&&i==null)){const el=$(`<section class="scene trailer still"><div class="card"><p class="eye in">${esc(t.sub2||"Coming to theatres")}</p><h1 class="H in d1">${esc(t.t)}</h1><p class="when in d2">${esc(t.when)}</p></div>${t.rel?(()=>{const d=Math.ceil((new Date(t.rel+"T19:00:00")-now())/864e5);return d>0?`<div class="dd in d2"><b>${d}</b><span>${d===1?"day to go":"days to go"}</span></div>`:`<div class="dd in d2"><b class="now">Now</b><span>in theatres</span></div>`;})():""}<div class="tie"></div></section>`);findBooks(t.kw,8).then(bs=>{bs=bs.filter(p=>p.price>=5).sort((a,b)=>b.price-a.price);if(!bs.length)return;const p=bs[0],u=qrURL(link(p,"trailer"));el.querySelector(".tie").innerHTML=`<img class="tc" src="${img(p.img,400)}" alt=""><div><span>In the shop now</span><b>${esc(splitT(p.title)[0])}</b><em>${money(p.price)}</em></div>${u?`<img class="tq" src="${u}" alt="">`:""}`;}).catch(()=>{});return {id:"trailer",dur:11,el};}
-    const el=$(`<section class="scene trailer"><div id="ytw"><div id="yt"></div></div><div class="card"><p class="eye">${esc(t.sub||"Official trailer")}</p><h1 class="H">${esc(t.t)}</h1><p class="when">${esc(t.when)}</p></div><div class="tie"></div></section>`);
-    let player=null,done=false,T2=[],bufN=0,bufMs=0,bufT=0;T2.push(setInterval(()=>{if(bufT&&Date.now()-bufT>6000){TRBAD++;finish();}},1000));const sc={id:"trailer",chrome:"cinema",dur:150,el,manual:true};
-    const finish=()=>{if(done)return;done=true;T2.forEach(clearTimeout);sc.onEnd&&sc.onEnd();};
-    el._start=()=>{Radio.duck(true);const W=el.querySelector("#ytw");W.style.opacity="0";W.style.transition="opacity .8s ease";let phase="pre",t0=Date.now();
-      const nc=p=>{try{p.unloadModule("captions");p.unloadModule("cc");}catch(x){}};
-      const reveal=p=>{if(phase!=="pre")return;phase="live";bufN=0;bufMs=0;bufT=0;try{p.seekTo(0,true);p.playVideo();}catch(x){}W.style.opacity="1";el.classList.add("rolling");setTimeout(()=>{if(TVOL>0&&GEST)trVol();else if(TVOL>0){try{p.unMute();p.setVolume(TVOL);}catch(x){}}},400);
-        T2.push(setTimeout(()=>{try{if(p.getPlayerState()!==1)finish();}catch(x){finish();}},9000));};
-      const prebuf=p=>{T2.push(setInterval(()=>{if(phase!=="pre")return;try{const d=p.getDuration()||150,f=p.getVideoLoadedFraction()||0,el2=Date.now()-t0;if(f*d>=Math.min(40,d*.35)||el2>14000)reveal(p);}catch(x){}},400));};
-      try{player=new YT.Player(el.querySelector("#yt"),{videoId:t.id,width:1920,height:1080,host:"https://www.youtube-nocookie.com",playerVars:{autoplay:1,mute:1,controls:0,rel:0,modestbranding:1,playsinline:1,iv_load_policy:3,disablekb:1,fs:0,cc_load_policy:0,vq:"hd1080"},events:{
-        onReady:e=>{CURPL=e.target;nc(e.target);setTimeout(()=>nc(e.target),2500);try{e.target.mute();e.target.playVideo();}catch(x){}},
-        onPlaybackQualityChange:()=>{},
-        onStateChange:e=>{const p=e.target;if(phase==="pre"){if(e.data===1){nc(p);try{p.pauseVideo();}catch(x){}if(!el._pb){el._pb=1;prebuf(p);}}return;}
-          if(e.data===3){bufN++;if(!bufT)bufT=Date.now();}if(e.data===1&&bufT){bufMs+=Date.now()-bufT;bufT=0;}if(bufN>=4||bufMs>6000||(bufT&&Date.now()-bufT>6000)){TRBAD++;finish();return;}if(e.data===1)nc(p);if(e.data===0)finish();},
-        onError:()=>finish()}});}catch(x){finish();}
-      T2.push(setTimeout(()=>{if(phase==="pre"&&!el._pb)finish();},15000));T2.push(setTimeout(finish,170000));
-      findBooks(t.kw,8).then(bs=>{bs=bs.filter(p=>p.price>=5).sort((a,b)=>b.price-a.price);if(!bs.length)return;const p=bs[0],u=qrURL(link(p,"trailer"));el.querySelector(".tie").innerHTML=`<img class="tc" src="${img(p.img,300)}" alt=""><div><span>In the shop now</span><b>${esc(splitT(p.title)[0])}</b><em>${money(p.price)}</em></div>${u?`<img class="tq" src="${u}" alt="">`:""}`;}).catch(()=>{});};
-    el._cleanup=()=>{Radio.duck(false);T2.forEach(t=>{clearTimeout(t);clearInterval(t);});CURPL=null;try{player&&player.destroy();}catch(x){}};
+  trailer(i){const live=x=>!x.rel||now()<=new Date(new Date(x.rel+"T12:00:00").getTime()+14*864e5);
+    const ALL=[...(UTR||[]).filter(x=>x&&x.mp4&&x.t),...(MARKET.trailers||[])].filter(live);if(!ALL.length)return null;
+    const MP=ALL.filter(x=>x.mp4),T=(WEAKTV||!YTREADY||TRBAD>=2)&&MP.length?MP:ALL;const t=T[i!=null?i%T.length:nx("tr",T.length)];
+    const canPlay=!!t.mp4||(!WEAKTV&&YTREADY&&!(TRBAD>=2&&i==null));
+    const ddH=(()=>{if(!t.rel)return"";const d=Math.ceil((new Date(t.rel+"T19:00:00")-now())/864e5);return d>0?`<div class="dd"><b>${d}</b><span>${d===1?"day to go":"days to go"}</span></div>`:`<div class="dd"><b class="now">Now</b><span>in theatres</span></div>`;})();
+    const el=$(`<section class="scene trailer ${canPlay?"":"still"}">${canPlay?`<div id="ytw">${t.mp4?`<video id="tv" muted playsinline preload="auto"></video>`:`<div id="yt"></div>`}</div>`:""}<div class="card"><p class="eye">${esc(t.sub||(canPlay?"Official trailer":"Coming to theatres"))}</p><h1 class="H">${esc(t.t)}</h1><p class="when">${esc(t.when||"")}</p></div>${ddH}<div class="tie"></div></section>`);
+    const sc={id:"trailer",chrome:canPlay?"cinema":"",dur:canPlay?170:11,el,manual:canPlay};
+    const tieUp=()=>findBooks(t.kw||t.t,8).then(bs=>{bs=bs.filter(p=>p.price>=5).sort((a,b)=>b.price-a.price);if(!bs.length)return;const p=bs[0],u=qrURL(link(p,"trailer"));el.querySelector(".tie").innerHTML=`<img class="tc" src="${img(p.img,300)}" alt=""><div><span>In the shop now</span><b>${esc(splitT(p.title)[0])}</b><em>${money(p.price)}</em></div>${u?`<img class="tq" src="${u}" alt="">`:""}`;}).catch(()=>{});
+    tieUp();if(!canPlay)return sc;
+    let done=false,phase="pre",T2=[],player=null,vid=null,stall=0,stallT=0;
+    const end=()=>{if(done)return;done=true;T2.forEach(x=>{clearTimeout(x);clearInterval(x);});sc.onEnd&&sc.onEnd();};
+    /* never flash a loading screen and jump: if the video can't start, the slide becomes the still version for 9 seconds */
+    const fallback=()=>{if(done||phase==="still")return;const was=phase;phase="still";if(was==="live"){end();return;}try{vid&&vid.pause();player&&player.stopVideo&&player.stopVideo();}catch(x){}const w=el.querySelector("#ytw");if(w)w.style.display="none";el.classList.add("still");document.body.className=document.body.className.replace("cinema","");T2.push(setTimeout(end,9000));};
+    const reveal=()=>{if(phase!=="pre")return;phase="live";const w=el.querySelector("#ytw");w.style.opacity="1";el.classList.add("rolling");T2.push(setTimeout(end,175000));};
+    el._start=()=>{Radio.duck(true);const w=el.querySelector("#ytw");w.style.opacity="0";w.style.transition="opacity .6s ease";
+      if(t.mp4){vid=el.querySelector("#tv");CURPL=null;CURV=vid;vid.volume=Math.max(0,Math.min(1,TVOL/100));
+        vid.addEventListener("canplaythrough",()=>{if(phase!=="pre")return;vid.currentTime=0;const p=vid.play();if(p&&p.catch)p.catch(()=>{});if(TVOL>0){vid.muted=false;const p2=vid.play();if(p2&&p2.catch)p2.catch(()=>{vid.muted=true;vid.play().catch(()=>{});});}reveal();},{once:false});
+        vid.addEventListener("waiting",()=>{if(phase==="live"&&!stallT)stallT=Date.now();});
+        vid.addEventListener("playing",()=>{if(stallT){stall+=Date.now()-stallT;stallT=0;}});
+        vid.addEventListener("ended",end);vid.addEventListener("error",fallback);
+        T2.push(setInterval(()=>{if(phase==="live"&&stallT&&Date.now()-stallT>5000)end();},1000));
+        vid.src=t.mp4;vid.load();T2.push(setTimeout(()=>{if(phase==="pre"){if(vid.readyState>=3){vid.dispatchEvent(new Event("canplaythrough"));}else fallback();}},14000));return;}
+      const nc=p=>{try{p.unloadModule("captions");p.unloadModule("cc");}catch(x){}};let t0=Date.now(),pb=false,bufT=0;
+      try{player=new YT.Player(el.querySelector("#yt"),{videoId:t.id,width:1920,height:1080,host:"https://www.youtube-nocookie.com",playerVars:{autoplay:1,mute:1,controls:0,rel:0,modestbranding:1,playsinline:1,iv_load_policy:3,disablekb:1,fs:0,cc_load_policy:0},events:{
+        onReady:e=>{CURPL=e.target;nc(e.target);try{e.target.mute();e.target.playVideo();}catch(x){}},
+        onStateChange:e=>{const p=e.target;if(phase==="pre"){if(e.data===1){nc(p);try{p.pauseVideo();}catch(x){}if(!pb){pb=true;T2.push(setInterval(()=>{if(phase!=="pre")return;try{const d=p.getDuration()||150,f=p.getVideoLoadedFraction()||0;if(f*d>=Math.min(40,d*.35)||Date.now()-t0>14000){p.seekTo(0,true);p.playVideo();reveal();setTimeout(()=>{if(TVOL>0){try{p.unMute();p.setVolume(TVOL);}catch(x){}}},400);}}catch(x){}},400));}}return;}
+          if(phase!=="live")return;if(e.data===3&&!bufT)bufT=Date.now();if(e.data===1){bufT=0;nc(p);}if(e.data===0)end();},
+        onError:()=>{TRBAD++;fallback();}}});}catch(x){fallback();}
+      T2.push(setInterval(()=>{if(phase==="live"&&bufT&&Date.now()-bufT>6000){TRBAD++;end();}},1000));
+      T2.push(setTimeout(()=>{if(phase==="pre"){TRBAD++;fallback();}},16000));};
+    el._cleanup=()=>{Radio.duck(false);T2.forEach(x=>{clearTimeout(x);clearInterval(x);});CURPL=null;CURV=null;try{vid&&(vid.pause(),vid.removeAttribute("src"),vid.load());}catch(x){}try{player&&player.destroy();}catch(x){}};
     return sc;},
 
   /* signing day: Chainkata #1 and the Jeff Monk exclusives */
@@ -892,7 +916,7 @@ async function show(sc,hold){if(!IS_REMOTE&&Date.now()-BOOT>3*3600e3&&!hold){loc
   cut.classList.remove("go");void cut.offsetWidth;cut.classList.add("go");
   await new Promise(r=>setTimeout(r,300));
   if(current){current._cleanup&&current._cleanup();current.remove();}
-  document.body.className=(sc.chrome||"")+(paused?" paused":"");host.appendChild(sc.el);gapFix(sc.el);current=sc.el;lastId=sc.id;updTk();
+  document.body.className=(sc.chrome||"")+(paused?" paused":"")+(WEAKTV?" weak":"");host.appendChild(sc.el);gapFix(sc.el);current=sc.el;lastId=sc.id;updTk();
   if(sc.manual)sc.onEnd=()=>go(1);sc.el._start&&sc.el._start();
   const ms=hold?hold*1000:sc.dur*1000*SPEED;curMs=ms;schedule(ms);}
 async function go(dir,push){if(busy)return;busy=true;clearTimeout(timer);
@@ -936,7 +960,7 @@ const Radio={a:null,on:false,url:"",name:"",vol:.35,ducked:false,locked:true,
   duck(on){this.ducked=on;if(!this.on)return;if(on)this.fade(0,()=>this.el().pause());else this.play();},
   unlock(){if(this.on&&this.locked)this.play();}};
 /* ===== TV side: listen for desk commands ===== */
-function applyState(s){if(!s)return;if(s.serve!=null){SERVE=+s.serve||0;updTk();}if(s.tvol!=null&&+s.tvol!==TVOL){TVOL=+s.tvol;trVol();}if(s.sig){const ch=JSON.stringify(s.sig)!==JSON.stringify(SIG);SIG=s.sig;if(ch&&!IS_REMOTE)buildTicker();if(ch&&!IS_REMOTE&&s.sigPush)setTimeout(()=>pushScreen("sign",null,30),300);}if(s.feat)FEAT=s.feat;if(s.mode&&MODES[s.mode]&&s.mode!==MODE){MODE=s.mode;queue=[];}if(s.speed)SPEED=s.speed;if(s.banner!=null&&s.banner!==BANNER){BANNER=s.banner;buildTicker();}if(s.radio)Radio.apply(s.radio);}
+function applyState(s){if(!s)return;if(Array.isArray(s.trailers))UTR=s.trailers;if(!IS_REMOTE){try{const o=JSON.parse(localStorage.getItem("cctvTV")||"{}");["mode","speed","banner","radio","sig","feat","serve","tvol","trailers"].forEach(k=>{if(s[k]!=null)o[k]=s[k];});localStorage.setItem("cctvTV",JSON.stringify(o));}catch(x){}}if(s.serve!=null){SERVE=+s.serve||0;updTk();}if(s.tvol!=null&&+s.tvol!==TVOL){TVOL=+s.tvol;trVol();}if(s.sig){const ch=JSON.stringify(s.sig)!==JSON.stringify(SIG);SIG=s.sig;if(ch&&!IS_REMOTE)buildTicker();if(ch&&!IS_REMOTE&&s.sigPush)setTimeout(()=>pushScreen("sign",null,30),300);}if(s.feat)FEAT=s.feat;if(s.mode&&MODES[s.mode]&&s.mode!==MODE){MODE=s.mode;queue=[];}if(s.speed)SPEED=s.speed;if(s.banner!=null&&s.banner!==BANNER){BANNER=s.banner;buildTicker();}if(s.radio)Radio.apply(s.radio);}
 function handle(m){if(!m||!m.cmd)return;
   if(m.cmd==="state"){applyState(m);if(m.ack)post(ackMsg(),"-ack");return;}
   if(Date.now()-(m.at||0)>120000)return;
@@ -992,7 +1016,7 @@ function remoteUI(){
   @media(min-width:900px){#rm .lay{display:grid;grid-template-columns:1.1fr 1fr;gap:18px}}`;
   const st=document.createElement("style");st.textContent=css;document.head.appendChild(st);
   const W=document.createElement("div");W.id="rm";document.body.appendChild(W);
-  let S0={mode:"mix",speed:1,banner:"",stations:DEFST.map(x=>({name:x.name,url:x.url})),radio:{on:false,name:"",vol:.35,url:""},sig:{mode:"auto",back:""},feat:[],serve:0,tvol:70};
+  let S0={mode:"mix",speed:1,banner:"",stations:DEFST.map(x=>({name:x.name,url:x.url})),radio:{on:false,name:"",vol:.35,url:""},sig:{mode:"auto",back:""},feat:[],serve:0,tvol:70,trailers:[]};
   try{const s=JSON.parse(localStorage.getItem("cctvState")||"null");if(s)S0=Object.assign(S0,s);}catch(x){}
   let HOLD=60;try{HOLD=+localStorage.getItem("cctvHold")||60;}catch(x){}
   const save=extra=>{try{localStorage.setItem("cctvState",JSON.stringify(S0));}catch(x){}post(Object.assign({cmd:"state"},S0,extra||{}));};
@@ -1041,6 +1065,7 @@ function remoteUI(){
     <div class="card"><label style="margin-top:0">Small line on top</label><input id="me" placeholder="Today, 12 to 4"><label>Headline (put *stars* around the red words)</label><input id="mh" placeholder="Jeff Monk *signing now*"><label>Extra line</label><input id="ms" placeholder="Bring your books up to the table"><button id="msend" class="on" style="width:100%;margin-top:12px">Show message</button></div>
     <div class="card"><label style="margin-top:0">Bottom bar banner</label><input id="bn" placeholder="Jeff Monk signing until 4pm"><div class="grid2" style="margin-top:10px"><button id="bset" class="on">Run banner</button><button id="bclr">Clear</button></div></div>
     <h3>Trailer sound</h3><div class="card"><input type="range" id="tvol" min="0" max="100" step="5" style="padding:0"><div class="row" style="justify-content:space-between;margin-top:6px"><span class="note" style="margin:0" id="tvl"></span><button id="tmute">Mute trailers</button></div></div>
+    <h3>Trailer clips</h3><div class="card"><div id="trl"></div><label>Movie or show</label><input id="trt" placeholder="Avengers: Doomsday"><label>Release date</label><input id="trd" type="date"><label>Video link (MP4 from Shopify Files)</label><input id="tru" placeholder="https://cdn.shopify.com/videos/…"><button id="tradd" style="width:100%;margin-top:8px">Add trailer</button><p class="note" style="margin:8px 0 0">Shopify admin, Content, Files, Upload. Copy the file link and paste it here. Clips play on the TV in full quality. Each one drops off 2 weeks after its release date.</p></div>
     <h3>What the channel focuses on</h3><div class="grid3" id="mode">${Object.entries(MODES).map(([k,v])=>`<button data-m="${k}">${v}</button>`).join("")}</div>
     <h3>Slide speed</h3><div class="grid3" id="speed">${[[1.4,"Relaxed"],[1,"Normal"],[.7,"Quick"]].map(x=>`<button data-s="${x[0]}">${x[1]}</button>`).join("")}</div>
     <h3>Background radio</h3><div class="card"><button id="ron" style="width:100%">Radio off</button><div class="rtiles" id="stations" style="margin-top:8px"></div><label>Volume</label><input type="range" id="vol" min="0" max="1" step="0.05" style="padding:0"><label>Add a station (stream link from your business music service)</label><input id="sname" placeholder="Name"><input id="curl" placeholder="https://…" style="margin-top:8px"><button id="cgo" style="width:100%;margin-top:8px">Add station</button></div>
@@ -1058,12 +1083,12 @@ function remoteUI(){
   const mark=()=>{W.querySelectorAll("[data-hold]").forEach(b=>b.classList.toggle("on",+b.dataset.hold===HOLD));W.querySelectorAll("#speed button").forEach(b=>b.classList.toggle("on",+b.dataset.s===S0.speed));W.querySelectorAll("#mode button").forEach(b=>b.classList.toggle("on",b.dataset.m===S0.mode));
     const sm=S0.sig&&S0.sig.mode||"auto";W.querySelectorAll("#sig button").forEach(b=>{b.classList.toggle("on",b.dataset.sig===sm&&sm!=="break");b.classList.toggle("y",b.dataset.sig===sm&&sm==="break");});W.querySelector("#back").value=S0.sig&&S0.sig.back||"";
     W.querySelector("#tn").textContent=S0.serve>0?"#"+S0.serve:"Off";
-    if(!S0.stations||!S0.stations.length)S0.stations=DEFST.map(x=>({name:x.name,url:x.url}));W.querySelector("#stations").innerHTML=(S0.stations||[]).map((x,i)=>`<button data-st="${i}" class="${S0.radio.on&&S0.radio.url===x.url?"on":""}">${esc(x.name)}<small data-del="${i}" style="display:block;font-weight:400;color:#B5B5BC;font-size:11px;margin-top:4px">Remove</small></button>`).join("");
+    {const tl=W.querySelector("#trl");if(tl)tl.innerHTML=(S0.trailers||[]).length?(S0.trailers||[]).map((x,i)=>`<div class="row" style="justify-content:space-between;padding:8px 0;border-bottom:1px solid #2A2A2F"><span><b>${esc(x.t)}</b><br><small style="color:#A9A9B0">${esc(x.rel||"no date")}</small></span><span style="display:flex;gap:8px"><button data-trp="${i}">Play now</button><button data-trdel="${i}">Remove</button></span></div>`).join(""):`<p class="note" style="margin:0 0 6px">No clips yet. YouTube trailers do not play on this Samsung, so add MP4 clips here.</p>`;}if(!S0.stations||!S0.stations.length)S0.stations=DEFST.map(x=>({name:x.name,url:x.url}));W.querySelector("#stations").innerHTML=(S0.stations||[]).map((x,i)=>`<button data-st="${i}" class="${S0.radio.on&&S0.radio.url===x.url?"on":""}">${esc(x.name)}<small data-del="${i}" style="display:block;font-weight:400;color:#B5B5BC;font-size:11px;margin-top:4px">Remove</small></button>`).join("");
     const r=W.querySelector("#ron");r.textContent=S0.radio.on?`Radio on · ${S0.radio.name}`:"Radio off";r.classList.toggle("on",S0.radio.on);W.querySelector("#vol").value=S0.radio.vol;W.querySelector("#bn").value=S0.banner||"";
     W.querySelector("#tvol").value=S0.tvol;W.querySelector("#tvl").textContent=S0.tvol>0?"Trailer volume "+S0.tvol+"%":"Trailers play muted";W.querySelector("#tmute").textContent=S0.tvol>0?"Mute trailers":"Unmute trailers";
     W.querySelector("#picks").innerHTML=(S0.feat||[]).length?S0.feat.map((p,i)=>`<div><img src="${img(p.img,200)}" alt=""><button data-unpick="${i}">Remove</button></div>`).join(""):`<p class="note" style="margin:0">None yet. Search a book and tap Pick.</p>`;};
   mark();
-  fetch(RELAY+"/json?poll=1&since=48h").then(x=>x.text()).then(t=>{let last=null;t.trim().split("\n").forEach(l=>{try{const m=JSON.parse(JSON.parse(l).message);if(m.cmd==="state")last=m;}catch(x){}});if(last){["mode","speed","banner","stations","radio","sig","feat","serve","tvol"].forEach(k=>{if(last[k]!=null)S0[k]=last[k];});SIG=S0.sig||SIG;FEAT=S0.feat||[];SERVE=S0.serve||0;mark();}}).catch(()=>{});
+  fetch(RELAY+"/json?poll=1&since=48h").then(x=>x.text()).then(t=>{let last=null;t.trim().split("\n").forEach(l=>{try{const m=JSON.parse(JSON.parse(l).message);if(m.cmd==="state")last=m;}catch(x){}});if(last){["mode","speed","banner","stations","radio","sig","feat","serve","tvol","trailers"].forEach(k=>{if(last[k]!=null)S0[k]=last[k];});SIG=S0.sig||SIG;FEAT=S0.feat||[];SERVE=S0.serve||0;mark();}}).catch(()=>{});
   const serve=n=>{S0.serve=Math.max(0,n);SERVE=S0.serve;save();mark();tip(S0.serve?"Now signing #"+S0.serve:"Ticket numbers off");};
   W.addEventListener("click",e=>{const b=e.target.closest("button,[data-p]");if(!b)return;
     if(b.dataset.tab){setTab(b.dataset.tab);return;}
@@ -1075,6 +1100,9 @@ function remoteUI(){
     else if(b.id==="tset"){const i=document.createElement("input");i.type="number";i.inputMode="numeric";i.placeholder="Ticket number";i.style.marginTop="10px";b.parentNode.after(i);i.focus();i.addEventListener("change",()=>{serve(+i.value||0);i.remove();});}
     else if(b.dataset.s){S0.speed=+b.dataset.s;save();mark();tip("Speed set");}
     else if(b.dataset.m){S0.mode=b.dataset.m;save();mark();tip(MODES[S0.mode]);}
+    else if(b.dataset.trdel!=null){S0.trailers.splice(+b.dataset.trdel,1);save();mark();tip("Trailer removed");}
+    else if(b.dataset.trp!=null){save();setTimeout(()=>post({cmd:"show",screen:"trailer",arg:(+b.dataset.trp),hold:0,at:Date.now()}),700);tip("Playing on the TV");}
+    else if(b.id==="tradd"){const t=W.querySelector("#trt").value.trim(),d=W.querySelector("#trd").value,u=W.querySelector("#tru").value.trim();if(!t){tip("Add the movie name");return;}if(!/^https:\/\/\S+$/.test(u)){tip("Paste the video link (starts with https://)");return;}S0.trailers=(S0.trailers||[]).concat([{t,rel:d||"",when:d?"In theatres "+new Date(d+"T12:00:00").toLocaleDateString("en-CA",{month:"long",day:"numeric"}):"",mp4:u,kw:t.split(/[:\s]/)[0]}]);W.querySelector("#trt").value="";W.querySelector("#tru").value="";save();mark();tip("Trailer added");}
     else if(b.id==="tmute"){S0.tvol=S0.tvol>0?0:70;save();mark();tip(S0.tvol?"Trailer sound on":"Trailers muted");}
     else if(b.dataset.st){if(e.target.dataset.del!=null){S0.stations.splice(+e.target.dataset.del,1);save();mark();tip("Station removed");return;}const x=S0.stations[+b.dataset.st];S0.radio=Object.assign(S0.radio,{on:true,name:x.name,url:x.url});save();mark();tip("Playing "+x.name);}
     else if(b.id==="ron"){if(!S0.radio.url){tip("Add a station first");return;}S0.radio.on=!S0.radio.on;save();mark();tip(S0.radio.on?"Radio on":"Radio off");}
@@ -1118,6 +1146,7 @@ if(ART)(async()=>{try{if(!window.claude)return;const db=await claude.use("db");i
   db.doc("tv/market").onSnapshot(s=>{if(s.exists){const d=s.data();if(d&&d.hot10&&d.hot10.length>=10){MARKET=Object.assign({},MARKET,d);buildTicker();}}},()=>{});
 }catch(e){}})();
 setInterval(()=>{const d=now();if(d.getHours()===4&&d.getMinutes()<1)location.reload();},45000);
+if(!IS_REMOTE){try{const o=JSON.parse(localStorage.getItem("cctvTV")||"null");if(o)applyState(o);}catch(x){}}
 
 </script>
 </body></html>
