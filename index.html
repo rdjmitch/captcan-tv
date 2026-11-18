@@ -747,6 +747,35 @@ html,body{background:#0B0B0D}
 #ytpre .tie div em{font-style:normal;font-family:var(--head);font-weight:900;font-size:34px}
 #ytpre .tie img.tq{width:150px;height:150px;background:#fff;padding:8px;margin:12px;image-rendering:pixelated}
 .ytp{background:#000}
+/* v14 site-style light screens: alternate with the dark ones like captcancomics.ca does */
+.scene.lite{background:#FFFFFF!important;color:#121212;--white:#121212;--panel:#F3F3F4;--panel2:#E9E9EB;--mute:#5E5E66;--line:#E1E1E4}
+.scene.lite::before,.scene.lite .amb{display:none!important}
+.scene.lite .eye{color:#121212}
+.scene.lite .src{color:#5E5E66}
+.scene.lite small,.scene.lite .sub,.scene.lite .lab{color:#5E5E66}
+.scene.lite img{box-shadow:0 10px 26px rgba(0,0,0,.18)}
+.lite.board .r.top .n{color:#fff!important;background:var(--red)}
+.lite.board .r .n{color:#121212}
+.lite.artists .tile div{background:#121212!important}.lite.artists .tile b{color:#fff!important}
+.lite.inc .hint{color:#5E5E66!important}.lite.inc .ic .v,.lite.inc .ic .g{color:#5E5E66!important}
+.lite .strip{background:#F3F3F4}
+/* v14 motion */
+@keyframes kb{from{transform:scale(1)}to{transform:scale(1.07)}}
+.hero .frame img,.cotd .art img,.story .frame img,.soon .frame img,.trailer .tc{animation:kb 14s ease-out both}
+.flow{background:#0B0B0C;overflow:hidden}
+.flow .lane{position:absolute;left:0;right:0;height:300px;overflow:hidden}
+.flow .lane:nth-child(1){top:20px}.flow .lane:nth-child(2){top:340px}.flow .lane:nth-child(3){top:660px}
+.flow .track{display:flex;gap:22px;width:max-content;animation:flowL 60s linear infinite;will-change:transform}
+.flow .rev .track{animation-name:flowR}
+@keyframes flowL{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
+@keyframes flowR{from{transform:translate3d(-50%,0,0)}to{transform:translate3d(0,0,0)}}
+.flow figure{margin:0;position:relative;height:300px}
+.flow figure img{height:300px;width:auto;display:block;opacity:.55}
+.flow figure span{position:absolute;left:0;bottom:0;background:var(--red);color:#fff;font-family:var(--head);font-weight:900;font-size:26px;padding:4px 10px}
+.flow .mid{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);background:rgba(11,11,12,.92);border-top:8px solid var(--red);padding:40px 60px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:20px;width:1000px}
+.flow .mid .eye{margin:0}.flow .mid h1{font-size:92px;line-height:.95;margin:0}
+.weak .flow .track{animation-duration:80s}
+.flow .mid{left:460px!important;top:250px!important;transform:none!important}
 
 </style></head><body>
 <div id="stage">
@@ -3075,7 +3104,7 @@ const keyNote=t=>{for(const [re,n,y] of KEYS)if(re.test(t))return {note:n,year:y
 
 
 CONFIG.ticker=["Every book bagged and boarded","Pre-sales close Monday 8pm","New releases every Tuesday","New back issues every Friday","Hold Box: no time limit, no storage fees","We buy and consign collections","CaptCan Cash: 10% back on pre-sales","Free account: scan any code on screen"];
-const BUILD="1118-1448";const SITE="https://www.captcancomics.ca",API="2025-10";
+const BUILD="1118-1505";const SITE="https://www.captcancomics.ca",API="2025-10";
 /* helpers */
 const NW="h1,h2,h3,p,b,span,figcaption,.sub,.txt,.book,.lab,.sm,.when,.after,.lead,.pts div";
 function noWidow(root){root.querySelectorAll(NW).forEach(e=>{if(e.children.length>2)return;const w=document.createTreeWalker(e,NodeFilter.SHOW_TEXT);let last=null;while(w.nextNode()){const n=w.currentNode;n.nodeValue=n.nodeValue.replace(/(\w)-(\w)/g,"$1\u2011$2");if(n.nodeValue.trim())last=n;}if(!last)return;const v=last.nodeValue,i=v.trimEnd().lastIndexOf(" ");if(i>0&&v.trim().split(/ +/).length>2&&v.slice(i+1).trim().length<=10)last.nodeValue=v.slice(0,i)+"\u00a0"+v.slice(i+1);});return root;}
@@ -3172,6 +3201,9 @@ const S={
     return {id:"news",dur:16,el:$(`<section class="scene news">${head("What fans are talking about this week",part?"More comic <em>news</em>":"Comic <em>news</em>","Updated "+esc(MARKET.asOf||""))}<div class="ncols">${N.map((n,i)=>{const p=n.img?{img:n.img,price:n.p}:find(n.kw);return `<article class="in" style="animation-delay:${.12+i*.1}s">${p&&p.img?`<div class="nimg"><img src="${img(p.img,500)}" alt=""></div>`:`<div class="nimg none"></div>`}<p class="neye">${esc(n.eye||"")}</p><h2>${esc(n.h)}</h2><p class="ntx">${esc(n.txt||"")}</p>${p&&p.price?`<p class="np">In the shop <b>${money(p.price)}</b></p>`:""}</article>`;}).join("")}</div></section>`)};},
   fact(){const F=MARKET.facts||[];if(!F.length)return null;const f=F[nx("fact",F.length)];
     return {id:"fact",dur:10,el:$(`<section class="scene fact"><div class="copy"><p class="eye in">Did you know?</p><h1 class="H in d1">${esc(f[0])}</h1><p class="txt in d2">${esc(f[1])}</p><p class="key in d3"><span>Key issue</span><b>${esc(f[2])}</b></p></div><div class="qmark in d2">?</div></section>`)};},
+  flow(){const seen={},P=[...(FEED.hot||[]),...(FEED.keys||[]),...(FEED.inc||[]),...(FEED.blow||[]),...(FEED.trades||[])].filter(p=>p.img&&(p.price||p.p)&&!seen[p.img]&&(seen[p.img]=1));if(P.length<12)return null;
+    const rows=[0,1,2].map(r=>P.filter((p,i)=>i%3===r));const card=p=>`<figure><img src="${img(p.img,400)}" alt=""><span>${money(p.price||p.p)}</span></figure>`;
+    return {id:"flow",dur:16,el:$(`<section class="scene flow">${rows.map((R,i)=>`<div class="lane ${i%2?"rev":""}"><div class="track">${R.map(card).join("")}${R.map(card).join("")}</div></div>`).join("")}<div class="mid in"><p class="eye">On the shelves right now</p><h1 class="H">All of this is <em>in the shop</em></h1><div>${chip(utm(SITE,"flow"),"Scan to shop","Or ask us to pull one")}</div></div></section>`)};},
   cotd(){const L=(FEED.hot||[]).slice(0,10).filter(p=>p.img);if(!L.length)return null;const d=Math.floor((now()-new Date(2026,0,1))/864e5),p=L[d%L.length],[a,b]=splitT(p.title);
     return {id:"cotd",dur:11,el:$(`<section class="scene cotd"><div class="blur" style="background-image:url('${img(p.img,500)}')"></div><div class="art in"><img src="${img(p.img,1200)}" alt=""></div><div class="copy"><p class="eye in">Cover of the day</p><h1 class="H in d1">${esc(a)}</h1>${b?`<p class="sub in d2">${esc(b)}</p>`:""}<div class="meta in d3"><b>${money(p.price)}</b>${p.inv?`<span>${p.inv<=5?"Only "+p.inv+" left":"In stock now"}</span>`:""}</div><div class="in d4">${chip(link(p,"cotd"),"Scan to buy","Or grab it off the wall")}</div></div></section>`)};},
   vote(){const G={};(FEED.hot||[]).concat(FEED.keys||[]).forEach(p=>{if(!p.img)return;const k=splitT(p.title)[0];(G[k]=G[k]||[]);if(!G[k].some(q=>q.img===p.img))G[k].push(p);});
@@ -3354,18 +3386,18 @@ const MODES={mix:"Full mix",event:"Signing day",sell:"Selling",line:"Line-up",ma
 const SIGNDAY=()=>now().toLocaleDateString("en-CA")==="2026-11-18";
 function playlist(){DAY=DAYNOW();
   const day={1:[S.presale,S.soon],2:[S.board,S.presale],3:[S.hero,S.board],4:[S.story,S.soon],5:[S.keys,S.story],6:[S.keys,S.merch],0:[S.keys,S.merch]}[DAY];
-  if(MODE==="event"||(MODE==="mix"&&SIGNDAY()))return [S.sign,S.chain,S.board,S.trailer,S.chainall,S.cgcss,S.hero,S.feat,S.sign,S.dwj,S.trailer,S.monk,S.wall,S.chain,S.inc,S.join,S.trailer,S.sign,S.chainall,S.hero,S.trades,S.cgcss,S.feat,S.app,S.sign,S.trailer,S.chain,S.cotd,S.market.bind(null,0),S.news,S.fact,S.vote,S.monk,S.about,S.news.bind(null,1),S.fact,S.spot,S.hero,S.trailer,S.sign,S.dwj,S.chainall,S.run,S.inc,S.trailer,S.sign,S.chain,S.excl,S.sold,S.blow,S.keys,S.feat,S.svc,S.about,S.presale,S.join];
+  if(MODE==="event"||(MODE==="mix"&&SIGNDAY()))return [S.sign,S.chain,S.board,S.trailer,S.chainall,S.cgcss,S.hero,S.feat,S.sign,S.dwj,S.trailer,S.monk,S.wall,S.chain,S.inc,S.join,S.trailer,S.sign,S.chainall,S.hero,S.trades,S.cgcss,S.feat,S.app,S.sign,S.trailer,S.chain,S.cotd,S.flow,S.market.bind(null,0),S.news,S.fact,S.vote,S.monk,S.about,S.news.bind(null,1),S.fact,S.spot,S.flow,S.hero,S.trailer,S.sign,S.dwj,S.chainall,S.run,S.inc,S.trailer,S.sign,S.chain,S.excl,S.sold,S.blow,S.keys,S.feat,S.svc,S.about,S.presale,S.join];
   if(MODE==="sell")return [S.chain,S.board,S.hero,S.wall,S.hero,S.run,S.blow,S.keys,S.inc,S.hero,day[0],S.trades,S.presale,S.soon,S.excl,S.hero,S.feat,S.wall,S.chainall,S.monk,S.merch,S.app,S.join,S.story,S.blow,day[1]];
   if(MODE==="line")return [S.quizFirst,S.hero,S.join,S.chain,S.quizPrice,S.wall,S.lesson,S.about,S.hero,S.howto,S.inc,S.quizFirst,S.sold,S.join,S.run,S.lesson,S.trades,S.school,S.hero];
   if(MODE==="market")return [S.market.bind(null,0),S.news,S.fact,S.market.bind(null,1),S.news.bind(null,1),S.alpha,S.fact,S.vote,S.sold,S.vel,S.trailer,S.timeline.bind(null,0),S.timeline.bind(null,1),S.quizFirst,S.trailer,S.join];
   if(MODE==="trailers")return [S.trailer,S.hero,S.trailer,S.wall,S.trailer,S.join,S.trailer,S.timeline.bind(null,0)];
-  return [...(loop%4===0?[S.open]:[]),S.board,S.feat,S.hero,S.wall,S.cotd,S.market.bind(null,0),S.news,S.fact,S.vote,S.quizFirst,S.run,S.hero,S.chain,S.trailer,S.sold,S.inc,S.blow,day[0],S.lesson,S.vel,S.join,S.about,S.hero,S.wall,S.market.bind(null,1),S.trades,S.news.bind(null,1),S.fact,S.spot,S.keys,S.upload,S.svc,S.excl,S.chainall,S.presale,S.trailer,S.timeline.bind(null,loop%2),S.quizFirst,S.run,S.story,day[1],S.soon,S.blow,S.eras,S.alpha,S.vote,S.hero,S.spot,S.quizPrice,S.artists,S.howto,S.app,S.monk,S.merch,S.feat,S.svc,S.school,S.join,S.event.bind(null,0)];}
+  return [...(loop%4===0?[S.open]:[]),S.board,S.feat,S.hero,S.wall,S.cotd,S.market.bind(null,0),S.news,S.fact,S.vote,S.quizFirst,S.run,S.hero,S.chain,S.trailer,S.sold,S.inc,S.blow,day[0],S.lesson,S.vel,S.join,S.about,S.hero,S.wall,S.market.bind(null,1),S.trades,S.news.bind(null,1),S.fact,S.spot,S.keys,S.flow,S.upload,S.svc,S.excl,S.chainall,S.presale,S.trailer,S.timeline.bind(null,loop%2),S.quizFirst,S.run,S.story,day[1],S.soon,S.blow,S.eras,S.alpha,S.vote,S.hero,S.spot,S.quizPrice,S.artists,S.howto,S.app,S.monk,S.merch,S.feat,S.svc,S.school,S.join,S.event.bind(null,0)];}
 /* engine: auto-plays, keeps a history so staff can step back and forward, can be paused, and can take a pushed screen from the desk */
 const host=document.getElementById("host"),cut=document.getElementById("cut");let queue=[],current=null,lastId="",timer=null,paused=false,busy=false,hist=[],hpos=-1,curMs=10000,startedAt=0,remain=0;
 const clone=o=>JSON.parse(JSON.stringify(o));
 function buildNext(){for(let g=0;g<60;g++){if(!queue.length){loop++;queue=playlist();}const f=queue.shift();const snap=clone(IX);let sc=null;try{sc=f();}catch(e){console.warn(e);}if(sc&&sc.id!==lastId)return {sc,f,snap};}return null;}
 function rebuild(h){const cur=clone(IX);IX=clone(h.snap);let sc=null;try{sc=h.f();}catch(e){}IX=cur;return sc;}
-function ready(el){try{if(el.querySelector(":scope>header"))el.classList.add("hd");}catch(x){}const imgs=[...el.querySelectorAll("img")];return Promise.race([Promise.all(imgs.map(i=>i.decode?i.decode().catch(()=>{i.style.visibility="hidden";}):Promise.resolve())),new Promise(r=>setTimeout(r,3000))]);}
+const LITE={wall:1,board:1,blow:1,keys:1,trades:1,inc:1,sold:1,artists:1};function ready(el){try{if(el.querySelector(":scope>header"))el.classList.add("hd");const id=[...el.classList].find(c=>LITE[c]);if(id)el.classList.add("lite");}catch(x){}const imgs=[...el.querySelectorAll("img")];return Promise.race([Promise.all(imgs.map(i=>i.decode?i.decode().catch(()=>{i.style.visibility="hidden";}):Promise.resolve())),new Promise(r=>setTimeout(r,3000))]);}
 const prog=()=>document.getElementById("prog");
 function progress(ms){const p=prog();if(!p)return;p.getAnimations().forEach(a=>a.cancel());if(ms==null){p.style.transform="scaleX(0)";return;}p.animate([{transform:`scaleX(${Math.max(0,1-ms/curMs)})`},{transform:"scaleX(1)"}],{duration:ms,fill:"forwards"});}
 function schedule(ms){clearTimeout(timer);if(paused){remain=ms;progress(null);return;}startedAt=Date.now();remain=ms;timer=setTimeout(()=>go(1),ms);progress(ms);}
@@ -3386,7 +3418,7 @@ async function go(dir,push){if(busy)return;busy=true;clearTimeout(timer);
 function setPaused(p){paused=p;document.body.classList.toggle("paused",p);if(p){clearTimeout(timer);remain=Math.max(1000,remain-(Date.now()-startedAt));progress(null);}else schedule(remain||curMs);}
 const next=()=>go(1);
 /* push a specific screen (from the desk remote) */
-const PUSH={book:p=>S.book(p),msg:m=>S.msg(m),join:()=>S.join(),cash:()=>S.svc(0),sell:()=>S.svc(1),consign:()=>S.svc(2),pressing:()=>S.svc(3),holdbox:()=>S.svc(4),presale:()=>S.presale(),wall:()=>S.wall(),board:()=>S.board(),hero:()=>S.hero(),run:()=>S.run(),blow:()=>S.blow(),keys:()=>S.keys(),soon:()=>S.soon(),excl:()=>S.excl(),merch:()=>S.merch(),market:()=>S.market(0),market2:()=>S.market(1),alpha:()=>S.alpha(),sold:()=>S.sold(),vel:()=>S.vel(),timeline:()=>S.timeline(0),timeline2:()=>S.timeline(1),quiz:()=>S.quizFirst(),quizprice:()=>S.quizPrice(),ratio:()=>S.lesson(0),cpv:()=>S.lesson(1),cgc:()=>S.school(),eras:()=>S.eras(),artists:()=>S.artists(),howto:()=>S.howto(),trailer:i=>S.trailer(i),open:()=>S.open(),chain:()=>S.chain(),chainall:()=>S.chainall(),inc:()=>S.inc(),trades:()=>S.trades(),about:()=>S.about(0),about2:()=>S.about(1),sign:()=>S.sign(),cgcss:()=>S.cgcss(),dwj:()=>S.dwj(),monk:()=>S.monk(),app:()=>S.app(),feat:()=>S.feat(),news:()=>S.news(0),news2:()=>S.news(1),fact:()=>S.fact(),cotd:()=>S.cotd(),vote:()=>S.vote(),spot:()=>S.spot(),upload:()=>S.upload()};
+const PUSH={book:p=>S.book(p),msg:m=>S.msg(m),join:()=>S.join(),cash:()=>S.svc(0),sell:()=>S.svc(1),consign:()=>S.svc(2),pressing:()=>S.svc(3),holdbox:()=>S.svc(4),presale:()=>S.presale(),wall:()=>S.wall(),board:()=>S.board(),hero:()=>S.hero(),run:()=>S.run(),blow:()=>S.blow(),keys:()=>S.keys(),soon:()=>S.soon(),excl:()=>S.excl(),merch:()=>S.merch(),market:()=>S.market(0),market2:()=>S.market(1),alpha:()=>S.alpha(),sold:()=>S.sold(),vel:()=>S.vel(),timeline:()=>S.timeline(0),timeline2:()=>S.timeline(1),quiz:()=>S.quizFirst(),quizprice:()=>S.quizPrice(),ratio:()=>S.lesson(0),cpv:()=>S.lesson(1),cgc:()=>S.school(),eras:()=>S.eras(),artists:()=>S.artists(),howto:()=>S.howto(),trailer:i=>S.trailer(i),open:()=>S.open(),chain:()=>S.chain(),chainall:()=>S.chainall(),inc:()=>S.inc(),trades:()=>S.trades(),about:()=>S.about(0),about2:()=>S.about(1),sign:()=>S.sign(),cgcss:()=>S.cgcss(),dwj:()=>S.dwj(),monk:()=>S.monk(),app:()=>S.app(),feat:()=>S.feat(),news:()=>S.news(0),news2:()=>S.news(1),fact:()=>S.fact(),cotd:()=>S.cotd(),vote:()=>S.vote(),spot:()=>S.spot(),upload:()=>S.upload(),flow:()=>S.flow()};
 function pushScreen(name,arg,hold){const f=PUSH[name];if(!f)return;let sc=null;try{sc=f(arg);}catch(e){}if(!sc)return;go(0,{sc,hold:hold||(sc.manual?null:sc.dur)}).then(()=>{});}
 function buildTicker(){const lead={1:"Pre-sales close tonight at 8pm",2:"This week's new releases go up today",3:"New comic book day",5:"New back issues go up today"}[DAYNOW()];
   const mk=MARKET.hot10.slice(0,3).map(m=>`Market: ${m.t} ${m.up}`);
@@ -3463,8 +3495,8 @@ function ackMsg(){const u=navigator.userAgent,m=u.match(/Chrom(?:e|ium)\/(\d+)/)
 function listen(){try{const es=new EventSource(RELAY+"/sse");es.onmessage=e=>{try{const d=JSON.parse(e.data);if(d.event==="message")handle(JSON.parse(d.message));}catch(x){}};es.onerror=()=>{};}catch(x){}}
 async function restore(){try{const t=await fetch(RELAY+"/json?poll=1&since=48h").then(r=>r.text());let last=null;t.trim().split("\n").forEach(l=>{try{const d=JSON.parse(l);const m=JSON.parse(d.message);if(m.cmd==="state")last=m;}catch(x){}});if(last)applyState(Object.assign({},last,{sigPush:false}));}catch(x){}}
 /* ===== desk remote: phone or desk computer, PIN protected ===== */
-const NAMES={open:"CaptCan intro",board:"Hot this week",hero:"#1 seller",wall:"New this week",run:"Friday's big run",blow:"25% off blowout",market:"Market Hot 10",alpha:"Market spotlight",sold:"Just sold at CaptCan",vel:"Moving fastest",excl:"Our exclusives",timeline:"Movie keys",eras:"Every era",artists:"Cover artists",svc:"CaptCan services",lesson:"Collector school",school:"How CGC grades",quiz:"Collector quiz",soon:"Coming soon",join:"Make an account",howto:"How the site works",keys:"Just landed",presale:"Pre-sales",merch:"Merch",event:"Event",trailer:"Trailer",book:"A book you pushed",msg:"Your message",chain:"Monk exclusives",chainall:"Every Chainkata cover",inc:"Incentive covers",trades:"Trades and hardcovers",about:"About CaptCan",sign:"Signing status",news:"Comic news",news2:"More comic news",fact:"Did you know",cotd:"Cover of the day",vote:"Which cover would you pick",spot:"Character spotlight",upload:"Friday upload countdown",cgcss:"CGC yellow label",dwj:"Why Chainkata",monk:"Monk originals",app:"The CaptCan app",feat:"Staff picks",story:"Key issue"};
-const PV={open:()=>S.open(),board:()=>S.board(),hero:()=>S.hero(),wall:()=>S.wall(),run:()=>S.run(),blow:()=>S.blow(),market:()=>S.market(0),alpha:()=>S.alpha(),sold:()=>S.sold(),vel:()=>S.vel(),excl:()=>S.excl(),timeline:()=>S.timeline(0),eras:()=>S.eras(),artists:()=>S.artists(),svc:()=>S.svc(0),lesson:()=>S.lesson(0),school:()=>S.school(),quiz:()=>S.quizFirst(0),soon:()=>S.soon(),join:()=>S.join(),keys:()=>S.keys(),presale:()=>S.presale(),merch:()=>S.merch(),event:()=>S.event(0),chain:()=>S.chain(),chainall:()=>S.chainall(),inc:()=>S.inc(),trades:()=>S.trades(),about:()=>S.about(0),sign:()=>S.sign(),cgcss:()=>S.cgcss(),dwj:()=>S.dwj(),monk:()=>S.monk(),app:()=>S.app(),feat:()=>S.feat(),story:()=>S.story(),news:()=>S.news(0),fact:()=>S.fact(),cotd:()=>S.cotd(),vote:()=>S.vote(),spot:()=>S.spot(),upload:()=>S.upload()};
+const NAMES={open:"CaptCan intro",board:"Hot this week",hero:"#1 seller",wall:"New this week",run:"Friday's big run",blow:"25% off blowout",market:"Market Hot 10",alpha:"Market spotlight",sold:"Just sold at CaptCan",vel:"Moving fastest",excl:"Our exclusives",timeline:"Movie keys",eras:"Every era",artists:"Cover artists",svc:"CaptCan services",lesson:"Collector school",school:"How CGC grades",quiz:"Collector quiz",soon:"Coming soon",join:"Make an account",howto:"How the site works",keys:"Just landed",presale:"Pre-sales",merch:"Merch",event:"Event",trailer:"Trailer",book:"A book you pushed",msg:"Your message",chain:"Monk exclusives",chainall:"Every Chainkata cover",inc:"Incentive covers",trades:"Trades and hardcovers",about:"About CaptCan",sign:"Signing status",news:"Comic news",news2:"More comic news",fact:"Did you know",cotd:"Cover of the day",flow:"Moving wall of covers",vote:"Which cover would you pick",spot:"Character spotlight",upload:"Friday upload countdown",cgcss:"CGC yellow label",dwj:"Why Chainkata",monk:"Monk originals",app:"The CaptCan app",feat:"Staff picks",story:"Key issue"};
+const PV={open:()=>S.open(),board:()=>S.board(),hero:()=>S.hero(),wall:()=>S.wall(),run:()=>S.run(),blow:()=>S.blow(),market:()=>S.market(0),alpha:()=>S.alpha(),sold:()=>S.sold(),vel:()=>S.vel(),excl:()=>S.excl(),timeline:()=>S.timeline(0),eras:()=>S.eras(),artists:()=>S.artists(),svc:()=>S.svc(0),lesson:()=>S.lesson(0),school:()=>S.school(),quiz:()=>S.quizFirst(0),soon:()=>S.soon(),join:()=>S.join(),keys:()=>S.keys(),presale:()=>S.presale(),merch:()=>S.merch(),event:()=>S.event(0),chain:()=>S.chain(),chainall:()=>S.chainall(),inc:()=>S.inc(),trades:()=>S.trades(),about:()=>S.about(0),sign:()=>S.sign(),cgcss:()=>S.cgcss(),dwj:()=>S.dwj(),monk:()=>S.monk(),app:()=>S.app(),feat:()=>S.feat(),story:()=>S.story(),news:()=>S.news(0),fact:()=>S.fact(),cotd:()=>S.cotd(),vote:()=>S.vote(),spot:()=>S.spot(),upload:()=>S.upload(),flow:()=>S.flow()};
 function remoteUI(){
   document.getElementById("stage").style.display="none";
   const css=`html,body{height:auto!important;overflow:auto!important}body{display:block!important;cursor:auto!important;background:#0B0B0D!important;color:#fff;font-family:var(--body);-webkit-text-size-adjust:100%}
@@ -3550,7 +3582,7 @@ function remoteUI(){
     <h3>Staff picks in rotation</h3><div class="picks" id="picks"></div></section>
   <section id="t-screens" class="tab"><h2>Every screen</h2><p class="lead">What you see is what goes up. Tap one to put it on the TV.</p>
     <h3>Trailers (sound on)</h3><div class="rtiles">${MARKET.trailers.map((t,i)=>`<div class="rtile" data-p="trailer:yt:${t.id}" role="button" tabindex="0"><div class="pv"><img class="yt" src="https://i.ytimg.com/vi/${t.id}/hqdefault.jpg" alt=""><span class="tag">Trailer</span></div><b>${esc(t.t)}${t.sub?", "+esc(t.sub):""}</b></div>`).join("")}</div>
-    <h3>Sell</h3><div class="rtiles">${T("board","Hot this week")}${T("wall","New this week")}${T("hero","#1 seller")}${T("inc","Incentive covers")}${T("trades","Trades and hardcovers")}${T("keys","Just landed")}${T("run","Friday's big run")}${T("blow","25% off blowout")}${T("soon","Coming soon")}${T("excl","Our exclusives")}${T("merch","Merch")}${T("feat","Staff picks")}${T("cotd","Cover of the day")}${T("spot","Character spotlight")}${T("upload","Friday upload countdown")}</div>
+    <h3>Sell</h3><div class="rtiles">${T("board","Hot this week")}${T("wall","New this week")}${T("hero","#1 seller")}${T("inc","Incentive covers")}${T("trades","Trades and hardcovers")}${T("keys","Just landed")}${T("run","Friday's big run")}${T("blow","25% off blowout")}${T("soon","Coming soon")}${T("excl","Our exclusives")}${T("merch","Merch")}${T("feat","Staff picks")}${T("cotd","Cover of the day")}${T("flow","Moving wall of covers")}${T("spot","Character spotlight")}${T("upload","Friday upload countdown")}</div>
     <h3>Market and news</h3><div class="rtiles">${T("market","Hot 10")}${T("alpha","Market spotlight")}${T("sold","Just sold here")}${T("vel","Moving fastest")}${T("timeline","Movie keys")}${T("news","Comic news")}${T("fact","Did you know")}</div>
     <h3>CaptCan</h3><div class="rtiles">${T("join","Make an account")}${T("app","The app")}${T("about","Our story")}${T("svc","CaptCan Cash")}${T("presale","Pre-sales")}${T("open","CaptCan intro")}</div>
     <h3>Learn and fun</h3><div class="rtiles">${T("quiz","First appearance quiz")}${T("lesson","Ratio variants")}${T("school","How CGC grades")}${T("eras","Every era")}${T("artists","Cover artists")}${T("story","Key issue")}${T("vote","Which cover would you pick")}</div></section>
@@ -3653,7 +3685,7 @@ function remoteUI(){
 
 if(IS_REMOTE){remoteUI();}else{warm();
 (document.fonts&&document.fonts.ready?Promise.race([document.fonts.ready,new Promise(r=>setTimeout(r,3000))]):Promise.resolve()).then(()=>{buildTicker();next();});
-if(!ART){loadLive();setInterval(loadLive,30*60*1000);listen();restore()}}
+if(!ART){loadLive();setInterval(loadLive,5*60*1000);listen();restore()}}
 /* Claude-link mode: live copies of the store feed, market data and image map come from the shared store, refreshed every morning */
 if(ART)(async()=>{try{if(!window.claude)return;const db=await claude.use("db");if(!db)return;
   db.doc("tv/assetmap").onSnapshot(s=>{if(s.exists){const d=s.data();if(d&&d.map)AMAP=Object.assign({},AMAP,d.map);}},()=>{});
