@@ -776,6 +776,15 @@ html,body{background:#0B0B0D}
 .flow .mid .eye{margin:0}.flow .mid h1{font-size:92px;line-height:.95;margin:0}
 .weak .flow .track{animation-duration:80s}
 .flow .mid{left:460px!important;top:250px!important;transform:none!important}
+/* v15 read it from the line: book names, variant lines and prices bigger in every grid */
+.run b,.chainall b,.blow b,.monk b,.inc .ic b,.keys b,.spot figcaption b{font-size:27px!important;line-height:1.08!important}
+.board small,.inc span.v,.inc span.g,.chainall em,.monk em,.run em,.spot figcaption small,.market span.w,.vel span,.timeline span{font-size:22px!important}
+.news p.neye,.news p.np{font-size:24px!important}
+.board .r b{font-size:40px!important}
+.inc .ic b{font-size:24px!important;white-space:normal!important}.inc span.v,.inc span.g{font-size:19px!important;white-space:normal!important}
+.scene h1 em,.scene .H em{font-size:inherit!important;line-height:inherit!important}
+.scene h1 em,.scene .H em{font-size:inherit!important;line-height:inherit!important}
+.wall .cap b{font-size:22px}
 
 </style></head><body>
 <div id="stage">
@@ -3104,7 +3113,7 @@ const keyNote=t=>{for(const [re,n,y] of KEYS)if(re.test(t))return {note:n,year:y
 
 
 CONFIG.ticker=["Every book bagged and boarded","Pre-sales close Monday 8pm","New releases every Tuesday","New back issues every Friday","Hold Box: no time limit, no storage fees","We buy and consign collections","CaptCan Cash: 10% back on pre-sales","Free account: scan any code on screen"];
-const BUILD="1118-1523";const SITE="https://www.captcancomics.ca",API="2025-10";
+const BUILD="1118-1539";const SITE="https://www.captcancomics.ca",API="2025-10";
 /* helpers */
 const NW="h1,h2,h3,p,b,span,figcaption,.sub,.txt,.book,.lab,.sm,.when,.after,.lead,.pts div";
 function noWidow(root){root.querySelectorAll(NW).forEach(e=>{if(e.children.length>2)return;const w=document.createTreeWalker(e,NodeFilter.SHOW_TEXT);let last=null;while(w.nextNode()){const n=w.currentNode;n.nodeValue=n.nodeValue.replace(/(\w)-(\w)/g,"$1\u2011$2");if(n.nodeValue.trim())last=n;}if(!last)return;const v=last.nodeValue,i=v.trimEnd().lastIndexOf(" ");if(i>0&&v.trim().split(/ +/).length>2&&v.slice(i+1).trim().length<=10)last.nodeValue=v.slice(0,i)+"\u00a0"+v.slice(i+1);});return root;}
@@ -3391,7 +3400,8 @@ function playlist(){DAY=DAYNOW();
   if(MODE==="line")return [S.quizFirst,S.hero,S.join,S.chain,S.quizPrice,S.wall,S.lesson,S.about,S.hero,S.howto,S.inc,S.quizFirst,S.sold,S.join,S.run,S.lesson,S.trades,S.school,S.hero];
   if(MODE==="market")return [S.market.bind(null,0),S.news,S.fact,S.market.bind(null,1),S.news.bind(null,1),S.alpha,S.fact,S.vote,S.sold,S.vel,S.trailer,S.timeline.bind(null,0),S.timeline.bind(null,1),S.quizFirst,S.trailer,S.join];
   if(MODE==="trailers")return [S.trailer,S.hero,S.trailer,S.wall,S.trailer,S.join,S.trailer,S.timeline.bind(null,0)];
-  return [...(loop%4===0?[S.open]:[]),S.board,S.feat,S.hero,S.wall,S.cotd,S.market.bind(null,0),S.news,S.fact,S.vote,S.quizFirst,S.run,S.hero,S.chain,S.trailer,S.sold,S.inc,S.blow,day[0],S.lesson,S.vel,S.join,S.about,S.hero,S.wall,S.market.bind(null,1),S.trades,S.news.bind(null,1),S.fact,S.spot,S.keys,S.flow,S.upload,S.svc,S.excl,S.chainall,S.presale,S.trailer,S.timeline.bind(null,loop%2),S.quizFirst,S.run,S.story,day[1],S.soon,S.blow,S.eras,S.alpha,S.vote,S.hero,S.spot,S.quizPrice,S.artists,S.howto,S.app,S.monk,S.merch,S.feat,S.svc,S.school,S.join,S.event.bind(null,0)];}
+  /* everyday loop: product first, a fun or useful screen every 3 to 4 screens; explainers stay on the remote */
+  return [...(loop%4===0?[S.open]:[]),S.board,S.flow,S.hero,S.trailer,S.wall,S.cotd,S.keys,S.news,S.chain,S.vote,S.run,S.blow,S.fact,S.join,S.inc,S.sold,S.trailer,S.spot,S.market.bind(null,0),S.hero,S.trades,S.upload,S.presale,S.soon,S.excl,S.flow,S.news.bind(null,1),S.quizFirst,S.monk,S.feat,S.timeline.bind(null,loop%2),S.merch,S.fact,S.svc,day[0],day[1],S.join];}
 /* engine: auto-plays, keeps a history so staff can step back and forward, can be paused, and can take a pushed screen from the desk */
 const host=document.getElementById("host"),cut=document.getElementById("cut");let queue=[],current=null,lastId="",timer=null,paused=false,busy=false,hist=[],hpos=-1,curMs=10000,startedAt=0,remain=0;
 const clone=o=>JSON.parse(JSON.stringify(o));
