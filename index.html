@@ -3075,7 +3075,7 @@ const keyNote=t=>{for(const [re,n,y] of KEYS)if(re.test(t))return {note:n,year:y
 
 
 CONFIG.ticker=["Every book bagged and boarded","Pre-sales close Monday 8pm","New releases every Tuesday","New back issues every Friday","Hold Box: no time limit, no storage fees","We buy and consign collections","CaptCan Cash: 10% back on pre-sales","Free account: scan any code on screen"];
-const BUILD="1118-1422";const SITE="https://www.captcancomics.ca",API="2025-10";
+const BUILD="1118-1426";const SITE="https://www.captcancomics.ca",API="2025-10";
 /* helpers */
 const NW="h1,h2,h3,p,b,span,figcaption,.sub,.txt,.book,.lab,.sm,.when,.after,.lead,.pts div";
 function noWidow(root){root.querySelectorAll(NW).forEach(e=>{if(e.children.length>2)return;const w=document.createTreeWalker(e,NodeFilter.SHOW_TEXT);let last=null;while(w.nextNode()){const n=w.currentNode;n.nodeValue=n.nodeValue.replace(/(\w)-(\w)/g,"$1\u2011$2");if(n.nodeValue.trim())last=n;}if(!last)return;const v=last.nodeValue,i=v.trimEnd().lastIndexOf(" ");if(i>0&&v.trim().split(/ +/).length>2&&v.slice(i+1).trim().length<=10)last.nodeValue=v.slice(0,i)+"\u00a0"+v.slice(i+1);});return root;}
@@ -3409,7 +3409,7 @@ const YTP={state:"idle",t:null,player:null,next:0,k:0,want:false,bufT:0,onEnd:nu
       onStateChange:e=>{const p=e.target;
         if(this.state==="live"){if(e.data===3&&!this.bufT)this.bufT=Date.now();if(e.data===1)this.bufT=0;if(e.data===0&&this.onEnd)this.onEnd();return;}
         if(this.state==="loading"&&e.data===1&&!pb){pb=true;try{p.pauseVideo();}catch(x){}this.log("playing",{s:Math.round((Date.now()-t0)/1e3)});
-          const iv=setInterval(()=>{if(this.state!=="loading"){clearInterval(iv);return;}try{const d=p.getDuration()||150,f=p.getVideoLoadedFraction()||0;if(f*d>=Math.min(45,d*.4)||Date.now()-t0>110000){clearInterval(iv);try{p.seekTo(0,true);p.pauseVideo();}catch(x){}this.state="ready";clearTimeout(this.to);this.log("ready",{s:Math.round((Date.now()-t0)/1e3),f:+f.toFixed(2)});if(this.want){this.want=false;pushScreen("trailer","yt");}}}catch(x){}},1000);}},
+          const iv=setInterval(()=>{if(this.state!=="loading"){clearInterval(iv);return;}try{const d=p.getDuration()||150,f=p.getVideoLoadedFraction()||0;if(f*d>=Math.min(20,d*.2)||Date.now()-t0>60000){clearInterval(iv);try{p.seekTo(0,true);p.pauseVideo();}catch(x){}this.state="ready";clearTimeout(this.to);this.log("ready",{s:Math.round((Date.now()-t0)/1e3),f:+f.toFixed(2)});if(this.want){this.want=false;pushScreen("trailer","yt");}}}catch(x){}},1000);}},
       onError:e=>{this.log("error",{c:e&&e.data});this.fail();}}});}catch(x){this.log("throw",{m:String(x&&x.message||x).slice(0,80)});this.fail();return;}
     clearTimeout(this.to);this.to=setTimeout(()=>{if(this.state==="loading"){this.log("timeout");this.fail();}},120000);},
   fail(){this.kill();this.next=Date.now()+5*60000;this.want=false;},
@@ -3641,7 +3641,8 @@ if(ART)(async()=>{try{if(!window.claude)return;const db=await claude.use("db");i
   db.doc("tv/feed").onSnapshot(s=>{if(s.exists){const d=s.data();if(d&&d.hot&&d.hot.length>=8){FEED=Object.assign({},FEED,d);warm();buildTicker();}}},()=>{});
   db.doc("tv/market").onSnapshot(s=>{if(s.exists){const d=s.data();if(d&&d.hot10&&d.hot10.length>=10){MARKET=Object.assign({},MARKET,d);buildTicker();}}},()=>{});
 }catch(e){}})();
-setInterval(()=>{const d=now();if(d.getHours()===4&&d.getMinutes()<1)hardReload();},45000);
+/* pick up the morning refresh: check for a new build every 10 minutes, reload only between 7 and 9:30am so it never interrupts the shop */
+if(!IS_REMOTE)setInterval(()=>{const d=now(),h=d.getHours()+d.getMinutes()/60;if(h<7||h>9.5)return;fetch(location.href.split("#")[0].split("?")[0]+"?v="+Date.now(),{cache:"no-store"}).then(r=>r.text()).then(t=>{const m=t.match(/const BUILD="([^"]+)"/);if(m&&m[1]!==BUILD)hardReload();}).catch(()=>{});},600000);
 if(!IS_REMOTE){setInterval(()=>{try{YTP.prep();}catch(x){}},20000);["pointerdown","mousedown","touchstart"].forEach(ev=>document.addEventListener(ev,()=>{goFull();try{Radio.unlock();soundUnlock();}catch(x){}},{passive:true}));let fsN=0;const fsc=()=>{const on=!!(document.fullscreenElement||document.webkitFullscreenElement);if(!on&&fsN<6){fsN++;post({cmd:"fslog",now:lastId,up:Math.round((Date.now()-BOOT)/1000),w:WEAKTV,vis:document.visibilityState},"-ack");}};document.addEventListener("fullscreenchange",fsc);document.addEventListener("webkitfullscreenchange",fsc);document.documentElement.classList.add("tvmode");try{const o=JSON.parse(localStorage.getItem("cctvTV")||"null");if(o)applyState(o);}catch(x){}}
 
 </script>
