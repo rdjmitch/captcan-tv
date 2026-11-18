@@ -674,6 +674,7 @@ function qrURL(text){if(QRC.has(text))return QRC.get(text);let u="";try{const d=
 const chip=(url,big,small)=>{const u=qrURL(url);return u?`<div class="qrc"><img src="${u}" alt=""><div><b>${big}</b><span>${small}</span></div></div>`:"";};
 const amb=u=>u?`<div class="amb" style="background-image:url('${img(u,240)}')"></div>`:"";
 let SIG={mode:"auto",back:""},FEAT=[],SERVE=0,TVOL=70,TRBAD=0,CURPL=null,CURV=null,GEST=false,UTR=[],FORCEYT=false,YTHOST="https://www.youtube-nocookie.com",TRT0=0;
+function hardReload(){try{const u=location.href.split("#")[0].replace(/[?&]v=\d+/,"");location.replace(u+(u.includes("?")?"&":"?")+"v="+Date.now()+(location.hash||""));}catch(x){location.reload();}}
 const trlog=(ev,d)=>{if(!FORCEYT)return;try{post(Object.assign({cmd:"trlog",ev,w:WEAKTV,t:Date.now()-TRT0},d||{}),"-ack");}catch(x){}};
 function trVol(){if(CURV){try{CURV.volume=Math.max(0,Math.min(1,TVOL/100));CURV.muted=TVOL<=0;if(CURV.paused)CURV.play().catch(()=>{});}catch(x){}}const p=CURPL;if(!p)return;try{if(TVOL>0){p.unMute();p.setVolume(TVOL);}else p.mute();}catch(x){}}
 function SOUNDWAIT(){return !GEST&&((Radio.on&&Radio.locked)||(CURPL&&TVOL>0&&(()=>{try{return CURPL.isMuted();}catch(x){return false;}})()));}
@@ -914,7 +915,7 @@ const prog=()=>document.getElementById("prog");
 function progress(ms){const p=prog();if(!p)return;p.getAnimations().forEach(a=>a.cancel());if(ms==null){p.style.transform="scaleX(0)";return;}p.animate([{transform:`scaleX(${Math.max(0,1-ms/curMs)})`},{transform:"scaleX(1)"}],{duration:ms,fill:"forwards"});}
 function schedule(ms){clearTimeout(timer);if(paused){remain=ms;progress(null);return;}startedAt=Date.now();remain=ms;timer=setTimeout(()=>go(1),ms);progress(ms);}
 const BOOT=Date.now();
-async function show(sc,hold){if(!IS_REMOTE&&Date.now()-BOOT>3*3600e3&&!hold){location.reload();return;}await ready(sc.el);
+async function show(sc,hold){if(!IS_REMOTE&&Date.now()-BOOT>3*3600e3&&!hold){hardReload();return;}await ready(sc.el);
   cut.classList.remove("go");void cut.offsetWidth;cut.classList.add("go");
   await new Promise(r=>setTimeout(r,300));
   if(current){current._cleanup&&current._cleanup();current.remove();}
@@ -948,7 +949,7 @@ addEventListener("keydown",e=>{const k=e.key;const tg=e.target;if(IS_REMOTE||(tg
 const wake=()=>{try{navigator.wakeLock&&navigator.wakeLock.request("screen").catch(()=>{});}catch(e){}};wake();document.addEventListener("visibilitychange",()=>{if(!document.hidden)wake();});
 /* ===== shared channel between the TV and the desk remote (ntfy.sh, a free open message relay; the topic name is the secret) ===== */
 const TOPIC="captcan-tv-r7k2m9q4x8v3n5w1",RELAY="https://ntfy.sh/"+TOPIC;
-const IS_REMOTE=location.hash==="#remote"||location.hash==="#r";addEventListener("hashchange",()=>location.reload());
+const IS_REMOTE=location.hash==="#remote"||location.hash==="#r";addEventListener("hashchange",()=>hardReload());
 const post=(o,t)=>fetch(RELAY+(t||""),{method:"POST",body:JSON.stringify(Object.assign({at:Date.now()},o))}).catch(()=>{});
 /* ===== radio ===== */
 const DEFST=[{id:"groovesalad",name:"Groove Salad",url:"https://ice2.somafm.com/groovesalad-128-mp3"},{id:"indiepop",name:"Indie Pop Rocks",url:"https://ice2.somafm.com/indiepop-128-mp3"},{id:"u80s",name:"Underground 80s",url:"https://ice2.somafm.com/u80s-128-mp3"},{id:"seventies",name:"Left Coast 70s",url:"https://ice2.somafm.com/seventies-128-mp3"},{id:"poptron",name:"PopTron",url:"https://ice2.somafm.com/poptron-128-mp3"}];const stationUrl=id=>{const x=DEFST.find(s=>s.id===id);return x?x.url:"";};
@@ -967,7 +968,7 @@ function handle(m){if(!m||!m.cmd)return;
   if(m.cmd==="state"){applyState(m);if(m.ack)post(ackMsg(),"-ack");return;}
   if(Date.now()-(m.at||0)>120000)return;
   if(m.cmd==="next")go(1);else if(m.cmd==="prev")go(-1);else if(m.cmd==="pause")setPaused(true);else if(m.cmd==="play")setPaused(false);
-  else if(m.cmd==="show")pushScreen(m.screen,m.arg,m.hold);else if(m.cmd==="yttest"){FORCEYT=true;if(m.host)YTHOST=m.host;TRBAD=0;pushScreen("trailer",m.arg||0,0);setTimeout(()=>{FORCEYT=false;},180000);}else if(m.cmd==="reload")location.reload();else if(m.cmd==="goto"&&/^https:\/\/(captcancomics\.ca|rdjmitch\.github\.io)\//.test(m.url||""))location.href=m.url;
+  else if(m.cmd==="show")pushScreen(m.screen,m.arg,m.hold);else if(m.cmd==="yttest"){FORCEYT=true;if(m.host)YTHOST=m.host;TRBAD=0;pushScreen("trailer",m.arg||0,0);setTimeout(()=>{FORCEYT=false;},180000);}else if(m.cmd==="reload")hardReload();else if(m.cmd==="goto"&&/^https:\/\/(captcancomics\.ca|rdjmitch\.github\.io)\//.test(m.url||""))location.href=m.url;
   setTimeout(()=>post(ackMsg(),"-ack"),900);}
 function updTk(){const e=document.getElementById("tk");if(!e)return;const ph=sigPhase();const on=SERVE>0&&(ph==="live"||ph==="last"||ph==="break");e.style.display=on?"flex":"none";if(on)e.innerHTML="Now signing <b>#"+SERVE+"</b>";}
 function ackMsg(){const u=navigator.userAgent,m=u.match(/Chrom(?:e|ium)\/(\d+)/)||u.match(/\) (\d{2,3})\.0\.\d{4}\.\d+/);return {cmd:"ack",now:lastId,paused,mode:MODE,radio:Radio.on?Radio.name:"",locked:SOUNDWAIT(),cv:m?+m[1]:0,fg:FLEXGAP,ua:navigator.userAgent.slice(0,140),sig:sigPhase(),serve:SERVE};}
@@ -1147,7 +1148,7 @@ if(ART)(async()=>{try{if(!window.claude)return;const db=await claude.use("db");i
   db.doc("tv/feed").onSnapshot(s=>{if(s.exists){const d=s.data();if(d&&d.hot&&d.hot.length>=8){FEED=Object.assign({},FEED,d);warm();buildTicker();}}},()=>{});
   db.doc("tv/market").onSnapshot(s=>{if(s.exists){const d=s.data();if(d&&d.hot10&&d.hot10.length>=10){MARKET=Object.assign({},MARKET,d);buildTicker();}}},()=>{});
 }catch(e){}})();
-setInterval(()=>{const d=now();if(d.getHours()===4&&d.getMinutes()<1)location.reload();},45000);
+setInterval(()=>{const d=now();if(d.getHours()===4&&d.getMinutes()<1)hardReload();},45000);
 if(!IS_REMOTE){try{const o=JSON.parse(localStorage.getItem("cctvTV")||"null");if(o)applyState(o);}catch(x){}}
 
 </script>
