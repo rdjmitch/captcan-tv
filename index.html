@@ -922,7 +922,7 @@ function handle(m){if(!m||!m.cmd)return;
   if(m.cmd==="state"){applyState(m);if(m.ack)post(ackMsg(),"-ack");return;}
   if(Date.now()-(m.at||0)>120000)return;
   if(m.cmd==="next")go(1);else if(m.cmd==="prev")go(-1);else if(m.cmd==="pause")setPaused(true);else if(m.cmd==="play")setPaused(false);
-  else if(m.cmd==="show")pushScreen(m.screen,m.arg,m.hold);else if(m.cmd==="reload")location.reload();
+  else if(m.cmd==="show")pushScreen(m.screen,m.arg,m.hold);else if(m.cmd==="reload")location.reload();else if(m.cmd==="goto"&&/^https:\/\/(captcancomics\.ca|rdjmitch\.github\.io)\//.test(m.url||""))location.href=m.url;
   setTimeout(()=>post(ackMsg(),"-ack"),900);}
 function updTk(){const e=document.getElementById("tk");if(!e)return;const ph=sigPhase();const on=SERVE>0&&(ph==="live"||ph==="last"||ph==="break");e.style.display=on?"flex":"none";if(on)e.innerHTML="Now signing <b>#"+SERVE+"</b>";}
 function ackMsg(){const u=navigator.userAgent,m=u.match(/Chrom(?:e|ium)\/(\d+)/)||u.match(/\) (\d{2,3})\.0\.\d{4}\.\d+/);return {cmd:"ack",now:lastId,paused,mode:MODE,radio:Radio.on?Radio.name:"",locked:SOUNDWAIT(),cv:m?+m[1]:0,fg:FLEXGAP,ua:navigator.userAgent.slice(0,140),sig:sigPhase(),serve:SERVE};}
