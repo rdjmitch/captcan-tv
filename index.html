@@ -674,7 +674,7 @@ function qrURL(text){if(QRC.has(text))return QRC.get(text);let u="";try{const d=
 const chip=(url,big,small)=>{const u=qrURL(url);return u?`<div class="qrc"><img src="${u}" alt=""><div><b>${big}</b><span>${small}</span></div></div>`:"";};
 const amb=u=>u?`<div class="amb" style="background-image:url('${img(u,240)}')"></div>`:"";
 let SIG={mode:"auto",back:""},FEAT=[],SERVE=0,TVOL=70,TRBAD=0,CURPL=null,CURV=null,GEST=false,UTR=[],FORCEYT=false,YTHOST="https://www.youtube-nocookie.com",TRT0=0;
-const trlog=(ev,d)=>{if(!FORCEYT)return;try{post(Object.assign({cmd:"trlog",ev,t:Date.now()-TRT0},d||{}),"-ack");}catch(x){}};
+const trlog=(ev,d)=>{if(!FORCEYT)return;try{post(Object.assign({cmd:"trlog",ev,w:WEAKTV,t:Date.now()-TRT0},d||{}),"-ack");}catch(x){}};
 function trVol(){if(CURV){try{CURV.volume=Math.max(0,Math.min(1,TVOL/100));CURV.muted=TVOL<=0;if(CURV.paused)CURV.play().catch(()=>{});}catch(x){}}const p=CURPL;if(!p)return;try{if(TVOL>0){p.unMute();p.setVolume(TVOL);}else p.mute();}catch(x){}}
 function SOUNDWAIT(){return !GEST&&((Radio.on&&Radio.locked)||(CURPL&&TVOL>0&&(()=>{try{return CURPL.isMuted();}catch(x){return false;}})()));}
 function soundUnlock(){GEST=true;trVol();}
