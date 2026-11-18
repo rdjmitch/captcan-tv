@@ -3104,7 +3104,7 @@ const keyNote=t=>{for(const [re,n,y] of KEYS)if(re.test(t))return {note:n,year:y
 
 
 CONFIG.ticker=["Every book bagged and boarded","Pre-sales close Monday 8pm","New releases every Tuesday","New back issues every Friday","Hold Box: no time limit, no storage fees","We buy and consign collections","CaptCan Cash: 10% back on pre-sales","Free account: scan any code on screen"];
-const BUILD="1118-1505";const SITE="https://www.captcancomics.ca",API="2025-10";
+const BUILD="1118-1523";const SITE="https://www.captcancomics.ca",API="2025-10";
 /* helpers */
 const NW="h1,h2,h3,p,b,span,figcaption,.sub,.txt,.book,.lab,.sm,.when,.after,.lead,.pts div";
 function noWidow(root){root.querySelectorAll(NW).forEach(e=>{if(e.children.length>2)return;const w=document.createTreeWalker(e,NodeFilter.SHOW_TEXT);let last=null;while(w.nextNode()){const n=w.currentNode;n.nodeValue=n.nodeValue.replace(/(\w)-(\w)/g,"$1\u2011$2");if(n.nodeValue.trim())last=n;}if(!last)return;const v=last.nodeValue,i=v.trimEnd().lastIndexOf(" ");if(i>0&&v.trim().split(/ +/).length>2&&v.slice(i+1).trim().length<=10)last.nodeValue=v.slice(0,i)+"\u00a0"+v.slice(i+1);});return root;}
@@ -3484,7 +3484,7 @@ const Radio={a:null,on:false,url:"",name:"",vol:.35,ducked:false,locked:true,
 setInterval(()=>{try{Radio.dog();}catch(x){}},6000);
 /* ===== TV side: listen for desk commands ===== */
 function applyState(s){if(!s)return;if(s.tron!=null)TRON=!!s.tron;if(Array.isArray(s.trailers))UTR=s.trailers;if(!IS_REMOTE){try{const o=JSON.parse(localStorage.getItem("cctvTV")||"{}");["mode","speed","banner","radio","sig","feat","serve","tvol","trailers","tron"].forEach(k=>{if(s[k]!=null)o[k]=s[k];});localStorage.setItem("cctvTV",JSON.stringify(o));}catch(x){}}if(s.serve!=null){SERVE=+s.serve||0;updTk();}if(s.tvol!=null&&+s.tvol!==TVOL){TVOL=+s.tvol;trVol();}if(s.sig){const ch=JSON.stringify(s.sig)!==JSON.stringify(SIG);SIG=s.sig;if(ch&&!IS_REMOTE)buildTicker();if(ch&&!IS_REMOTE&&s.sigPush)setTimeout(()=>pushScreen("sign",null,30),300);}if(s.feat)FEAT=s.feat;if(s.mode&&MODES[s.mode]&&s.mode!==MODE){MODE=s.mode;queue=[];}if(s.speed)SPEED=s.speed;if(s.banner!=null&&s.banner!==BANNER){BANNER=s.banner;buildTicker();}if(s.radio)Radio.apply(s.radio);}
-function handle(m){if(!m||!m.cmd)return;
+function handle(m){if(!m||!m.cmd||window.DEADTAB)return;
   if(m.cmd==="state"){applyState(m);if(m.ack)post(ackMsg(),"-ack");return;}
   if(Date.now()-(m.at||0)>120000)return;
   if(m.cmd==="next")go(1);else if(m.cmd==="prev")go(-1);else if(m.cmd==="pause")setPaused(true);else if(m.cmd==="play")setPaused(false);
@@ -3694,7 +3694,11 @@ if(ART)(async()=>{try{if(!window.claude)return;const db=await claude.use("db");i
 }catch(e){}})();
 /* pick up the morning refresh: check for a new build every 10 minutes, reload only between 7 and 9:30am so it never interrupts the shop */
 if(!IS_REMOTE)setInterval(()=>{const d=now(),h=d.getHours()+d.getMinutes()/60;if(h<7||h>9.5)return;fetch(location.href.split("#")[0].split("?")[0]+"?v="+Date.now(),{cache:"no-store"}).then(r=>r.text()).then(t=>{const m=t.match(/const BUILD="([^"]+)"/);if(m&&m[1]!==BUILD)hardReload();}).catch(()=>{});},600000);
-if(!IS_REMOTE){setInterval(()=>{try{YTP.prep();}catch(x){}},20000);["pointerdown","mousedown","touchstart"].forEach(ev=>document.addEventListener(ev,()=>{goFull();try{Radio.unlock();soundUnlock();}catch(x){}},{passive:true}));let fsN=0;const fsc=()=>{const on=!!(document.fullscreenElement||document.webkitFullscreenElement);if(!on&&fsN<6){fsN++;post({cmd:"fslog",now:lastId,up:Math.round((Date.now()-BOOT)/1000),w:WEAKTV,vis:document.visibilityState},"-ack");}};document.addEventListener("fullscreenchange",fsc);document.addEventListener("webkitfullscreenchange",fsc);document.documentElement.classList.add("tvmode");try{const o=JSON.parse(localStorage.getItem("cctvTV")||"null");if(o)applyState(o);}catch(x){}}
+if(!IS_REMOTE){(()=>{/* only one copy may run per browser: a newer tab wins, older tabs go quiet (two copies = two radios out of sync) */
+  const me=Date.now()+":"+Math.random().toString(36).slice(2,7),t0=Date.now();let dead=false;
+  const beat=()=>{if(dead)return;try{const o=JSON.parse(localStorage.getItem("cctvLive")||"null");if(o&&o.id!==me&&o.t0>t0&&Date.now()-o.at<12000){dead=true;window.DEADTAB=true;try{Radio.on=false;Radio.el().pause();YTP.kill();}catch(x){}clearTimeout(timer);busy=true;document.body.innerHTML='<p style="color:#888;font:24px sans-serif;padding:60px">CaptCan TV is open in another tab. This copy stopped so the music doesn\'t play twice.</p>';return;}localStorage.setItem("cctvLive",JSON.stringify({id:me,t0,at:Date.now()}));}catch(x){}};
+  beat();setInterval(beat,3000);})();
+  setInterval(()=>{try{YTP.prep();}catch(x){}},20000);["pointerdown","mousedown","touchstart"].forEach(ev=>document.addEventListener(ev,()=>{goFull();try{Radio.unlock();soundUnlock();}catch(x){}},{passive:true}));let fsN=0;const fsc=()=>{const on=!!(document.fullscreenElement||document.webkitFullscreenElement);if(!on&&fsN<6){fsN++;post({cmd:"fslog",now:lastId,up:Math.round((Date.now()-BOOT)/1000),w:WEAKTV,vis:document.visibilityState},"-ack");}};document.addEventListener("fullscreenchange",fsc);document.addEventListener("webkitfullscreenchange",fsc);document.documentElement.classList.add("tvmode");try{const o=JSON.parse(localStorage.getItem("cctvTV")||"null");if(o)applyState(o);}catch(x){}}
 
 </script>
 </body></html>
