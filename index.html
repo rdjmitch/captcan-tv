@@ -871,6 +871,64 @@ body.cinema #needok{bottom:40px}
 .news .neye{letter-spacing:0!important;text-transform:none!important;font-weight:600!important;color:#F07A7F!important}
 .news .np{letter-spacing:0!important;text-transform:none!important}
 .board small,.inc span.v,.inc span.g,.trades .feat .v,.mrow .w i,.chain figcaption,.fact .key span,.timeline i{letter-spacing:.02em!important;text-transform:none!important}
+/* v18 big-cover screens: the covers are the show */
+.scene.big{background:#0B0B0C;overflow:hidden}
+.scene.big .amb{opacity:.55!important;filter:blur(60px) saturate(1.3)!important;transform:scale(1.3)}
+.scene.big::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,11,12,.55) 0%,rgba(11,11,12,.2) 40%,rgba(11,11,12,.85) 100%);pointer-events:none}
+.big .bh,.big .bq,.big .brow{position:absolute;z-index:2}
+.big .bh{left:110px;top:46px}
+.big .bh .eye{font-size:30px;color:#E4E4E8}
+.big .bh h1{font-size:96px;line-height:.95;margin:6px 0 0}
+.big .bq{right:110px;top:46px}
+.big .brow{left:110px;right:110px;top:236px;bottom:128px;display:grid;gap:56px;align-items:end}
+.big.n3 .brow{grid-template-columns:repeat(3,minmax(0,1fr));gap:80px}
+.big.n4 .brow{grid-template-columns:repeat(4,minmax(0,1fr))}
+.big .bi{position:relative;display:flex;flex-direction:column;min-width:0}
+.big .bc{position:relative;height:500px;display:flex;align-items:flex-end;justify-content:flex-start}
+.big.n3 .bc{height:520px}
+.big .bc img{max-height:100%;max-width:100%;object-fit:contain;display:block;box-shadow:0 26px 60px rgba(0,0,0,.6)}
+.big .lf{position:absolute;top:14px;left:14px;background:var(--red);color:#fff;text-decoration:none;font-family:var(--head);font-weight:900;font-size:24px;text-transform:uppercase;padding:6px 12px}
+.big .bi b{margin-top:20px;font-family:var(--head);font-weight:900;font-size:34px;line-height:1.02;text-transform:uppercase;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.big .bi small{font-size:23px;color:#C9C9CF;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.big .bi em{font-style:normal;font-family:var(--head);font-weight:900;font-size:58px;line-height:1;margin-top:10px;color:#fff;display:flex;align-items:baseline;gap:16px}
+.big .bi em u{text-decoration:line-through;font-size:30px;color:#9A9AA2}
+.big .rk{position:absolute;left:-26px;top:-30px;z-index:3;font-style:normal;font-family:var(--head);font-weight:900;font-size:72px;line-height:1;width:84px;height:84px;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center}
+.big .bh h1,.big .bi b{color:#fff!important}
+.big .amb{display:block!important;position:absolute;inset:0;background-size:cover;background-position:center}
+.big .brow{top:200px!important}
+.big .bc{height:560px}.big.n3 .bc{height:590px}
+.big .bc img{height:100%!important;width:100%!important;max-width:none!important;max-height:none!important;object-fit:contain;object-position:left bottom;box-shadow:none!important;filter:drop-shadow(0 24px 40px rgba(0,0,0,.6))}
+.big .rk{left:0!important;top:auto!important;bottom:0;width:78px;height:78px;font-size:60px}
+.big .lf{top:auto!important;bottom:0;left:auto!important;right:0}
+/* v18 first appearance game */
+.scene.fa{background:#0B0B0C;overflow:hidden}
+.fa .amb{opacity:.35!important;filter:blur(70px)!important;transform:scale(1.3)}
+.fa .l{position:absolute;left:110px;top:70px;width:1000px;bottom:140px;display:flex;flex-direction:column;z-index:2}
+.fa h1{font-size:76px;line-height:1;margin:10px 0 0;color:#fff}
+.fa h1 span{color:var(--gold)}
+.fa .yr{font-size:30px;color:#C9C9CF;margin:12px 0 0}
+.fa .opts{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:40px}
+.fa .op{display:flex;align-items:center;gap:22px;background:rgba(255,255,255,.08);border:3px solid rgba(255,255,255,.14);padding:22px 26px;transition:background .5s,border-color .5s,opacity .5s}
+.fa .op i{font-style:normal;font-family:var(--head);font-weight:900;font-size:38px;width:62px;height:62px;display:flex;align-items:center;justify-content:center;background:#fff;color:#121212;flex:none}
+.fa .op b{font-family:var(--head);font-weight:900;font-size:42px;text-transform:uppercase;line-height:1}
+.fa .bar{height:10px;background:rgba(255,255,255,.12);margin-top:34px;position:relative;overflow:hidden}
+.fa .bar i{position:absolute;inset:0;background:var(--red);transform-origin:left;animation:faBar 9s linear forwards}
+@keyframes faBar{from{transform:scaleX(1)}to{transform:scaleX(0)}}
+.fa .after{font-size:32px;color:#E4E4E8;margin:28px 0 0;opacity:0;transition:opacity .6s .4s}.fa .after b{color:#fff}
+.fa.rev .op{opacity:.35}.fa.rev .op.ok{opacity:1;background:var(--red);border-color:var(--red)}.fa.rev .op.ok i{color:var(--red)}
+.fa.rev .after{opacity:1}
+.fa .faR{position:absolute;right:110px;top:70px;bottom:140px;width:580px;display:flex;align-items:center;justify-content:center;z-index:2}
+.fa .faCov{position:relative;height:100%;display:flex;align-items:center}
+.fa .faCov img{height:760px;width:auto;max-width:580px;object-fit:contain;filter:blur(40px) brightness(.6);transition:filter 1s ease;box-shadow:0 30px 70px rgba(0,0,0,.6)}
+.fa .faCov .hide{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--head);font-weight:900;font-size:300px;color:var(--gold);transition:opacity .6s}
+.fa.rev .faCov img{filter:none}.fa.rev .faCov .hide{opacity:0}
+.big .bi b{min-height:2.04em;display:-webkit-box}
+.fa .amb{display:block!important;position:absolute;inset:0;background-size:cover;background-position:center}
+/* v18 trailers load visibly UNDER the current screen (the Samsung pauses video it can't see) */
+.scene{z-index:1}
+#ytpre{opacity:1!important;z-index:0!important;transition:none!important}
+#ytpre.on{z-index:31!important}
+#vcover{position:absolute;inset:0;z-index:0;background:#0B0B0C;pointer-events:none}
 
 </style></head><body>
 <div id="stage">
@@ -3199,7 +3257,7 @@ const keyNote=t=>{for(const [re,n,y] of KEYS)if(re.test(t))return {note:n,year:y
 
 
 CONFIG.ticker=["Every book bagged and boarded","Pre-sales close Monday 8pm","New releases every Tuesday","New back issues every Friday","Hold Box: no time limit, no storage fees","We buy and consign collections","CaptCan Cash: 10% back on pre-sales","Free account: scan any code on screen"];
-const BUILD="1118-1608";const SITE="https://www.captcancomics.ca",API="2025-10";
+const BUILD="1118-1614";const SITE="https://www.captcancomics.ca",API="2025-10";
 /* helpers */
 const NW="h1,h2,h3,p,b,span,figcaption,.sub,.txt,.book,.lab,.sm,.when,.after,.lead,.pts div";
 function noWidow(root){root.querySelectorAll(NW).forEach(e=>{if(e.children.length>2)return;const w=document.createTreeWalker(e,NodeFilter.SHOW_TEXT);let last=null;while(w.nextNode()){const n=w.currentNode;n.nodeValue=n.nodeValue.replace(/(\w)-(\w)/g,"$1\u2011$2");if(n.nodeValue.trim())last=n;}if(!last)return;const v=last.nodeValue,i=v.trimEnd().lastIndexOf(" ");if(i>0&&v.trim().split(/ +/).length>2&&v.slice(i+1).trim().length<=10)last.nodeValue=v.slice(0,i)+"\u00a0"+v.slice(i+1);});return root;}
@@ -3265,30 +3323,28 @@ async function findBooks(kw,n){const local=[...FEED.hot,...FEED.keys].filter(p=>
   try{const q=await sf(`{products(first:12,sortKey:BEST_SELLING,query:${J(`title:*${kw}* available_for_sale:true`)}){${PF}}}`);return [...local,...norm(q.products.nodes)].slice(0,n);}catch(e){return local.slice(0,n);}}
 
 /* scenes */
+const bigs=(id,L,o)=>{const n=o.n||4;if(L.length<Math.min(n,3))return null;const pages=Math.max(1,Math.floor(L.length/n));const pg=o.fixed?0:nx(id+"pg",pages),P=L.slice(pg*n,pg*n+n);const bg=P[0].img;
+  return {id,dur:o.dur||12,el:$(`<section class="scene big n${n} ${id}">${amb(bg)}<div class="bh"><p class="eye in">${o.eye}</p><h1 class="H in d1">${o.h}</h1></div>${o.qr?`<div class="bq in d2">${chip(o.qr[0],o.qr[1],o.qr[2])}</div>`:""}<div class="brow">${P.map((p,i)=>`<div class="bi in" style="animation-delay:${.15+i*.1}s"><div class="bc"><img src="${img(p.img,700)}" alt="">${o.rank?`<i class="rk">${pg*n+i+1}</i>`:""}${p.inv&&p.inv<=3?`<s class="lf">${p.inv===1?"Last one":p.inv+" left"}</s>`:""}</div><b>${esc(p.name)}</b>${p.sub?`<small>${esc(p.sub)}</small>`:""}<em>${money(p.price)}${p.was?`<u>${money(p.was)}</u>`:""}</em></div>`).join("")}</div></section>`)};};
+const nm=p=>{const [a,v]=splitT(p.title||p.t||"");return {img:p.img,name:a,sub:v,price:p.price||p.p,inv:p.inv,was:p.was};};
 const bk2=(p,i,o)=>{o=o||{};const [a,v]=splitT(p.title||p.t||"");return `<div class="bk2 in" style="animation-delay:${.12+i*.05}s"><div class="ci"><img src="${img(p.img,500)}" alt="">${p.inv&&p.inv<=3?`<i class="lf">${p.inv===1?"Last one":p.inv+" left"}</i>`:""}</div><b>${esc(o.name||a)}</b>${(o.sub||v)?`<small>${esc(o.sub||v)}</small>`:""}<em>${money(p.price||p.p)}</em></div>`;};
 const S={
   open(){return {id:"open",chrome:"clean",dur:6,el:$(`<section class="scene open"><div class="photo" style="background-image:url('${img(FEED.shop,1920)}')"></div><div class="veil"></div><div class="copy"><img class="logo in" src="${img("https://cdn.shopify.com/s/files/1/0273/9870/1140/files/CaptCan-Logo-Red-01.png",1600)}" alt="CaptCan Comics"><p class="eye in d2">466 Elgin St · Brantford</p><h1 class="H in d3">Canada's online <em>comic shop</em></h1></div></section>`)};},
-  board(){const h=FEED.hot.slice(0,8);if(h.length<8)return null;
-    return {id:"board",dur:14,el:$(`<section class="scene board">${head(`${DAY===3?"New comic book day":"Out this week"} · ${esc(FEED.newLabel)} releases`,"Hot <em>this week</em>",`Top 8 by copies sold<br>${esc(FEED.asOf||"")}`)}
-      <div class="rows">${h.map((p,i)=>{const [a,b]=splitT(p.title);return `<div class="r ${i<3?"top":""}" style="animation-delay:${.15+i*.07}s"><div class="n">${i+1}</div><img src="${img(p.img,300)}" alt=""><b>${esc(a)}${b?`<small>${esc(b)}</small>`:""}</b><div class="p">${money(p.price)}</div></div>`}).join("")}</div></section>`)};},
+  board(){return bigs("board",(FEED.hot||[]).slice(0,8).map(nm),{n:4,rank:1,eye:`Top sellers this week, by copies sold`,h:"Hot this week"});},
   hero(){const n=Math.min(8,FEED.hot.length);if(!n)return null;const r=nx("hero",n),p=FEED.hot[r],[a,b]=splitT(p.title);
     return {id:"hero",dur:9,el:$(`<section class="scene hero">${amb(p.img)}<div class="copy"><p class="eye in">${DAY===3?"New comic book day":"Out this week"} · #${r+1} best seller</p><h1 class="H in d1">${esc(a)}</h1>${b?`<div class="sub in d2">${esc(b)}</div>`:""}<div class="row in d3"><div class="price">${money(p.price)}</div>${chip(link(p,"hero"),"Scan to buy","In store today")}</div>${p.inv&&p.inv<=5?`<div class="in d4"><span class="left">Only ${p.inv} left</span></div>`:""}</div><div class="frame"><img src="${img(p.img)}" alt=""></div></section>`)};},
   story(){const ks=FEED.keys.map(p=>({...p,k:keyNote(p.title)})).filter(p=>p.k);if(!ks.length)return null;const p=ks[nx("story",ks.length)];
     const who=p.k.note.replace(/^(1st (full )?appearance of |Origin of )/,"");
     return {id:"story",dur:10,el:$(`<section class="scene story">${amb(p.img)}<div class="copy"><p class="eye in">${esc(/^1st/.test(p.k.note)?"First appearance":/^Origin/.test(p.k.note)?"Origin story":"Key issue")} · ${esc(p.k.year)}</p><h1 class="H in d1">${esc(who)}</h1><div class="book in d2">${esc(shortT(p.title))}</div><div class="row in d3"><div class="price">${money(p.price)}</div>${chip(link(p,"key"),"Scan to buy","Or ask to see it")}</div></div><div class="slab"><img src="${img(p.img)}" alt=""></div></section>`)};},
-  wall(){const L=FEED.hot.slice(0,10);if(L.length<5)return null;const coll=FEED.newColl||"/collections/final-order-cut-off";
-    return {id:"wall",dur:14,el:$(`<section class="scene wall v2"><header><div><p class="eye in">${DAY===3?"New comic book day":"Out this week"} · ${esc(FEED.newLabel)} releases</p><h1 class="H in d1">New <em>this week</em></h1></div><div class="bigq in d2">${chip(utm(SITE+coll,"wall"),"Scan to shop","All of this week")}</div></header><div class="g5">${L.map((p,i)=>bk2(p,i)).join("")}</div></section>`)};},
+  wall(){const coll=FEED.newColl||"/collections/final-order-cut-off";return bigs("wall",(FEED.hot||[]).filter(p=>p.img).map(nm),{n:3,eye:`${DAY===3?"New comic book day":"Out this week"}, ${esc(FEED.newLabel)} releases`,h:"New this week",qr:[utm(SITE+coll,"wall"),"Scan to shop","All of this week"]});},
   run(){const R=FEED.run;if(!R||!R.items||R.items.length<6)return null;const L=R.items.slice(0,12);
     return {id:"run",dur:14,el:$(`<section class="scene run"><header><div><p class="eye in">${esc(R.eye)}</p><h1 class="H in d1">${R.h}</h1></div><div class="bigq in d2"><div class="num">${R.count}<small>issues in stock</small></div>${chip(utm(SITE+R.coll,"run"),"Scan to shop","Every issue")}</div></header><div class="g6">${L.map((p,i)=>`<div class="cv" style="animation-delay:${.1+i*.05}s"><img src="${img(p.img,500)}" alt=""><div class="cap"><b>${esc(p.t)}</b><span>${money(p.price)}<em>${esc(p.y)}</em></span></div></div>`).join("")}</div></section>`)};},
-  blow(){const L=(FEED.blow||[]).slice(0,6);if(L.length<6)return null;
-    return {id:"blow",dur:12,el:$(`<section class="scene blow"><header><div><p class="eye in">Recent release blowout</p><h1 class="H in d1">25% off <em>recent releases</em></h1></div><div class="bigq in d2"><div class="num">40,000+<small>books on sale</small></div>${chip(utm(SITE+"/collections/back-issue-blowout","blowout"),"Scan to shop","Online and in store")}</div></header><div class="g6">${L.map((p,i)=>`<div class="cv" style="animation-delay:${.1+i*.05}s"><img src="${img(p.img,500)}" alt=""><div class="cap"><b>${esc(p.t)}</b><span>${money(p.price)}<em><s>${money(p.was)}</s></em></span></div></div>`).join("")}</div></section>`)};},
+  blow(){return bigs("blow",(FEED.blow||[]).map(p=>({img:p.img,name:p.t,price:p.price,was:p.was})),{n:4,eye:"25% off recent releases, online and in store",h:"Blowout",qr:[utm(SITE+"/collections/back-issue-blowout","blowout"),"Scan to shop","40,000+ books on sale"]});},
   /* market */
   market(part){const L=MARKET.hot10.slice(part*5,part*5+5);
     return {id:"market",dur:15,el:$(`<section class="scene mk">${head(`The market this week${part?" · 6 to 10":" · 1 to 5"}`,"Hottest <em>comics</em>",esc(MARKET.hot10src).replace(" · eBay","<br>eBay"))}${L.map((m,i)=>`<div class="mrow ${m.r<=3?"top":""} in" style="animation-delay:${.15+i*.09}s"><div class="n">${m.r}</div>${m.img?`<img class="c" src="${img(m.img,300)}" alt="">`:`<div class="c blank">${m.r}</div>`}<div style="min-width:0"><b>${esc(m.t)}</b><span class="w">${esc(m.v)}</span></div><div class="ms"><b>${esc(m.up)}</b><span>${esc(m.s)}</span></div></div>`).join("")}</section>`)};},
   alpha(){const s=MARKET.spot;if(!s||!s.h)return null;
     return {id:"alpha",dur:11,el:$(`<section class="scene svc"><div class="copy"><p class="eye in">${esc(s.eye)}</p><h1 class="H in d1">${s.h}</h1><p class="txt in d2">${esc(s.txt)}</p><div class="pts in d3">${(s.pts||[]).map(p=>`<div><b>${esc(p[0])}</b> · ${esc(p[1])}</div>`).join("")}</div></div><div class="big in d2"><div class="lab">${esc(s.cta||"Got one?")}</div><div class="sm">${esc(s.ctaTxt||"Ask us what yours is worth.")}</div>${chip(utm(SITE+"/pages/sell-your-collection","spotlight"),"Scan to sell","Paid by e-Transfer")}</div></section>`)};},
-  sold(){const L=MARKET.sold.slice(0,6);if(L.length<4)return null;
-    return {id:"sold",dur:13,el:$(`<section class="scene sold v2">${head("Sold at CaptCan · last 30 days","Just sold <em>at CaptCan</em>","Real sale prices<br>Canadian dollars")}<div class="g6">${L.map((p,i)=>bk2({img:p.img,p:p.p,title:p.t},i,{name:p.t,sub:p.g})).join("")}</div><div class="strip in d4"><p>Sitting on books like these? <em>We buy and consign.</em></p>${chip(utm(SITE+"/pages/sell-your-collection","sold"),"Scan to sell","Free evaluation")}</div></section>`)};},
+  sold(){return bigs("sold",(MARKET.sold||[]).map(p=>({img:p.img,name:p.t,sub:p.g,price:p.p})),{n:4,eye:"Sold at CaptCan in the last 30 days, Canadian prices",h:"Just sold here",qr:[utm(SITE+"/pages/sell-your-collection","sold"),"Got books like these?","We buy and consign"]});},
   vel(){const L=[...MARKET.vel].sort((a,b)=>b.n-a.n),max=Math.max(...L.map(v=>v.n));
     return {id:"vel",dur:13,el:$(`<section class="scene vel">${head("Modern velocity · last 30 days","Moving <em>fastest</em>","Copies sold at CaptCan<br>Updated "+esc(MARKET.asOf))}${L.map((v,i)=>`<div class="vrow ${v.ours?"ours":""} in" style="animation-delay:${.12+i*.07}s"><img src="${img(v.img,200)}" alt=""><div><b>${esc(v.t)}</b><span>${esc(v.v)}</span></div><div class="bar"><i style="width:${Math.round(v.n/max*1000)}px;animation-delay:${.3+i*.07}s"></i><s>${v.n}</s></div></div>`).join("")}</section>`)};},
   news(part){part=part||0;const N=(MARKET.news||[]).slice(part*3,part*3+3);if(N.length<2)return null;
@@ -3347,9 +3403,9 @@ const S={
     return {id:"lesson",dur:13,el:$(`<section class="scene lesson">${Ls[i!=null?i%Ls.length:nx("lesson",Ls.length)]()}</section>`)};},
   school(){return {id:"school",dur:12,el:$(`<section class="scene school"><p class="eye in">Collector school</p><h1 class="H in d1">How CGC <em>grades</em></h1><p class="lead in d2">Every slab gets a number from 0.5 to 10. The label colour tells you what kind of book is inside.</p><div class="scale in d3">${[["10","Gem Mint"],["9.8","NM/M"],["9.6","NM+"],["9.4","NM"],["9.2","NM-"],["9.0","VF/NM"],["8.0","VF"],["6.0","FN"],["4.0","VG"],["2.0","GD"]].map(g=>`<div class="${g[0]==="9.8"?"hl":""}"><b>${g[0]}</b><span>${g[1]}</span></div>`).join("")}</div><div class="facts in d4">${[["Blue label","Universal. A straight, unrestored grade.","#2F6FD6"],["Yellow label","Signature Series. Signed in front of a CGC witness.","#E8B30E"],["Purple label","Restored. Work has been done to the book.","#7B3FB5"]].map(f=>`<div style="border-top-color:${f[2]}"><b>${f[0]}</b><span>${f[1]}</span></div>`).join("")}</div></section>`)};},
   quizFirst(i){const Q=MARKET.quiz,q=Q[i!=null?i%Q.length:nx("mc",Q.length)];const ok=q.o.indexOf(q.a);
-    const el=$(`<section class="scene mc"><div class="q"><p class="eye in">Collector quiz · first appearances</p><h1 class="H in d1">Who shows up <em>for the first time?</em></h1><div class="book in d2">${esc(q.b)}<span>${esc(q.y)}</span></div><div class="opts in d3">${q.o.map((o,i)=>`<div class="${i===ok?"ok":""}"><i>${"ABCD"[i]}</i><span>${esc(o)}</span></div>`).join("")}</div><div class="timer"><i></i></div><p class="after">${q.sold?`A copy sold here last month for <b>${money(q.sold)}</b>.`:esc(q.note||"")} Got one? We buy keys.</p></div><div class="art"><div class="qm">?</div><img src="${img(q.img,700)}" alt=""></div></section>`);
-    let t;el._start=()=>{t=setTimeout(()=>el.classList.add("rev"),8300);};el._cleanup=()=>clearTimeout(t);
-    return {id:"quiz",dur:15,el};},
+    const el=$(`<section class="scene fa">${amb(q.img)}<div class="l"><p class="eye in">Guess the first appearance</p><h1 class="H in d1">Who shows up for the first time in <span>${esc(q.b)}</span>?</h1><p class="yr in d2">${esc(q.y)}</p><div class="opts">${q.o.map((o,k)=>`<div class="op in ${k===ok?"ok":""}" style="animation-delay:${.35+k*.1}s"><i>${"ABCD"[k]}</i><b>${esc(o)}</b></div>`).join("")}</div><div class="bar in d3"><i></i></div><p class="after">${q.sold?`A copy sold here for <b>${money(q.sold)}</b>. Got one? We buy keys.`:esc(q.note||"Got one? We buy keys.")}</p></div><div class="faR"><div class="faCov"><img src="${img(q.img,800)}" alt=""><div class="hide">?</div></div></div></section>`);
+    let t;el._start=()=>{t=setTimeout(()=>el.classList.add("rev"),9000);};el._cleanup=()=>clearTimeout(t);
+    return {id:"quiz",dur:16,el};},
   quizPrice(){const pool=FEED.keys.filter(p=>p.price>=40);if(!pool.length)return null;const p=pool[nx("qp",pool.length)];const k=keyNote(p.title);
     return {id:"quiz",dur:14,el:$(`<section class="scene quiz"><img class="cover" src="${img(p.img,700)}" alt=""><div class="q"><p class="eye in">Collector quiz</p><h1 class="H in d1">Guess <em>the price</em></h1><div class="book in d2">${esc(shortT(p.title))}</div><div class="timer"><i></i></div><div class="a"><p class="eye">Our price</p><h2>${money(p.price)}</h2><p class="t">${k?esc(k.note)+", "+esc(k.year)+". ":""}Ask to see it in person.</p></div></div></section>`)};},
   soon(){const pool=(FEED.soon||[]).filter(p=>p.sold>=10);if(!pool.length)return null;const p=pool[nx("soon",pool.length)],[a,b]=splitT(p.title);
@@ -3366,8 +3422,7 @@ const S={
     },i*per*1000+400)));
     el._cleanup=()=>T.forEach(clearTimeout);
     return {id:"howto",el,dur:h.steps.length*per+1.2};},
-  keys(){const n=Math.floor(FEED.keys.length/6);if(!n)return null;const off=nx("key",n)*6,k=FEED.keys.slice(off,off+6);
-    return {id:"keys",dur:13,el:$(`<section class="scene keys"><header><div><p class="eye in">${DAY===5?"Up on the site today":"Fresh off Friday's upload"}</p><h1 class="H in d1">Just <em>landed</em></h1></div><span class="btn in d2">Ask to see any book</span></header><div class="slabs">${k.map((p,i)=>`<div class="slab6 in" style="animation-delay:${.15+i*.07}s"><img src="${img(p.img,500)}" alt=""><div><b>${esc(shortT(p.title))}</b><span>${money(p.price)}</span></div></div>`).join("")}</div></section>`)};},
+  keys(){return bigs("keys",(FEED.keys||[]).filter(p=>p.img).map(p=>{const t=shortT(p.title),m=t.match(/^(.*?#\S+)\s*(.*)$/);return {img:p.img,name:m?m[1]:t,sub:m?m[2]:"",price:p.price};}),{n:4,eye:DAY===5?"Up on the site today":"Fresh off Friday's back-issue upload",h:"Just landed",qr:[utm(SITE+"/collections/all","keys"),"Ask to see any book","Or scan to shop"]});},
   presale(){const f=FEED.foc.slice(0,3);if(f.length<3)return null;const dl=nextMonday8pm();
     const el=$(`<section class="scene presale"><div class="copy">${DAY===1?`<p class="eye in">Last call · closes tonight 8pm</p><h1 class="H in d1">Pre-sales <em>close tonight</em></h1>`:`<p class="eye in">Pre-sales · close Monday 8pm</p><h1 class="H in d1">Lock in <em>next month</em></h1>`}<div class="count in d2"><div><b data-k="d"></b><s>Days</s></div><div><b data-k="h"></b><s>Hrs</s></div><div><b data-k="m"></b><s>Min</s></div><div><b data-k="s"></b><s>Sec</s></div></div><div class="in d3">${chip(utm(SITE+"/collections/final-order-cut-off","presale"),"Scan to pre-order","Ships release day")}</div></div><div class="covers">${f.map(p=>`<img src="${img(p.img,600)}" alt="">`).join("")}</div></section>`);
     const tick=()=>{const s=Math.max(0,(dl-now())/1000|0),v={d:s/86400|0,h:s%86400/3600|0,m:s%3600/60|0,s:s%60};el.querySelectorAll("b[data-k]").forEach(b=>b.textContent=String(v[b.dataset.k]).padStart(2,"0"));};
@@ -3446,10 +3501,8 @@ const S={
     if(L.length<3){const p=L[nx("feat",L.length)];return S.book(Object.assign({},p,{eye:"Staff pick today"}));}
     return {id:"feat",dur:13,el:$(`<section class="scene monkw feat"><header><div><p class="eye in">Picked by our staff today</p><h1 class="H in d1">Ask us <em>about these</em></h1></div></header><div class="g6">${L.map((p,i)=>`<div class="cv" style="animation-delay:${.1+i*.05}s"><img src="${img(p.img,500)}" alt=""><div class="cap"><b>${esc(shortT(p.title))}</b><span>${money(p.price)}</span></div></div>`).join("")}</div></section>`)};},
   /* in-store stock */
-  inc(){const L=(FEED.inc||[]).slice(0,8);if(L.length<4)return null;
-    return {id:"inc",dur:14,el:$(`<section class="scene inc"><header><div><p class="eye in">Ratio variants · in stock now</p><h1 class="H in d1">Incentive <em>covers</em></h1><p class="hint in d2">Shops unlock 1 for every 10, 25 or 50 regular copies they order.</p></div><div class="bigq in d2">${chip(utm(SITE+"/search?q=incentive","incentives"),"Scan to shop","Every incentive cover")}</div></header><div class="cards">${L.map((p,i)=>`<div class="ic in" style="animation-delay:${.12+i*.06}s"><img src="${img(p.img,400)}" alt=""><div><b>${esc(p.t)}</b><span class="v">${esc(p.v)}</span>${p.g?`<span class="g">${esc(p.g)}</span>`:""}<em>${money(p.price)}</em>${p.inv<=2?`<s>${p.inv===1?"Last one":p.inv+" left"}</s>`:`<s style="visibility:hidden">0</s>`}</div></div>`).join("")}</div></section>`)};},
-  trades(){const L=(FEED.trades||[]).slice(0,5);if(L.length<3)return null;
-    return {id:"trades",dur:13,el:$(`<section class="scene trades v2"><header><div><p class="eye in">On the shelf now</p><h1 class="H in d1">Trades and <em>hardcovers</em></h1></div><div class="bigq in d2">${chip(utm(SITE+"/collections/graphic-novels","trades"),"Scan to shop","1,100+ collections")}</div></header><div class="g5">${L.map((p,i)=>bk2(p,i,{name:p.t,sub:p.v})).join("")}</div></section>`)};},
+  inc(){return bigs("inc",(FEED.inc||[]).map(p=>({img:p.img,name:p.t,sub:[p.v,p.g].filter(Boolean).join(", "),price:p.price,inv:p.inv})),{n:4,eye:"Ratio variants, in stock now",h:"Incentive covers",qr:[utm(SITE+"/search?q=incentive","incentives"),"Scan to shop","Every incentive cover"]});},
+  trades(){return bigs("trades",(FEED.trades||[]).map(p=>({img:p.img,name:p.t,sub:p.v,price:p.price,inv:p.inv})),{n:4,eye:"On the shelf now",h:"Trades and hardcovers",qr:[utm(SITE+"/collections/graphic-novels","trades"),"Scan to shop","1,100+ collections"]});},
   /* about CaptCan */
   about(i){const k=i!=null?i%2:nx("about",2);
     if(k===0)return {id:"about",dur:14,el:$(`<section class="scene about"><div class="top"><div class="copy"><p class="eye in">Family run · since 2019</p><h1 class="H in d1">From a basement <em>to Elgin Street</em></h1><p class="txt in d2">CaptCan started with 150 comics in Warren's basement and Jayden's dorm room. Now it's one of the biggest back issue shops in Canada.</p></div><div class="ph in d2" style="background-image:url('${img(FEED.shop,1200)}')"></div></div><div class="tl5">${[["Sept 2019","150 books in a basement and a dorm room"],["May 2020","Our first warehouse"],["Feb 2022","This store opens on Elgin Street"],["Dec 2023","We buy out two shops. 500,000 more books"],["Today","Shipping 1,000+ books a day across Canada"]].map((t,j)=>`<div class="in" style="animation-delay:${.3+j*.1}s"><i></i><b>${t[0]}</b><span>${t[1]}</span></div>`).join("")}</div></section>`)};
@@ -3504,7 +3557,7 @@ const host=document.getElementById("host"),cut=document.getElementById("cut");le
 const clone=o=>JSON.parse(JSON.stringify(o));
 function buildNext(){for(let g=0;g<60;g++){if(!queue.length){loop++;queue=playlist();}const f=queue.shift();const snap=clone(IX);let sc=null;try{sc=f();}catch(e){console.warn(e);}if(sc&&sc.id!==lastId)return {sc,f,snap};}return null;}
 function rebuild(h){const cur=clone(IX);IX=clone(h.snap);let sc=null;try{sc=h.f();}catch(e){}IX=cur;return sc;}
-const LITE={wall:1,board:1,blow:1,keys:1,trades:1,inc:1,sold:1,artists:1};function ready(el){try{if(el.querySelector(":scope>header"))el.classList.add("hd");const id=[...el.classList].find(c=>LITE[c]);if(id)el.classList.add("lite");}catch(x){}const imgs=[...el.querySelectorAll("img")];return Promise.race([Promise.all(imgs.map(i=>i.decode?i.decode().catch(()=>{i.style.visibility="hidden";}):Promise.resolve())),new Promise(r=>setTimeout(r,3000))]);}
+const LITE={};function ready(el){try{if(el.querySelector(":scope>header"))el.classList.add("hd");const id=[...el.classList].find(c=>LITE[c]);if(id)el.classList.add("lite");}catch(x){}const imgs=[...el.querySelectorAll("img")];return Promise.race([Promise.all(imgs.map(i=>i.decode?i.decode().catch(()=>{i.style.visibility="hidden";}):Promise.resolve())),new Promise(r=>setTimeout(r,3000))]);}
 const prog=()=>document.getElementById("prog");
 function progress(ms){const p=prog();if(!p)return;p.getAnimations().forEach(a=>a.cancel());if(ms==null){p.style.transform="scaleX(0)";return;}p.animate([{transform:`scaleX(${Math.max(0,1-ms/curMs)})`},{transform:"scaleX(1)"}],{duration:ms,fill:"forwards"});}
 function schedule(ms){clearTimeout(timer);if(paused){remain=ms;progress(null);return;}startedAt=Date.now();remain=ms;timer=setTimeout(()=>go(1),ms);progress(ms);}
@@ -3539,7 +3592,7 @@ let YTREADY=false,LASTTR=0;const TRGAP=12*60000;window.onYouTubeIframeAPIReady=(
 const liveT=x=>x.exp?now()<=new Date(x.exp+"T23:59:00"):(!x.rel||now()<=new Date(new Date(x.rel+"T12:00:00").getTime()+14*864e5));
 /* YouTube trailers load hidden in the background while other screens play. A trailer only comes on screen once it is buffered and ready, so there is never a loading screen. */
 const YTP={state:"idle",t:null,player:null,next:0,k:0,want:false,bufT:0,onEnd:null,n:0,w:null,f:null,o:null,to:0,
-  box(){if(this.w)return;const st=document.getElementById("stage");if(!st)return;this.w=document.createElement("div");this.w.id="ytpre";this.w.innerHTML='<div class="f"></div><div class="ovl"></div>';st.appendChild(this.w);this.f=this.w.querySelector(".f");this.o=this.w.querySelector(".ovl");},
+  box(){if(this.w)return;const st=document.getElementById("stage");if(!st)return;this.w=document.createElement("div");this.w.id="ytpre";this.w.innerHTML='<div class="f"></div><div class="ovl"></div>';st.appendChild(this.w);const vc=document.createElement("div");vc.id="vcover";st.appendChild(vc);this.f=this.w.querySelector(".f");this.o=this.w.querySelector(".ovl");},
   log(ev,x){if(this.n++>14)return;try{post(Object.assign({cmd:"ytp",ev,id:this.t&&this.t.id,w:WEAKTV},x||{}),"-ack");}catch(e){}},
   prep(id,want){if(this.off&&!want)return;if(IS_REMOTE||NOTTV||!YTREADY||typeof YT==="undefined"||!YT.Player)return;if(want)this.want=true;if(this.state!=="idle")return;if(!id&&(Date.now()<this.next||Date.now()-LASTTR<TRGAP-150000))return;if(TRON===false&&!want)return;
     const L=(MARKET.trailers||[]).filter(x=>x.id&&liveT(x));if(!L.length)return;this.box();if(!this.w)return;
@@ -3553,11 +3606,11 @@ const YTP={state:"idle",t:null,player:null,next:0,k:0,want:false,bufT:0,onEnd:nu
           const iv=setInterval(()=>{if(this.state!=="loading"){clearInterval(iv);return;}try{const d=p.getDuration()||150,f=p.getVideoLoadedFraction()||0;if(f*d>=Math.min(20,d*.2)||Date.now()-t0>60000){clearInterval(iv);try{p.seekTo(0,true);p.pauseVideo();}catch(x){}this.state="ready";clearTimeout(this.to);this.log("ready",{s:Math.round((Date.now()-t0)/1e3),f:+f.toFixed(2)});if(this.want){this.want=false;pushScreen("trailer","yt");}}}catch(x){}},1000);}},
       onError:e=>{this.log("error",{c:e&&e.data});this.fail();}}});}catch(x){this.log("throw",{m:String(x&&x.message||x).slice(0,80)});this.fail();return;}
     clearTimeout(this.to);this.to=setTimeout(()=>{if(this.state==="loading"){this.log("timeout");this.fail();}},120000);},
-  fail(){this.kill();this.next=Date.now()+5*60000;this.want=false;this.bad=(this.bad||0)+1;if(WEAKTV&&this.bad>=2){this.off=true;this.log("off");}},
+  fail(){this.kill();this.next=Date.now()+5*60000;this.want=false;this.bad=(this.bad||0)+1;if(WEAKTV&&this.bad>=3){this.off=true;this.log("off");}},
   kill(){try{this.player&&this.player.destroy();}catch(x){}this.player=null;if(this.f)this.f.innerHTML="";if(this.o)this.o.innerHTML="";if(this.w)this.w.classList.remove("on");this.state="idle";this.bufT=0;clearTimeout(this.to);},
   scene(){const self=this,t=this.t;const el=$('<section class="scene trailer ytp"></section>');const sc={id:"trailer",chrome:"cinema",dur:170,el,manual:true};let T2=[],done=false;
     const end=()=>{if(done)return;done=true;T2.forEach(x=>{clearTimeout(x);clearInterval(x);});sc.onEnd&&sc.onEnd();};
-    el._start=()=>{if(self.state!=="ready"){end();return;}self.onEnd=end;self.show();T2.push(setTimeout(end,175000));T2.push(setInterval(()=>{if(self.bufT&&Date.now()-self.bufT>8000){self.log("stall");self.bad=(self.bad||0)+1;if(WEAKTV&&self.bad>=2)self.off=true;end();}},1000));};
+    el._start=()=>{if(self.state!=="ready"){end();return;}self.onEnd=end;self.show();T2.push(setTimeout(end,175000));T2.push(setInterval(()=>{if(self.bufT&&Date.now()-self.bufT>8000){self.log("stall");self.bad=(self.bad||0)+1;if(WEAKTV&&self.bad>=3)self.off=true;end();}},1000));};
     el._cleanup=()=>{T2.forEach(x=>{clearTimeout(x);clearInterval(x);});self.hide();};return sc;},
   show(){const t=this.t,p=this.player;this.state="live";this.bufT=0;
     const dd=(()=>{if(!t.rel)return"";const a=new Date(t.rel+"T00:00:00"),n=now(),b=new Date(n.getFullYear(),n.getMonth(),n.getDate()),d=Math.round((a-b)/864e5);return d>0?`<span class="d"><b>${d}</b> ${d===1?"day to go":"days to go"}</span>`:`<span class="d">In theatres now</span>`;})()||(t.when?`<span class="d">${esc(t.when)}</span>`:"");
