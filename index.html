@@ -3257,7 +3257,7 @@ const keyNote=t=>{for(const [re,n,y] of KEYS)if(re.test(t))return {note:n,year:y
 
 
 CONFIG.ticker=["Every book bagged and boarded","Pre-sales close Monday 8pm","New releases every Tuesday","New back issues every Friday","Hold Box: no time limit, no storage fees","We buy and consign collections","CaptCan Cash: 10% back on pre-sales","Free account: scan any code on screen"];
-const BUILD="1118-1614";const SITE="https://www.captcancomics.ca",API="2025-10";
+const BUILD="1118-1706";const SITE="https://www.captcancomics.ca",API="2025-10";
 /* helpers */
 const NW="h1,h2,h3,p,b,span,figcaption,.sub,.txt,.book,.lab,.sm,.when,.after,.lead,.pts div";
 function noWidow(root){root.querySelectorAll(NW).forEach(e=>{if(e.children.length>2)return;const w=document.createTreeWalker(e,NodeFilter.SHOW_TEXT);let last=null;while(w.nextNode()){const n=w.currentNode;n.nodeValue=n.nodeValue.replace(/(\w)-(\w)/g,"$1\u2011$2");if(n.nodeValue.trim())last=n;}if(!last)return;const v=last.nodeValue,i=v.trimEnd().lastIndexOf(" ");if(i>0&&v.trim().split(/ +/).length>2&&v.slice(i+1).trim().length<=10)last.nodeValue=v.slice(0,i)+"\u00a0"+v.slice(i+1);});return root;}
@@ -3630,7 +3630,7 @@ const IS_REMOTE=location.hash==="#remote"||location.hash==="#r";const NOTTV=!IS_
 let RELAYFULL=0;const post=(o,t)=>fetch(RELAY+(t||""),{method:"POST",body:JSON.stringify(Object.assign({at:Date.now()},o))}).then(r=>{if(r.status===429){RELAYFULL=Date.now();try{window.onRelayFull&&window.onRelayFull();}catch(x){}}else RELAYFULL=0;return r;}).catch(()=>{});
 /* ===== radio ===== */
 const DEFST=[{id:"rpmain",name:"Radio Paradise",url:"https://stream.radioparadise.com/mp3-192"},{id:"rprock",name:"Rock Mix",url:"https://stream.radioparadise.com/rock-320"},{id:"rpmellow",name:"Mellow Mix",url:"https://stream.radioparadise.com/mellow-320"},{id:"rpglobal",name:"World Mix",url:"https://stream.radioparadise.com/global-320"}];const stationUrl=id=>{const x=DEFST.find(s=>s.id===id)||DEFST[0];return x.url;};
-const WEAKTV=/Tizen|Web0S|webOS|SMART-TV|SmartTV/i.test(navigator.userAgent);
+const WEAKTV=/Tizen|Web0S|webOS|SMART-TV|SmartTV|CrKey/i.test(navigator.userAgent);const ISCAST=/CrKey/i.test(navigator.userAgent);const CASTID="__CASTID__";
 const Radio={a:null,on:false,url:"",name:"",vol:.35,ducked:false,locked:true,
   el(){if(!this.a){this.a=new Audio();this.a.preload="none";this.a.addEventListener("error",()=>{this.st&&this.st.err++;if(this.on)setTimeout(()=>{this.a.src=this.url;this.play();},4000);});}return this.a;},
   apply(r){if(!r||NOTTV)return;if(r.url&&/somafm\.com/.test(r.url)){r=Object.assign({},r,{url:DEFST[0].url,name:DEFST[0].name});}this.vol=r.vol!=null?r.vol:this.vol;const url=r.url||(r.id?stationUrl(r.id):"");const changed=url&&url!==this.url;this.url=url||this.url;const ds=DEFST.find(x=>x.url===this.url);this.name=ds?ds.name:(r.name||this.name);this.on=!!r.on&&!!this.url;
@@ -3715,7 +3715,7 @@ function remoteUI(){
    <div class="pb"><button data-c="prev">◀ Back</button><button data-c="pause" id="pp">❚❚ Pause</button><button data-c="next">Next ▶</button></div>
    <div class="holdrow"><span>Show pushed screens for</span>${HOLDS.map(h=>`<button data-hold="${h[0]}">${h[1]}</button>`).join("")}</div></div>
   <section id="t-live" class="tab cur"><div class="lay"><div>
-    <div class="card"><div class="pv" id="livepv"><span class="tag live">On the TV</span></div><div class="nowline"><div><b id="tvnow">Waiting for the TV</b><br><span id="tvsub">Tap Check if this doesn't update</span></div><button id="ping">Check</button></div><div class="health" id="health"></div><div class="warn" id="warn"></div><div class="dupe" id="dupe"></div>     <button class="w" data-c="next" style="width:100%;margin-top:10px">Back to the channel</button></div></div><div>
+    <div class="card"><div class="pv" id="livepv"><span class="tag live">On the TV</span></div><div class="nowline"><div><b id="tvnow">Waiting for the TV</b><br><span id="tvsub">Tap Check if this doesn't update</span></div><button id="ping">Check</button></div><button class="w" id="castgo" style="width:100%;margin-top:10px;display:none">Start the channel on the Chromecast</button><p class="note" id="castnote" style="display:none;margin:6px 0 0"></p><div class="health" id="health"></div><div class="warn" id="warn"></div><div class="dupe" id="dupe"></div>     <button class="w" data-c="next" style="width:100%;margin-top:10px">Back to the channel</button></div></div><div>
     <h3>Sign up a customer</h3><div class="card" id="su"><label>Email (ask every customer at the till)</label><input id="sue" type="email" inputmode="email" autocomplete="off" placeholder="name@email.com"><label>First name (optional)</label><input id="sun" autocomplete="off" placeholder="First name"><label>They collect (tap any)</label><div class="rtiles" id="sui">${["New releases","Back issues","CGC graded","Keys","Pokémon","Trades"].map(x=>`<button data-int="${x}">${x}</button>`).join("")}</div><label>Today's purchase in $ (optional)</label><input id="sua" inputmode="decimal" autocomplete="off" placeholder="0.00"><label class="row" style="gap:10px;align-items:center;margin-top:12px"><input id="suc" type="checkbox" style="width:24px;height:24px;margin:0">Customer said yes to emails</label><button id="sugo" style="width:100%;margin-top:10px">Add to email list</button><p class="note" id="sum" style="margin:8px 0 0">Goes to the Klaviyo list In-store sign-ups.</p></div>
     <h3>One tap</h3><div class="grid2">
      <button class="big" data-p="trailer"><span>▶ Play a trailer</span><small>Newest trailer, with sound</small></button>
@@ -3838,11 +3838,17 @@ function remoteUI(){
     const old=m.cv&&m.cv<76;const wn=W.querySelector("#warn");wn.style.display=old?"block":"none";if(old)wn.textContent=`This TV's browser is old (version ${m.cv}). If slides look squished, plug in the Fire TV stick and use its Silk browser.`;
     if(m.now&&m.now!==lastNow){lastNow=m.now;const lp=W.querySelector("#livepv");if(PV[m.now])paint(lp,PV[m.now]);else{PVS.delete(lp);lp.querySelectorAll(".pvi").forEach(x=>x.remove());}}}catch(x){}};}catch(x){}
   post({cmd:"ping",at:Date.now()});
+  /* Chromecast: one tap starts the channel on the TV; it keeps running after the phone is put away */
+  if(CASTID&&CASTID.indexOf("__")<0){const cb=W.querySelector("#castgo"),cn=W.querySelector("#castnote");cb.style.display="block";
+    window.__onGCastApiAvailable=ok=>{if(!ok){cn.style.display="block";cn.textContent="Casting works from Chrome on Android or a computer. On iPhone, open this page in the Google Home app's browser or use a computer.";return;}try{cast.framework.CastContext.getInstance().setOptions({receiverApplicationId:CASTID,autoJoinPolicy:chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED});}catch(x){}};
+    const ss=document.createElement("script");ss.src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1";document.head.appendChild(ss);
+    cb.addEventListener("click",()=>{try{cast.framework.CastContext.getInstance().requestSession().then(()=>{tip("Channel started on the TV. You can close this.");},()=>{tip("Pick the shop's Chromecast from the list");});}catch(x){cn.style.display="block";cn.textContent="Open this page in Chrome to start the Chromecast.";}});}
   const pin=document.createElement("div");pin.id="pin";pin.innerHTML=`<div><h1>CaptCan TV Remote</h1><p style="color:#A9A9B0">Enter the staff PIN</p><input id="pinv" type="password" inputmode="numeric" autocomplete="off" style="font-size:28px;text-align:center;background:#16161A;color:#fff;border:1px solid #33333A;border-radius:12px;padding:14px;width:100%;box-sizing:border-box"></div>`;
   let ok=false;try{ok=localStorage.getItem("cctvPin")==="466466";}catch(x){}
   if(!ok){document.body.appendChild(pin);const i=pin.querySelector("input");i.focus();i.addEventListener("input",()=>{if(i.value==="466466"){try{localStorage.setItem("cctvPin","466466");}catch(x){}pin.remove();}});}
 }
 
+if(ISCAST){try{const sc=document.createElement("script");sc.src="https://www.gstatic.com/cast/sdk/libs/caf_receiver/v3/cast_receiver_framework.js";sc.onload=()=>{try{const o=new cast.framework.CastReceiverOptions();o.disableIdleTimeout=true;o.statusText="CaptCan TV";cast.framework.CastReceiverContext.getInstance().start(o);}catch(x){}};document.head.appendChild(sc);}catch(x){}GEST=true;}
 if(IS_REMOTE){remoteUI();}else{warm();
 (document.fonts&&document.fonts.ready?Promise.race([document.fonts.ready,new Promise(r=>setTimeout(r,3000))]):Promise.resolve()).then(()=>{buildTicker();next();});
 if(!ART){loadLive();setInterval(loadLive,5*60*1000);listen();restore()}}
