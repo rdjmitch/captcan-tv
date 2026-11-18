@@ -851,6 +851,26 @@ html,body{background:#0B0B0D}
 #needok span{font-family:var(--head);font-weight:800;font-size:26px;max-width:640px;line-height:1.15}
 body.cinema #needok{bottom:40px}
 .spot .row3{left:760px!important}.spot figure{flex:0 1 420px!important}.spot figcaption b{font-size:28px!important}
+.grade .art.slab img,.grade.show .art.slab img{clip-path:none!important}
+.grade .gw{position:relative;display:inline-block;line-height:0}
+.grade .gw img{display:block;max-height:820px;max-width:620px;width:auto;height:auto}
+.grade .gbox{position:absolute;left:2.4%;top:1.6%;width:17.6%;height:10.4%;background:#121212;color:var(--gold);font-style:normal;font-family:var(--head);font-weight:900;font-size:64px;line-height:1;display:flex;align-items:center;justify-content:center;border-radius:4px;transition:opacity .6s,transform .6s}
+.grade.show .gbox{opacity:0;transform:scale(1.3)}
+/* v17 design system: less template, more shop. Quiet labels, one accent, calm codes */
+.scene .eye{font-family:var(--body);font-weight:500;font-size:28px;letter-spacing:0;text-transform:none;color:#B9B9C0;gap:0}
+.scene .eye::before{display:none!important}
+.scene.lite .eye{color:#5E5E66}
+.scene .H em,.scene h1 em{color:inherit!important}
+.scene .qrc{gap:18px;padding:10px 22px 10px 10px;border-radius:6px}
+.scene .qrc img{width:120px;height:120px}
+.scene .qrc b{font-size:28px;text-transform:none;letter-spacing:0;font-weight:800}
+.scene .qrc span{font-size:20px;text-transform:none;letter-spacing:0;font-weight:500;color:#555;margin-top:6px}
+.nums .eye{color:#fff!important}
+.flow .mid .eye{color:#ddd}
+.scene .src{font-family:var(--body);font-weight:500;font-size:22px;letter-spacing:0;text-transform:none;line-height:1.4}
+.news .neye{letter-spacing:0!important;text-transform:none!important;font-weight:600!important;color:#F07A7F!important}
+.news .np{letter-spacing:0!important;text-transform:none!important}
+.board small,.inc span.v,.inc span.g,.trades .feat .v,.mrow .w i,.chain figcaption,.fact .key span,.timeline i{letter-spacing:.02em!important;text-transform:none!important}
 
 </style></head><body>
 <div id="stage">
@@ -3179,7 +3199,7 @@ const keyNote=t=>{for(const [re,n,y] of KEYS)if(re.test(t))return {note:n,year:y
 
 
 CONFIG.ticker=["Every book bagged and boarded","Pre-sales close Monday 8pm","New releases every Tuesday","New back issues every Friday","Hold Box: no time limit, no storage fees","We buy and consign collections","CaptCan Cash: 10% back on pre-sales","Free account: scan any code on screen"];
-const BUILD="1118-1604";const SITE="https://www.captcancomics.ca",API="2025-10";
+const BUILD="1118-1608";const SITE="https://www.captcancomics.ca",API="2025-10";
 /* helpers */
 const NW="h1,h2,h3,p,b,span,figcaption,.sub,.txt,.book,.lab,.sm,.when,.after,.lead,.pts div";
 function noWidow(root){root.querySelectorAll(NW).forEach(e=>{if(e.children.length>2)return;const w=document.createTreeWalker(e,NodeFilter.SHOW_TEXT);let last=null;while(w.nextNode()){const n=w.currentNode;n.nodeValue=n.nodeValue.replace(/(\w)-(\w)/g,"$1\u2011$2");if(n.nodeValue.trim())last=n;}if(!last)return;const v=last.nodeValue,i=v.trimEnd().lastIndexOf(" ");if(i>0&&v.trim().split(/ +/).length>2&&v.slice(i+1).trim().length<=10)last.nodeValue=v.slice(0,i)+"\u00a0"+v.slice(i+1);});return root;}
@@ -3282,7 +3302,7 @@ const S={
     return {id:"flow",dur:16,el:$(`<section class="scene flow">${rows.map((R,i)=>`<div class="lane ${i%2?"rev":""}"><div class="track">${R.map(card).join("")}${R.map(card).join("")}</div></div>`).join("")}<div class="mid in"><p class="eye">On the shelves right now</p><h1 class="H">All of this is <em>in the shop</em></h1><div>${chip(utm(SITE,"flow"),"Scan to shop","Or ask us to pull one")}</div></div></section>`)};},
   grade(){const K=(FEED.keys||[]).map(p=>{const m=(p.title||"").match(/\b(CGC\s*)?((?:GM|NM|VF|FN|VG|GD|FR|PR)[+-]?(?:\/[A-Z]+)?\s*)?(\d{1,2}\.\d)\b/);return m?{p,g:+m[3],cgc:!!m[1],lab:(m[1]?"CGC ":"")+(m[2]||"").trim()}:null;}).filter(x=>x&&x.p.img);if(!K.length)return null;
     const k=K[nx("grade",K.length)],t=shortT(k.p.title.replace(/\s*\b(CGC\s*)?((?:GM|NM|VF|FN|VG|GD|FR|PR)[+-]?(?:\/[A-Z]+)?\s*)?\d{1,2}\.\d\b.*$/,""));
-    const el=$(`<section class="scene grade"><div class="copy"><p class="eye in">Collector game</p><h1 class="H in d1">Guess <em>the grade</em></h1><p class="txt in d2">${esc(t)}. Grades run from 0.5 to 10. Make your call before it flips.</p><div class="ans"><div class="q in d3">?</div><div class="a"><b>${k.g.toFixed(1)}</b><span>${esc(k.lab||"Graded")}</span><em>${money(k.p.price)}, on our wall</em></div></div></div><div class="art in d2${k.cgc?" slab":""}"><img src="${img(k.p.img,800)}" alt=""><i class="cover"></i></div></section>`);
+    const el=$(`<section class="scene grade"><div class="copy"><p class="eye in">Collector game</p><h1 class="H in d1">Guess <em>the grade</em></h1><p class="txt in d2">${esc(t)}. Grades run from 0.5 to 10. Make your call before it flips.</p><div class="ans"><div class="q in d3">?</div><div class="a"><b>${k.g.toFixed(1)}</b><span>${esc(k.lab||"Graded")}</span><em>${money(k.p.price)}, on our wall</em></div></div></div><div class="art in d2"><span class="gw"><img src="${img(k.p.img,800)}" alt="">${k.cgc?`<i class="gbox">?</i>`:""}</span></div></section>`);
     setTimeout(()=>el.classList.add("show"),7000);return {id:"grade",dur:13,el};},
   doom(){const rel=new Date(2026,11,18),n=now(),d=Math.round((rel-new Date(n.getFullYear(),n.getMonth(),n.getDate()))/864e5);if(d<1||d>60)return null;
     const el=$(`<section class="scene doom"><div class="copy"><p class="eye in">Avengers: Doomsday</p><div class="big in d1"><b>${d}</b><span>${d===1?"day":"days"} to Doomsday</span></div><p class="txt in d2">Doctor Doom first showed up in Fantastic Four #5 in 1962. Get your Doom books before the movie hits.</p></div><div class="row4" id="dmb">${(()=>{const k=[].concat(...(MARKET.timeline||[])).find(x=>/doom/i.test(x.kn||"")&&x.img);return k?`<figure class="dk in d2"><img src="${img(k.img,800)}" alt=""><figcaption><b>${esc(k.k)}</b><span>${esc(k.kn)}, the key to own</span></figcaption></figure>`:"";})()}</div></section>`);
