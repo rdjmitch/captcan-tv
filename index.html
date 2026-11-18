@@ -619,6 +619,15 @@ header{padding-right:0!important}
 #bar .run span{line-height:1}
 #bar .run{padding:0!important;margin:0!important}
 html,body{background:#0B0B0D}
+/* trailer: while the video loads the slide is a finished title card (title, date, countdown, book), then the video fades in */
+.trailer .card::after{display:none!important}
+.trailer.pre .card,.trailer.still .card{background:radial-gradient(ellipse at 78% 45%,#2B1416 0%,#171213 45%,var(--ink) 75%)}
+.trailer .dd{position:absolute;right:130px;top:50%;transform:translateY(-58%);z-index:4;text-align:right;display:flex;flex-direction:column;align-items:flex-end;transition:opacity .5s}
+.trailer .dd b{font-family:var(--head);font-weight:900;font-size:380px;line-height:.82;color:var(--red);letter-spacing:-.02em}
+.trailer .dd b.now{font-size:240px}
+.trailer .dd span{font-weight:700;font-size:34px;letter-spacing:.14em;text-transform:uppercase;color:#fff;margin-top:18px}
+.trailer.rolling .dd{opacity:0}
+.trailer.pre .tie{opacity:1}
 
 </style></head><body>
 <div id="stage">
@@ -793,10 +802,10 @@ const S={
     return {id:"event",dur:9,el:$(`<section class="scene event"><div class="photo" style="background-image:url('${img(FEED.shop,1920)}')"></div><div class="veil"></div><div class="copy"><p class="eye in">${esc(eye)}</p><h1 class="H in d1">${esc(w.join(" "))} <em>${esc(l)}</em></h1><p class="txt in d2">${esc(e.text)}</p></div></section>`)};},
   trailer(i){const live=x=>!x.rel||now()<=new Date(new Date(x.rel+"T12:00:00").getTime()+14*864e5);
     const ALL=[...(UTR||[]).filter(x=>x&&x.mp4&&x.t),...(MARKET.trailers||[])].filter(live);if(!ALL.length)return null;
-    const MP=ALL.filter(x=>x.mp4),T=FORCEYT?ALL.filter(x=>x.id):(WEAKTV||!YTREADY||TRBAD>=2)&&MP.length?MP:ALL;const t=T[i!=null?i%T.length:nx("tr",T.length)];
-    const canPlay=!!t.mp4||(FORCEYT&&YTREADY)||(!WEAKTV&&YTREADY&&!(TRBAD>=2&&i==null));if(FORCEYT){TRT0=Date.now();trlog("start",{id:t.id,ytready:YTREADY,canPlay,host:YTHOST});}
+    const MP=ALL.filter(x=>x.mp4),T=FORCEYT?ALL.filter(x=>x.id):(!YTREADY||TRBAD>=2)&&MP.length?MP:ALL;const t=T[i!=null?i%T.length:nx("tr",T.length)];
+    const canPlay=!!t.mp4||(FORCEYT&&YTREADY)||(YTREADY&&!(TRBAD>=2&&i==null));if(FORCEYT){TRT0=Date.now();trlog("start",{id:t.id,ytready:YTREADY,canPlay,host:YTHOST});}
     const ddH=(()=>{if(!t.rel)return"";const d=Math.ceil((new Date(t.rel+"T19:00:00")-now())/864e5);return d>0?`<div class="dd"><b>${d}</b><span>${d===1?"day to go":"days to go"}</span></div>`:`<div class="dd"><b class="now">Now</b><span>in theatres</span></div>`;})();
-    const el=$(`<section class="scene trailer ${canPlay?"":"still"}">${canPlay?`<div id="ytw">${t.mp4?`<video id="tv" muted playsinline preload="auto"></video>`:`<div id="yt"></div>`}</div>`:""}<div class="card"><p class="eye">${esc(t.sub||(canPlay?"Official trailer":"Coming to theatres"))}</p><h1 class="H">${esc(t.t)}</h1><p class="when">${esc(t.when||"")}</p></div>${ddH}<div class="tie"></div></section>`);
+    const el=$(`<section class="scene trailer ${canPlay?"pre":"still"}">${canPlay?`<div id="ytw">${t.mp4?`<video id="tv" muted playsinline preload="auto"></video>`:`<div id="yt"></div>`}</div>`:""}<div class="card"><p class="eye">${esc(t.sub||(canPlay?"Official trailer":"Coming to theatres"))}</p><h1 class="H">${esc(t.t)}</h1><p class="when">${esc(t.when||"")}</p></div>${ddH}<div class="tie"></div></section>`);
     const sc={id:"trailer",chrome:canPlay?"cinema":"",dur:canPlay?170:11,el,manual:canPlay};
     const tieUp=()=>findBooks(t.kw||t.t,8).then(bs=>{bs=bs.filter(p=>p.price>=5).sort((a,b)=>b.price-a.price);if(!bs.length)return;const p=bs[0],u=qrURL(link(p,"trailer"));el.querySelector(".tie").innerHTML=`<img class="tc" src="${img(p.img,300)}" alt=""><div><span>In the shop now</span><b>${esc(splitT(p.title)[0])}</b><em>${money(p.price)}</em></div>${u?`<img class="tq" src="${u}" alt="">`:""}`;}).catch(()=>{});
     tieUp();if(!canPlay)return sc;
@@ -804,7 +813,7 @@ const S={
     const end=()=>{if(done)return;done=true;T2.forEach(x=>{clearTimeout(x);clearInterval(x);});sc.onEnd&&sc.onEnd();};
     /* never flash a loading screen and jump: if the video can't start, the slide becomes the still version for 9 seconds */
     const fallback=()=>{trlog("fallback",{ph:phase});if(done||phase==="still")return;const was=phase;phase="still";if(was==="live"){end();return;}try{vid&&vid.pause();player&&player.stopVideo&&player.stopVideo();}catch(x){}const w=el.querySelector("#ytw");if(w)w.style.display="none";el.classList.add("still");document.body.className=document.body.className.replace("cinema","");T2.push(setTimeout(end,9000));};
-    const reveal=()=>{trlog("reveal");if(phase!=="pre")return;phase="live";const w=el.querySelector("#ytw");w.style.opacity="1";el.classList.add("rolling");T2.push(setTimeout(end,175000));};
+    const reveal=()=>{trlog("reveal",{muted:(()=>{try{return player&&player.isMuted();}catch(x){return null}})()});if(phase!=="pre")return;phase="live";const w=el.querySelector("#ytw");w.style.opacity="1";el.classList.remove("pre");el.classList.add("rolling");T2.push(setTimeout(end,175000));};
     el._start=()=>{Radio.duck(true);const w=el.querySelector("#ytw");w.style.opacity="0";w.style.transition="opacity .6s ease";
       if(t.mp4){vid=el.querySelector("#tv");CURPL=null;CURV=vid;vid.volume=Math.max(0,Math.min(1,TVOL/100));
         vid.addEventListener("canplaythrough",()=>{if(phase!=="pre")return;vid.currentTime=0;const p=vid.play();if(p&&p.catch)p.catch(()=>{});if(TVOL>0){vid.muted=false;const p2=vid.play();if(p2&&p2.catch)p2.catch(()=>{vid.muted=true;vid.play().catch(()=>{});});}reveal();},{once:false});
@@ -816,11 +825,11 @@ const S={
       const nc=p=>{try{p.unloadModule("captions");p.unloadModule("cc");}catch(x){}};let t0=Date.now(),pb=false,bufT=0;
       try{player=new YT.Player(el.querySelector("#yt"),{videoId:t.id,width:1920,height:1080,host:YTHOST,playerVars:{autoplay:1,mute:1,controls:0,rel:0,modestbranding:1,playsinline:1,iv_load_policy:3,disablekb:1,fs:0,cc_load_policy:0},events:{
         onReady:e=>{CURPL=e.target;trlog("ready");nc(e.target);try{e.target.mute();e.target.playVideo();}catch(x){}},
-        onStateChange:e=>{const p=e.target;try{trlog("state",{s:e.data,ph:phase,q:p.getPlaybackQuality&&p.getPlaybackQuality(),f:p.getVideoLoadedFraction&&+(p.getVideoLoadedFraction()||0).toFixed(3),ct:p.getCurrentTime&&+(p.getCurrentTime()||0).toFixed(1)});}catch(x){}if(phase==="pre"){if(e.data===1){nc(p);try{p.pauseVideo();}catch(x){}if(!pb){pb=true;T2.push(setInterval(()=>{if(phase!=="pre")return;try{const d=p.getDuration()||150,f=p.getVideoLoadedFraction()||0;if(f*d>=Math.min(40,d*.35)||Date.now()-t0>14000){p.seekTo(0,true);p.playVideo();reveal();setTimeout(()=>{if(TVOL>0){try{p.unMute();p.setVolume(TVOL);}catch(x){}}},400);}}catch(x){}},400));}}return;}
+        onStateChange:e=>{const p=e.target;try{trlog("state",{s:e.data,ph:phase,q:p.getPlaybackQuality&&p.getPlaybackQuality(),f:p.getVideoLoadedFraction&&+(p.getVideoLoadedFraction()||0).toFixed(3),ct:p.getCurrentTime&&+(p.getCurrentTime()||0).toFixed(1)});}catch(x){}if(phase==="pre"){if(e.data===1){nc(p);try{p.pauseVideo();}catch(x){}if(!pb){pb=true;T2.push(setInterval(()=>{if(phase!=="pre")return;try{const d=p.getDuration()||150,f=p.getVideoLoadedFraction()||0;if(f*d>=Math.min(WEAKTV?25:40,d*.35)||Date.now()-t0>(WEAKTV?32000:14000)){p.seekTo(0,true);p.playVideo();reveal();setTimeout(()=>{if(TVOL>0){try{p.unMute();p.setVolume(TVOL);}catch(x){}}},400);}}catch(x){}},400));}}return;}
           if(phase!=="live")return;if(e.data===3&&!bufT)bufT=Date.now();if(e.data===1){bufT=0;nc(p);}if(e.data===0)end();},
         onError:e=>{trlog("error",{code:e&&e.data});TRBAD++;fallback();}}});}catch(x){trlog("throw",{m:String(x&&x.message||x)});fallback();}
       T2.push(setInterval(()=>{if(phase==="live"&&bufT&&Date.now()-bufT>6000){TRBAD++;end();}},1000));
-      T2.push(setTimeout(()=>{if(phase==="pre"){TRBAD++;fallback();}},16000));};
+      T2.push(setTimeout(()=>{if(phase==="pre"){TRBAD++;fallback();}},WEAKTV?50000:20000));};
     el._cleanup=()=>{Radio.duck(false);T2.forEach(x=>{clearTimeout(x);clearInterval(x);});CURPL=null;CURV=null;try{vid&&(vid.pause(),vid.removeAttribute("src"),vid.load());}catch(x){}try{player&&player.destroy();}catch(x){}};
     return sc;},
 
