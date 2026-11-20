@@ -400,6 +400,8 @@ body.cinema #bar,body.clean #bar{transform:translateY(105%)}
 .trailer .tie div em{font-style:normal;font-family:var(--head);font-weight:900;font-size:34px}
 .trailer .tie img.tq{width:150px;height:150px;background:#fff;padding:8px;margin:12px;image-rendering:pixelated}
 #nl-badge-frame{display:none!important}
+.cashcv{display:flex;gap:16px;justify-content:center;margin-bottom:6px}.cashcv img{height:250px;width:auto;max-width:170px;object-fit:contain;opacity:0;animation:in .6s ease both}
+
 
 /* ---- type: balanced headings, no orphan words, consistent left alignment ---- */
 .H,h1,h2,h3,.sub,.book,.lab,.strip p,.cap b,figcaption b,.ic b,.feat b,.mrow b{text-wrap:balance}
@@ -825,6 +827,22 @@ html,body{background:#0B0B0D}
 .doom .txt{font-size:32px;line-height:1.35;color:#D6D6DA;margin:0}
 .doom .row4{position:absolute;right:110px;top:110px;width:960px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:30px 40px}
 .doom .bk2 .ci{height:290px}
+.cash{background:#0B0B0C;overflow:hidden;padding:0!important}
+.cash .wall{position:absolute;inset:0 0 auto 0;top:40px;height:520px;overflow:hidden}
+.cash .track{display:flex;gap:24px;width:max-content;animation:flowL 70s linear infinite;will-change:transform}
+.cash figure{margin:0;position:relative;height:520px}.cash figure img{height:520px;width:auto;display:block;opacity:.5}
+.cash .stamp{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%) rotate(-12deg);border:6px solid var(--red);color:#fff;background:rgba(200,16,46,.85);font-family:var(--head);font-weight:900;font-size:30px;letter-spacing:.04em;padding:8px 16px;white-space:nowrap}
+.cash .shade{position:absolute;inset:0;background:linear-gradient(90deg,#0B0B0C 0%,rgba(11,11,12,.92) 38%,rgba(11,11,12,.25) 70%,rgba(11,11,12,.6) 100%),linear-gradient(0deg,#0B0B0C 34%,rgba(11,11,12,0) 52%)}
+.cash .copy{position:absolute;left:130px;top:70px;width:1000px}
+.cash .amt{margin-top:18px;font-family:var(--head);font-weight:900;font-size:230px;line-height:.9;color:#fff;letter-spacing:-.02em}.cash .amt b{color:var(--red)}
+.cash .lead{font-size:46px;font-weight:700;color:#fff;margin:10px 0 0}
+.cash .txt{font-size:34px;color:#ccc;margin:18px 0 0;line-height:1.3}.cash .txt em{font-style:normal;color:#fff;font-weight:800}
+.cash .steps{position:absolute;left:130px;right:130px;bottom:130px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) auto;gap:28px;align-items:stretch}
+.cash .steps>div:not(.qr){background:#1A1A1C;border-top:8px solid var(--red);padding:26px 30px}
+.cash .steps>div:not(.qr) i{font-style:normal;font-family:var(--head);font-weight:900;font-size:40px;color:var(--red);display:block}
+.cash .steps>div:not(.qr) b{display:block;font-family:var(--head);font-weight:900;font-size:46px;color:#fff;text-transform:uppercase;line-height:1.05}
+.cash .steps>div:not(.qr) span{display:block;font-size:28px;color:#bbb;margin-top:8px}
+.cash .qr{display:flex;align-items:center}
 .nums{background:var(--red);padding:90px 120px 0!important}
 .nums .eye{color:#fff;font-size:28px}.nums .eye::before{background:#fff!important}
 .nums .g4{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:40px 80px;margin-top:40px}
@@ -3257,7 +3275,7 @@ const keyNote=t=>{for(const [re,n,y] of KEYS)if(re.test(t))return {note:n,year:y
 
 
 CONFIG.ticker=["Every book bagged and boarded","Pre-sales close Monday 8pm","New releases every Tuesday","New back issues every Friday","Hold Box: no time limit, no storage fees","We buy and consign collections","CaptCan Cash: 10% back on pre-sales","Free account: scan any code on screen"];
-const BUILD="1120-1030";const SITE="https://www.captcancomics.ca",API="2025-10";
+const BUILD="1120-1215";const SITE="https://www.captcancomics.ca",API="2025-10";
 /* helpers */
 const NW="h1,h2,h3,p,b,span,figcaption,.sub,.txt,.book,.lab,.sm,.when,.after,.lead,.pts div";
 function noWidow(root){root.querySelectorAll(NW).forEach(e=>{if(e.children.length>2)return;const w=document.createTreeWalker(e,NodeFilter.SHOW_TEXT);let last=null;while(w.nextNode()){const n=w.currentNode;n.nodeValue=n.nodeValue.replace(/(\w)-(\w)/g,"$1\u2011$2");if(n.nodeValue.trim())last=n;}if(!last)return;const v=last.nodeValue,i=v.trimEnd().lastIndexOf(" ");if(i>0&&v.trim().split(/ +/).length>2&&v.slice(i+1).trim().length<=10)last.nodeValue=v.slice(0,i)+"\u00a0"+v.slice(i+1);});return root;}
@@ -3389,13 +3407,25 @@ const S={
     return {id:"timeline",dur:14,el:$(`<section class="scene tl">${head("Coming to screens","The key <em>to own</em>",part?"2028 and streaming now":"Next 12 months")}<div class="tline">${L.map((t,i)=>`<div class="tn in" style="animation-delay:${.15+i*.1}s"><div class="d">${esc(t.d)}</div><h3>${esc(t.t)}</h3><div class="k">${t.img?`<img src="${img(t.img,300)}" alt="">`:`<div class="ph">${esc((t.k.match(/#\d+/)||[""])[0])}</div>`}<div><i>Key to own</i><b>${esc(t.k)}</b><span>${esc(t.kn)}</span></div></div></div>`).join("")}</div><div class="strip in d4" style="margin-top:44px"><p>Hunting a key? <em>Search every book we have.</em></p>${chip(utm(SITE+"/pages/advanced-search","timeline"),"Scan to search","Wishlist it if it's gone")}</div></section>`)};},
   eras(){return {id:"eras",dur:11,el:$(`<section class="scene eras">${head("Dig through our long boxes","Shop <em>every era</em>","Thousands of back issues<br>New ones every Friday")}<div class="tiles4">${MARKET.eras.map((e,i)=>`<div class="tile in" style="animation-delay:${.12+i*.08}s"><img src="${img(e[2],700)}" alt=""><div><b>${esc(e[0])}</b><span>${esc(e[1])}</span></div></div>`).join("")}</div></section>`)};},
   artists(){return {id:"artists",dur:11,el:$(`<section class="scene artists">${head("Browse by creator","Shop by <em>cover artist</em>","Every artist has a page<br>captcancomics.ca")}<div class="tiles6">${MARKET.artists.map((e,i)=>`<div class="tile in" style="animation-delay:${.12+i*.07}s"><img src="${img(e[1],600)}" alt=""><div><b>${esc(e[0])}</b></div></div>`).join("")}</div><div class="strip in d4" style="margin-top:26px"><p>Kirby to Monk. <em>Find any creator, character or series.</em></p>${chip(utm(SITE+"/pages/browse-creators?view=browse-creators","artists"),"Scan to browse","Creators · characters")}</div></section>`)};},
+  cash(){const C=Object.assign({wk:5955,n:358,ppl:261,asof:"Nov 9 to 15"},MARKET.cash||{});const free=Math.round(C.wk/6.49/50)*50;
+    const seen={},cv=((FEED.soon||[]).concat(FEED.foc||[],FEED.new||[],FEED.hot||[])).filter(x=>x&&x.img&&!seen[x.img]&&(seen[x.img]=1)).slice(0,14);
+    const lane=cv.length?cv.concat(cv).map((x,i)=>`<figure><img src="${img(x.img,400)}" alt="">${i%3===1?`<b class="stamp">YOURS WITH POINTS</b>`:""}</figure>`).join(""):"";
+    const el=$(`<section class="scene cash">${lane?`<div class="wall"><div class="track">${lane}</div></div>`:""}<div class="shade"></div>
+      <div class="copy"><p class="eye in">CaptCan Cash · ${esc(C.asof)}</p>
+        <div class="amt in d1">$<b data-to="${C.wk}">0</b></div>
+        <p class="lead in d2">off comics last week, paid for with points.</p>
+        <p class="txt in d3">About <em>${free.toLocaleString("en-CA")} new comics</em> our customers didn't pay for. ${C.ppl} collectors cashed in.</p></div>
+      <div class="steps">${[["1","Pre-order","Every $1 = 1 point"],["2","Stack it","100 points = $10 off"],["3","Cash in","Your next comics, paid with points"]].map((t,i)=>`<div class="in" style="animation-delay:${.9+i*.25}s"><i>${t[0]}</i><b>${t[1]}</b><span>${t[2]}</span></div>`).join("")}
+        <div class="in qr" style="animation-delay:1.7s">${chip(utm(CONFIG.join,"cash"),"Scan to start earning","Free account")}</div></div></section>`);
+    const b=el.querySelector(".amt b"),to=+b.dataset.to,t0=Date.now()+600;el._t=setInterval(()=>{if(!el.isConnected&&Date.now()>t0+3e3){clearInterval(el._t);return;}const f=Math.min(1,Math.max(0,(Date.now()-t0)/1800));b.textContent=Math.round(to*(1-Math.pow(1-f,3))).toLocaleString("en-CA");if(f>=1)clearInterval(el._t);},50);
+    return {id:"cash",dur:14,el};},
   svc(i){const V=[
-      ()=>({eye:"Rewards",h:"CaptCan <em>Cash</em>",p:"Sign in when you order and every dollar earns a point.",pts:[["1 point","per $1 spent"],["100 points","= $10 off"],["Use it on","pre-sales, trades, hardcovers"]],big:`<div class="num">10%</div><div class="lab">back on pre-sales</div><div class="sm">Points post when you pay, pre-orders included.</div>${chip(utm(CONFIG.join,"cash"),"Scan to join","Free account")}`}),
+      ()=>null,
       ()=>({eye:"Sell your collection",h:"We buy <em>collections</em>",p:"One key or a whole long box.",pts:[["We want","Golden, Silver and early Bronze"],["Plus","keys and CGC graded books"],["Graded books","assessed remotely, anywhere in Canada"]],big:`<div class="lab">Paid on the spot</div><div class="sm">Accept the offer and we send an e-Transfer right away.</div>${chip(utm(SITE+"/pages/sell-your-collection","sell"),"Scan to sell","Free evaluation")}`}),
       ()=>({eye:"Consignment",h:"Let us <em>sell it for you</em>",p:"CGC or CBCS graded books. We photograph, list and sell them. You approve every price.",pts:[["Paid weekly","by e-Transfer"],["Track it","in your consignment portal"]],big:`<div class="lab">Our fee</div><div class="tiers">${[["$15 to $50","20%",100],["$50 to $250","18%",90],["$250 to $500","15%",75],["$500 to $2,000","12%",60],["$2,000 to $5,000","10%",50],["$5,000 and up","8%",40]].map((t,i)=>`<div><span>${t[0]}</span><i style="width:${t[2]}%;animation-delay:${.3+i*.08}s"></i><s>${t[1]}</s></div>`).join("")}</div><div class="sm">The more it sells for, the less we take.</div>`}),
       ()=>({eye:"Canada Comic Pressing",h:"Press it. <em>Grade it.</em>",p:"Canada Comic Pressing is part of CaptCan. We press, clean and send your books to CGC or CBCS for you, tracked the whole way.",pts:[["Pressing","removes bends and waves"],["Cleaning","before it goes in the slab"],["Submissions","to CGC and CBCS"]],big:`<div class="lab">Better grade, better price</div><div class="sm">A pressed book can jump a full grade or more.</div>${chip(utm(SITE+"/pages/pressing-grading","pressing"),"Scan to submit","Start a submission")}`}),
       ()=>({eye:"Buy now · ship later",h:"Your <em>Hold Box</em>",p:"Buy books when they drop and we keep them for you.",pts:[["No time limit",""],["No storage fees",""],["Ship it all at once","or pick up here"]],big:`<div class="lab">One box. One shipment.</div><div class="sm">Fill it all month, then ship everything together.</div>${chip(utm(SITE+"/apps/captcan/holdbox","holdbox"),"Scan to open","Your Hold Box")}`})];
-    const v=V[i!=null?i%V.length:nx("svc",V.length)]();
+    const k=i!=null?i%V.length:nx("svc",V.length);if(k===0)return S.cash();const v=V[k]();
     return {id:"svc",dur:12,el:$(`<section class="scene svc"><div class="copy"><p class="eye in">${v.eye}</p><h1 class="H in d1">${v.h}</h1><p class="txt in d2">${v.p}</p><div class="pts in d3">${v.pts.map(t=>`<div><b>${t[0]}</b>${t[1]?" "+t[1]:""}</div>`).join("")}</div></div><div class="big in d2">${v.big}</div></section>`)};},
   lesson(i){const Ls=[
       ()=>{const L=MARKET.lesson.inc;return `<div class="copy"><p class="eye in">Collector school</p><h1 class="H in d1">Ratio <em>variants</em></h1><p class="txt in d2">You can't just order an incentive cover. A shop unlocks it by ordering lots of the regular cover, like 1 for every 25.</p><div class="dots in d3">${"<i></i>".repeat(25)}</div><p class="txt in d4" style="font-size:30px;color:var(--mute)">25 regular copies to unlock 1. Fewer exist, so they cost more.</p></div><div class="pair in d2"><figure><img src="${img(L.reg.img,600)}" alt=""><figcaption><i>${esc(L.reg.v)}</i><b>${money(L.reg.p)}</b></figcaption></figure><figure class="win"><img src="${img(L.inc.img,600)}" alt=""><figcaption><i>${esc(L.inc.v)}</i><b>${money(L.inc.p)}</b></figcaption></figure></div>`;},
@@ -3551,7 +3581,7 @@ function playlist(){DAY=DAYNOW();
   if(MODE==="market")return [S.market.bind(null,0),S.news,S.fact,S.market.bind(null,1),S.news.bind(null,1),S.alpha,S.fact,S.vote,S.sold,S.vel,S.trailer,S.timeline.bind(null,0),S.timeline.bind(null,1),S.quizFirst,S.trailer,S.join];
   if(MODE==="trailers")return [S.trailer,S.hero,S.trailer,S.wall,S.trailer,S.join,S.trailer,S.timeline.bind(null,0)];
   /* everyday loop: product first, a fun or useful screen every 3 to 4 screens; explainers stay on the remote */
-  return [...(loop%4===0?[S.open]:[]),S.board,S.flow,S.hero,S.trailer,S.wall,S.cotd,S.keys,S.grade,S.news,S.chain,S.vote,S.doom,S.run,S.blow,S.fact,S.join,S.inc,S.sold,S.trailer,S.spot,S.market.bind(null,0),S.nums,S.hero,S.trades,S.grade,S.upload,S.presale,S.soon,S.excl,S.flow,S.news.bind(null,1),S.quizFirst,S.monk,S.feat,S.timeline.bind(null,loop%2),S.merch,S.fact,S.svc,day[0],day[1],S.join];}
+  return [...(loop%4===0?[S.open]:[]),S.board,S.flow,S.hero,S.trailer,S.wall,S.cotd,S.keys,S.grade,S.news,S.chain,S.vote,S.doom,S.run,S.blow,S.fact,S.join,S.inc,S.sold,S.trailer,S.spot,S.market.bind(null,0),S.nums,S.hero,S.trades,S.grade,S.upload,S.presale,S.soon,S.excl,S.flow,S.news.bind(null,1),S.quizFirst,S.monk,S.feat,S.timeline.bind(null,loop%2),S.merch,S.fact,S.cash,S.svc,day[0],day[1],S.join];}
 /* engine: auto-plays, keeps a history so staff can step back and forward, can be paused, and can take a pushed screen from the desk */
 const host=document.getElementById("host"),cut=document.getElementById("cut");let queue=[],current=null,lastId="",timer=null,paused=false,busy=false,hist=[],hpos=-1,curMs=10000,startedAt=0,remain=0;
 const clone=o=>JSON.parse(JSON.stringify(o));
@@ -3578,7 +3608,7 @@ async function go(dir,push){if(busy)return;busy=true;clearTimeout(timer);
 function setPaused(p){paused=p;document.body.classList.toggle("paused",p);if(p){clearTimeout(timer);remain=Math.max(1000,remain-(Date.now()-startedAt));progress(null);}else schedule(remain||curMs);}
 const next=()=>go(1);
 /* push a specific screen (from the desk remote) */
-const PUSH={book:p=>S.book(p),msg:m=>S.msg(m),join:()=>S.join(),cash:()=>S.svc(0),sell:()=>S.svc(1),consign:()=>S.svc(2),pressing:()=>S.svc(3),holdbox:()=>S.svc(4),presale:()=>S.presale(),wall:()=>S.wall(),board:()=>S.board(),hero:()=>S.hero(),run:()=>S.run(),blow:()=>S.blow(),keys:()=>S.keys(),soon:()=>S.soon(),excl:()=>S.excl(),merch:()=>S.merch(),market:()=>S.market(0),market2:()=>S.market(1),alpha:()=>S.alpha(),sold:()=>S.sold(),vel:()=>S.vel(),timeline:()=>S.timeline(0),timeline2:()=>S.timeline(1),quiz:()=>S.quizFirst(),quizprice:()=>S.quizPrice(),ratio:()=>S.lesson(0),cpv:()=>S.lesson(1),cgc:()=>S.school(),eras:()=>S.eras(),artists:()=>S.artists(),howto:()=>S.howto(),trailer:i=>S.trailer(i),open:()=>S.open(),chain:()=>S.chain(),chainall:()=>S.chainall(),inc:()=>S.inc(),trades:()=>S.trades(),about:()=>S.about(0),about2:()=>S.about(1),sign:()=>S.sign(),cgcss:()=>S.cgcss(),dwj:()=>S.dwj(),monk:()=>S.monk(),app:()=>S.app(),feat:()=>S.feat(),news:()=>S.news(0),news2:()=>S.news(1),fact:()=>S.fact(),cotd:()=>S.cotd(),vote:()=>S.vote(),spot:()=>S.spot(),upload:()=>S.upload(),flow:()=>S.flow(),grade:()=>S.grade(),doom:()=>S.doom(),nums:()=>S.nums()};
+const PUSH={book:p=>S.book(p),msg:m=>S.msg(m),join:()=>S.join(),cash:()=>S.cash(),sell:()=>S.svc(1),consign:()=>S.svc(2),pressing:()=>S.svc(3),holdbox:()=>S.svc(4),presale:()=>S.presale(),wall:()=>S.wall(),board:()=>S.board(),hero:()=>S.hero(),run:()=>S.run(),blow:()=>S.blow(),keys:()=>S.keys(),soon:()=>S.soon(),excl:()=>S.excl(),merch:()=>S.merch(),market:()=>S.market(0),market2:()=>S.market(1),alpha:()=>S.alpha(),sold:()=>S.sold(),vel:()=>S.vel(),timeline:()=>S.timeline(0),timeline2:()=>S.timeline(1),quiz:()=>S.quizFirst(),quizprice:()=>S.quizPrice(),ratio:()=>S.lesson(0),cpv:()=>S.lesson(1),cgc:()=>S.school(),eras:()=>S.eras(),artists:()=>S.artists(),howto:()=>S.howto(),trailer:i=>S.trailer(i),open:()=>S.open(),chain:()=>S.chain(),chainall:()=>S.chainall(),inc:()=>S.inc(),trades:()=>S.trades(),about:()=>S.about(0),about2:()=>S.about(1),sign:()=>S.sign(),cgcss:()=>S.cgcss(),dwj:()=>S.dwj(),monk:()=>S.monk(),app:()=>S.app(),feat:()=>S.feat(),news:()=>S.news(0),news2:()=>S.news(1),fact:()=>S.fact(),cotd:()=>S.cotd(),vote:()=>S.vote(),spot:()=>S.spot(),upload:()=>S.upload(),flow:()=>S.flow(),grade:()=>S.grade(),doom:()=>S.doom(),nums:()=>S.nums()};
 function pushScreen(name,arg,hold){const f=PUSH[name];if(!f)return;let sc=null;try{sc=f(arg);}catch(e){}if(!sc)return;go(0,{sc,hold:hold||(sc.manual?null:sc.dur)}).then(()=>{});}
 function buildTicker(){const lead={1:"Pre-sales close tonight at 8pm",2:"This week's new releases go up today",3:"New comic book day",5:"New back issues go up today"}[DAYNOW()];
   const mk=MARKET.hot10.slice(0,3).map(m=>`Market: ${m.t} ${m.up}`);
