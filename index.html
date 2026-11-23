@@ -948,6 +948,21 @@ body.cinema #needok{bottom:40px}
 #ytpre.on{z-index:31!important}
 #vcover{position:absolute;inset:0;z-index:0;background:#0B0B0C;pointer-events:none}
 
+
+/* TV performance pass Nov 23: the Samsung browser stutters on slide-in text, big filters and sweeping wipes */
+body.weak .in,body.weak .r,body.weak .cv,body.weak .cashcv img{animation:fade .35s linear both!important;transform:none!important}
+body.weak #cut{display:none!important}
+body.weak *{filter:none!important;text-shadow:none!important}
+body.weak .vrow .bar i,body.weak .tiers i{animation:none!important}
+/* run screen captions: full title, aligned, price on its own line */
+.run .cv .cap b{font-size:17px;line-height:1.15;height:40px;-webkit-line-clamp:2;letter-spacing:0}
+.run .cv .cap span{margin-top:6px}
+
+.run .cv .runcap b{font-family:var(--head);font-weight:900;font-size:30px;height:auto;-webkit-line-clamp:1;line-height:1}
+.trades h1,.inc h1,.chainall h1{font-size:80px!important}
+/* long one-word headings never cut off */
+.spot .copy{min-width:0;max-width:760px}.spot h1{font-size:84px!important;hyphens:none}
+.H{overflow-wrap:normal;word-break:keep-all}
 </style></head><body>
 <div id="stage">
   <div id="host"></div>
@@ -3275,7 +3290,7 @@ const keyNote=t=>{for(const [re,n,y] of KEYS)if(re.test(t))return {note:n,year:y
 
 
 CONFIG.ticker=["Every book bagged and boarded","Pre-sales close Monday 8pm","New releases every Tuesday","New back issues every Friday","Hold Box: no time limit, no storage fees","We buy and consign collections","CaptCan Cash: 10% back on pre-sales","Free account: scan any code on screen"];
-const BUILD="1123-1420";const SITE="https://www.captcancomics.ca",API="2025-10";
+const BUILD="1123-1440";const SITE="https://www.captcancomics.ca",API="2025-10";
 /* helpers */
 const NW="h1,h2,h3,p,b,span,figcaption,.sub,.txt,.book,.lab,.sm,.when,.after,.lead,.pts div";
 function noWidow(root){root.querySelectorAll(NW).forEach(e=>{if(e.children.length>2)return;const w=document.createTreeWalker(e,NodeFilter.SHOW_TEXT);let last=null;while(w.nextNode()){const n=w.currentNode;n.nodeValue=n.nodeValue.replace(/(\w)-(\w)/g,"$1\u2011$2");if(n.nodeValue.trim())last=n;}if(!last)return;const v=last.nodeValue,i=v.trimEnd().lastIndexOf(" ");if(i>0&&v.trim().split(/ +/).length>2&&v.slice(i+1).trim().length<=10)last.nodeValue=v.slice(0,i)+"\u00a0"+v.slice(i+1);});return root;}
@@ -3289,7 +3304,7 @@ const shortT=t=>String(t).replace(/\s*\(\d{4}\)\s*/," ").replace(/\s+Vol \d+/,""
 const tidy=s=>String(s).replace(/\bCVR [A-Z]\b\s*/i,"").replace(/\bVAR\b/i,"variant").replace(/\s+/g," ").trim();
 const splitT0=t=>{const c=shortT(t).replace(/^The\s+/i,"");let m=c.match(/^(.*?#\s?\d+[A-Z]?)\s*(.*)$/);if(m)return [m[1],m[2].replace(/^\(of \d+\)\s*/,"")];m=c.match(/^(.*?\D)\s+(\d+)(?:\s+(.*))?$/);return m?[m[1]+" #"+m[2],(m[3]||"").trim()]:[c,""];};
 const splitT=t=>{const r=splitT0(t);return [r[0],tidy(r[1])];};
-const img=(u,w)=>{if(!u)return "";if(u.startsWith("/")||u.startsWith("data:"))return u;const b=u.split("?")[0];if(AMAP[b])return AMAP[b];return ART?"":b+"?width="+(w||900);};
+const img=(u,w)=>{if(!u)return "";if(u.startsWith("/")||u.startsWith("data:"))return u;const b=u.split("?")[0];if(AMAP[b])return AMAP[b];return ART?"":b+"?width="+(WEAKTV?Math.min(w||900,520):(w||900));};
 const now=()=>new Date();
 function nextMonday8pm(){const n=new Date(),t=new Date(n);t.setHours(20,0,0,0);while(t.getDay()!==1||t<=n){t.setDate(t.getDate()+1);t.setHours(20,0,0,0);}return t;}
 const utm=(u,c)=>u+(u.includes("?")?"&":"?")+`utm_source=store_tv&utm_medium=qr&utm_campaign=${c}`;
@@ -3355,7 +3370,7 @@ const S={
     return {id:"story",dur:10,el:$(`<section class="scene story">${amb(p.img)}<div class="copy"><p class="eye in">${esc(/^1st/.test(p.k.note)?"First appearance":/^Origin/.test(p.k.note)?"Origin story":"Key issue")} · ${esc(p.k.year)}</p><h1 class="H in d1">${esc(who)}</h1><div class="book in d2">${esc(shortT(p.title))}</div><div class="row in d3"><div class="price">${money(p.price)}</div>${chip(link(p,"key"),"Scan to buy","Or ask to see it")}</div></div><div class="slab"><img src="${img(p.img)}" alt=""></div></section>`)};},
   wall(){const coll=FEED.newColl||"/collections/final-order-cut-off";return bigs("wall",(FEED.hot||[]).filter(p=>p.img).map(nm),{n:3,eye:`${DAY===3?"New comic book day":"Out this week"}, ${esc(FEED.newLabel)} releases`,h:"New this week",qr:[utm(SITE+coll,"wall"),"Scan to shop","All of this week"]});},
   run(){const R=FEED.run;if(!R||!R.items||R.items.length<6)return null;const L=R.items.slice(0,12);
-    return {id:"run",dur:14,el:$(`<section class="scene run"><header><div><p class="eye in">${esc(R.eye)}</p><h1 class="H in d1">${R.h}</h1></div><div class="bigq in d2"><div class="num">${R.count}<small>issues in stock</small></div>${chip(utm(SITE+R.coll,"run"),"Scan to shop","Every issue")}</div></header><div class="g6">${L.map((p,i)=>`<div class="cv" style="animation-delay:${.1+i*.05}s"><img src="${img(p.img,500)}" alt=""><div class="cap"><b>${esc(p.t)}</b><span>${money(p.price)}<em>${esc(p.y)}</em></span></div></div>`).join("")}</div></section>`)};},
+    return {id:"run",dur:14,el:$(`<section class="scene run"><header><div><p class="eye in">${esc(R.eye)}</p><h1 class="H in d1">${R.h}</h1></div><div class="bigq in d2"><div class="num">${R.count}<small>issues in stock</small></div>${chip(utm(SITE+R.coll,"run"),"Scan to shop","Every issue")}</div></header><div class="g6">${L.map((p,i)=>`<div class="cv" style="animation-delay:${.1+i*.05}s"><img src="${img(p.img,500)}" alt=""><div class="cap runcap"><b>${esc((String(p.t).match(/#\S+$/)||[p.t])[0])}</b><span>${money(p.price)}<em>${esc(p.y)}</em></span></div></div>`).join("")}</div></section>`)};},
   blow(){return bigs("blow",(FEED.blow||[]).map(p=>({img:p.img,name:p.t,price:p.price,was:p.was})),{n:4,eye:"25% off recent releases, online and in store",h:"Blowout",qr:[utm(SITE+"/collections/back-issue-blowout","blowout"),"Scan to shop","40,000+ books on sale"]});},
   /* market */
   market(part){const L=MARKET.hot10.slice(part*5,part*5+5);
@@ -3581,13 +3596,13 @@ function playlist(){DAY=DAYNOW();
   if(MODE==="market")return [S.market.bind(null,0),S.news,S.fact,S.market.bind(null,1),S.news.bind(null,1),S.alpha,S.fact,S.vote,S.sold,S.vel,S.trailer,S.timeline.bind(null,0),S.timeline.bind(null,1),S.quizFirst,S.trailer,S.join];
   if(MODE==="trailers")return [S.trailer,S.hero,S.trailer,S.wall,S.trailer,S.join,S.trailer,S.timeline.bind(null,0)];
   /* everyday loop: product first, a fun or useful screen every 3 to 4 screens; explainers stay on the remote */
-  return [...(loop%4===0?[S.open]:[]),S.board,S.flow,S.hero,S.trailer,S.wall,S.cotd,S.keys,S.grade,S.news,S.chain,S.vote,S.doom,S.run,S.blow,S.fact,S.join,S.inc,S.sold,S.trailer,S.spot,S.market.bind(null,0),S.nums,S.hero,S.trades,S.grade,S.upload,S.presale,S.soon,S.excl,S.flow,S.news.bind(null,1),S.quizFirst,S.monk,S.feat,S.timeline.bind(null,loop%2),S.merch,S.fact,S.cash,S.svc,day[0],day[1],S.join];}
+  return [...(loop%4===0?[S.open]:[]),S.board,S.flow,S.hero,S.trailer,S.wall,S.cotd,S.keys,S.grade,S.news,S.vote,S.doom,S.run,S.blow,S.fact,S.join,S.inc,S.sold,S.trailer,S.spot,S.market.bind(null,0),S.nums,S.hero,S.trades,S.grade,S.upload,S.presale,S.soon,S.excl,S.flow,S.news.bind(null,1),S.quizFirst,S.feat,S.timeline.bind(null,loop%2),S.merch,S.fact,S.cash,S.svc,day[0],day[1],S.join];}
 /* engine: auto-plays, keeps a history so staff can step back and forward, can be paused, and can take a pushed screen from the desk */
 const host=document.getElementById("host"),cut=document.getElementById("cut");let queue=[],current=null,lastId="",timer=null,paused=false,busy=false,hist=[],hpos=-1,curMs=10000,startedAt=0,remain=0;
 const clone=o=>JSON.parse(JSON.stringify(o));
 function buildNext(){for(let g=0;g<60;g++){if(!queue.length){loop++;queue=playlist();}const f=queue.shift();const snap=clone(IX);let sc=null;try{sc=f();}catch(e){console.warn(e);}if(sc&&sc.id!==lastId)return {sc,f,snap};}return null;}
 function rebuild(h){const cur=clone(IX);IX=clone(h.snap);let sc=null;try{sc=h.f();}catch(e){}IX=cur;return sc;}
-const LITE={};function ready(el){try{if(el.querySelector(":scope>header"))el.classList.add("hd");const id=[...el.classList].find(c=>LITE[c]);if(id)el.classList.add("lite");}catch(x){}const imgs=[...el.querySelectorAll("img")];return Promise.race([Promise.all(imgs.map(i=>i.decode?i.decode().catch(()=>{i.style.visibility="hidden";}):Promise.resolve())),new Promise(r=>setTimeout(r,3000))]);}
+const LITE={};function ready(el){try{if(el.querySelector(":scope>header"))el.classList.add("hd");const id=[...el.classList].find(c=>LITE[c]);if(id)el.classList.add("lite");}catch(x){}const imgs=[...el.querySelectorAll("img")];return Promise.race([Promise.all(imgs.map(i=>i.decode?i.decode().catch(()=>{}):Promise.resolve())),new Promise(r=>setTimeout(r,WEAKTV?7000:3000))]);}
 const prog=()=>document.getElementById("prog");
 function progress(ms){const p=prog();if(!p)return;p.getAnimations().forEach(a=>a.cancel());if(ms==null){p.style.transform="scaleX(0)";return;}p.animate([{transform:`scaleX(${Math.max(0,1-ms/curMs)})`},{transform:"scaleX(1)"}],{duration:ms,fill:"forwards"});}
 function schedule(ms){clearTimeout(timer);if(paused){remain=ms;progress(null);return;}startedAt=Date.now();remain=ms;timer=setTimeout(()=>go(1),ms);progress(ms);}
@@ -3660,7 +3675,7 @@ const IS_REMOTE=location.hash==="#remote"||location.hash==="#r";const NOTTV=!IS_
 let RELAYFULL=0;const post=(o,t)=>fetch(RELAY+(t||""),{method:"POST",body:JSON.stringify(Object.assign({at:Date.now()},o))}).then(r=>{if(r.status===429){RELAYFULL=Date.now();try{window.onRelayFull&&window.onRelayFull();}catch(x){}}else RELAYFULL=0;return r;}).catch(()=>{});
 /* ===== radio ===== */
 const DEFST=[{id:"rpmain",name:"Radio Paradise",url:"https://stream.radioparadise.com/mp3-192"},{id:"rprock",name:"Rock Mix",url:"https://stream.radioparadise.com/rock-320"},{id:"rpmellow",name:"Mellow Mix",url:"https://stream.radioparadise.com/mellow-320"},{id:"rpglobal",name:"World Mix",url:"https://stream.radioparadise.com/global-320"}];const stationUrl=id=>{const x=DEFST.find(s=>s.id===id)||DEFST[0];return x.url;};
-const WEAKTV=/Tizen|Web0S|webOS|SMART-TV|SmartTV|CrKey/i.test(navigator.userAgent);const ISCAST=/CrKey/i.test(navigator.userAgent);const CASTID="__CASTID__";
+const WEAKTV=/Tizen|Web0S|webOS|SMART-TV|SmartTV|CrKey/i.test(navigator.userAgent);if(WEAKTV)document.documentElement.classList.add("weakroot"),addEventListener("DOMContentLoaded",()=>document.body.classList.add("weak"));if(WEAKTV&&document.body)document.body.classList.add("weak");const ISCAST=/CrKey/i.test(navigator.userAgent);const CASTID="__CASTID__";
 const Radio={a:null,on:false,url:"",name:"",vol:.35,ducked:false,locked:true,
   el(){if(!this.a){this.a=new Audio();this.a.preload="none";this.a.addEventListener("error",()=>{this.st&&this.st.err++;if(this.on)setTimeout(()=>{this.a.src=this.url;this.play();},4000);});}return this.a;},
   apply(r){if(!r||NOTTV)return;if(r.url&&/somafm\.com/.test(r.url)){r=Object.assign({},r,{url:DEFST[0].url,name:DEFST[0].name});}this.vol=r.vol!=null?r.vol:this.vol;const url=r.url||(r.id?stationUrl(r.id):"");const changed=url&&url!==this.url;this.url=url||this.url;const ds=DEFST.find(x=>x.url===this.url);this.name=ds?ds.name:(r.name||this.name);this.on=!!r.on&&!!this.url;
