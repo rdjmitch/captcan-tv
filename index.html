@@ -961,41 +961,37 @@ body.weak .vrow .bar i,body.weak .tiers i{animation:none!important}
 .run .cv .runcap b{font-family:var(--head);font-weight:900;font-size:30px;height:auto;-webkit-line-clamp:1;line-height:1}
 .trades h1,.inc h1,.chainall h1{font-size:80px!important}
 
-/* ===== spotlight v2: cinematic ===== */
-.spotx{background:#09090A;overflow:hidden}
+/* ===== spotlight v3: clean ===== */
+.spotx{background:#0B0B0C;overflow:hidden}
 .spotx .sx-bg{position:absolute;inset:0;overflow:hidden}
-.spotx .sx-bg img{position:absolute;left:38%;top:-10%;width:75%;height:130%;object-fit:cover;object-position:center 20%;opacity:.55;animation:sxpan 16s linear both}
-@keyframes sxpan{from{transform:scale(1.08) translateX(0)}to{transform:scale(1.18) translateX(-40px)}}
-.spotx .sx-shade{position:absolute;inset:0;background:linear-gradient(90deg,#09090A 0%,#09090A 34%,rgba(9,9,10,.86) 48%,rgba(9,9,10,.35) 75%,rgba(9,9,10,.6) 100%)}
-.spotx .sx-dots{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.07) 2px,transparent 2.5px);background-size:14px 14px;mix-blend-mode:normal}
-.spotx .sx-slash{position:absolute;left:-120px;bottom:-90px;width:1500px;height:150px;background:var(--ac);transform:rotate(-8deg);opacity:.92}
-.spotx .sx-copy{position:absolute;left:110px;top:90px;width:900px;display:flex;flex-direction:column;gap:26px;z-index:2}
-.spotx .sx-eye{margin:0;display:inline-flex;align-self:flex-start;background:var(--ac);color:#0A0A0A;font-weight:900;font-size:24px;letter-spacing:.16em;text-transform:uppercase;padding:10px 18px}
-.spotx .sx-title{margin:0;font-family:var(--head);font-weight:900;text-transform:uppercase;line-height:.84;letter-spacing:-.01em}
-.spotx .sx-title span{display:block;font-size:96px;color:#fff}
-.spotx .sx-title b{display:block;font-size:220px;color:var(--ac);-webkit-text-stroke:0;text-shadow:10px 10px 0 #000}
-.spotx .sx-tag{margin:0;font-size:36px;line-height:1.3;color:#E9E9EE;max-width:24ch;font-weight:500}
-.spotx .sx-stats{display:flex;align-items:center;gap:22px;margin-top:6px}
-.spotx .sx-stats>.sx-st{background:#0A0A0A;border:4px solid var(--ac);padding:14px 22px;min-width:170px}
-.spotx .sx-stats>.sx-st b{display:block;font-family:var(--head);font-weight:900;font-size:62px;line-height:1}
-.spotx .sx-stats>.sx-st span{display:block;font-weight:800;font-size:17px;letter-spacing:.14em;text-transform:uppercase;color:#BDBDC4;margin-top:6px}
-.spotx .sx-stack{position:absolute;right:90px;top:60px;width:720px;height:860px;z-index:2}
-.spotx figure{margin:0;position:absolute}
-.spotx .sx-back{width:330px;transform:rotate(var(--t));background:#fff;padding:8px;box-shadow:12px 12px 0 #000}
-.spotx .sx-back img{display:block;width:100%;aspect-ratio:2/3;object-fit:cover}
-.spotx .sx-back.b0{left:0;top:110px}.spotx .sx-back.b1{right:0;top:40px}.spotx .sx-back.b2{right:40px;bottom:30px}
-.spotx .sx-back em,.spotx .sx-hero em{position:absolute;font-style:normal;font-family:var(--head);font-weight:900;color:#0A0A0A;background:var(--ac);border:4px solid #0A0A0A;border-radius:50%;width:122px;height:122px;display:flex;align-items:center;justify-content:center;font-size:32px;transform:rotate(-12deg)}
-.spotx .sx-back em{right:-26px;top:-26px;width:104px;height:104px;font-size:27px}
-.spotx .sx-hero{left:190px;top:70px;width:430px;background:#fff;padding:10px;transform:rotate(2deg);box-shadow:18px 18px 0 var(--ac),18px 18px 0 4px #000;z-index:3}
-.spotx .sx-hero img{display:block;width:100%;aspect-ratio:2/3;object-fit:cover}
-.spotx .sx-hero figcaption{background:#0A0A0A;color:#fff;padding:14px 16px;margin:10px -10px -10px}
-.spotx .sx-hero figcaption b{display:block;font-family:var(--head);font-weight:900;font-size:28px;text-transform:uppercase;line-height:1.05;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:300px}
-.spotx .sx-hero em{left:-60px;bottom:30px}
-body:not(.weak) .spotx .sx-hero{animation:sxin .7s cubic-bezier(.2,.9,.25,1.2) both .15s}
-body:not(.weak) .spotx .sx-back{animation:sxback .7s ease both}
-@keyframes sxin{from{opacity:0;transform:rotate(9deg) translateY(60px) scale(.9)}to{opacity:1;transform:rotate(2deg)}}
-@keyframes sxback{from{opacity:0;transform:rotate(0) scale(.85)}to{opacity:1;transform:rotate(var(--t))}}
-body.weak .spotx .sx-bg img{animation:none;transform:scale(1.1)}
+.spotx .sx-bg img{position:absolute;right:0;top:0;width:62%;height:100%;object-fit:cover;object-position:center 25%;opacity:.28}
+.spotx .sx-shade{position:absolute;inset:0;background:linear-gradient(90deg,#0B0B0C 0%,#0B0B0C 40%,rgba(11,11,12,.7) 60%,rgba(11,11,12,.55) 100%)}
+.spotx .sx-dots,.spotx .sx-slash{display:none}
+.spotx .sx-copy{position:absolute;left:110px;top:0;bottom:0;width:820px;display:flex;flex-direction:column;justify-content:center;gap:24px;z-index:2}
+.spotx .sx-eye{margin:0;display:flex;align-items:center;gap:14px;font-weight:700;font-size:24px;letter-spacing:.18em;text-transform:uppercase;color:#fff}
+.spotx .sx-eye::before{content:"";width:16px;height:16px;background:var(--ac);flex:none}
+.spotx .sx-title{margin:0;font-family:var(--head);font-weight:900;text-transform:uppercase;line-height:.88}
+.spotx .sx-title span{display:block;font-size:88px;color:#fff}
+.spotx .sx-title b{display:block;color:var(--ac)}
+.spotx .sx-tag{margin:0;font-size:34px;line-height:1.32;color:#D6D6DB;max-width:26ch}
+.spotx .sx-stats{display:flex;align-items:stretch;gap:0;margin-top:10px}
+.spotx .sx-stats>.sx-st{padding:6px 34px 6px 0;margin-right:34px;border-right:2px solid #2E2E33}
+.spotx .sx-stats>.sx-st b{display:block;font-family:var(--head);font-weight:900;font-size:60px;line-height:1}
+.spotx .sx-stats>.sx-st span{display:block;font-weight:700;font-size:17px;letter-spacing:.14em;text-transform:uppercase;color:#9C9CA4;margin-top:8px}
+.spotx .sx-stack{position:absolute;right:110px;top:0;bottom:0;width:820px;display:flex;align-items:center;justify-content:flex-end;gap:26px;z-index:2}
+.spotx figure{margin:0;position:relative;display:flex;flex-direction:column}
+.spotx .sx-back{order:2;width:190px}
+.spotx .sx-hero{order:1;width:400px}
+.spotx .sx-back.b2{display:none}
+.spotx figure img{display:block;width:100%;aspect-ratio:2/3;object-fit:contain;object-position:center bottom}
+.spotx .sx-hero{border-bottom:8px solid var(--ac);padding-bottom:16px}
+.spotx .sx-hero figcaption{margin-top:16px}
+.spotx .sx-hero figcaption b{display:block;font-family:var(--head);font-weight:800;font-size:28px;text-transform:uppercase;line-height:1.08;color:#fff}
+.spotx .sx-hero em,.spotx .sx-back em{position:static;font-style:normal;font-family:var(--head);font-weight:900;color:#fff;background:none;border:0;width:auto;height:auto;transform:none;display:block;margin-top:8px}
+.spotx .sx-hero em{font-size:52px}
+.spotx .sx-back em{font-size:30px;margin-top:10px}
+.spotx .sx-backs{order:2;display:flex;flex-direction:column;gap:24px}
+body:not(.weak) .spotx .sx-hero,body:not(.weak) .spotx .sx-back{animation:fade .6s ease both}
 /* long one-word headings never cut off */
 .spot .copy{min-width:0;max-width:760px}.spot h1{font-size:84px!important;hyphens:none}
 .H{overflow-wrap:normal;word-break:keep-all}
@@ -3326,7 +3322,7 @@ const keyNote=t=>{for(const [re,n,y] of KEYS)if(re.test(t))return {note:n,year:y
 
 
 CONFIG.ticker=["Every book bagged and boarded","Pre-sales close Monday 8pm","New releases every Tuesday","New back issues every Friday","Hold Box: no time limit, no storage fees","We buy and consign collections","CaptCan Cash: 10% back on pre-sales","Free account: scan any code on screen"];
-const BUILD="1123-1550";const SITE="https://www.captcancomics.ca",API="2025-10";
+const BUILD="1123-1615";const SITE="https://www.captcancomics.ca",API="2025-10";
 /* helpers */
 const NW="h1,h2,h3,p,b,span,figcaption,.sub,.txt,.book,.lab,.sm,.when,.after,.lead,.pts div";
 function noWidow(root){root.querySelectorAll(NW).forEach(e=>{if(e.children.length>2)return;const w=document.createTreeWalker(e,NodeFilter.SHOW_TEXT);let last=null;while(w.nextNode()){const n=w.currentNode;n.nodeValue=n.nodeValue.replace(/(\w)-(\w)/g,"$1\u2011$2");if(n.nodeValue.trim())last=n;}if(!last)return;const v=last.nodeValue,i=v.trimEnd().lastIndexOf(" ");if(i>0&&v.trim().split(/ +/).length>2&&v.slice(i+1).trim().length<=10)last.nodeValue=v.slice(0,i)+"\u00a0"+v.slice(i+1);});return root;}
@@ -3649,11 +3645,10 @@ function spotScene(s){const C=SPOTC[String(s.q).toLowerCase().trim()]||{},L=C.L|
   const title=(words.length?`<span>${esc(words.join(" "))}</span>`:"")+`<b style="font-size:${fs}px">${esc(last)}</b>`;
   const tilt=[-6,7,-3];
   return {id:"spotx",dur:14,el:$(`<section class="scene spotx" style="--ac:${ac}">
-   <div class="sx-bg"><img src="${img(hero.img,900)}" alt=""></div><div class="sx-shade"></div><div class="sx-dots"></div><i class="sx-slash"></i>
+   <div class="sx-bg"><img src="${img(hero.img,900)}" alt=""></div><div class="sx-shade"></div>
    <div class="sx-copy"><p class="sx-eye in">${esc(s.eye||"Spotlight")}</p><h1 class="sx-title in d1">${title}</h1>${s.tag?`<p class="sx-tag in d2">${esc(s.tag)}</p>`:""}
     <div class="sx-stats in d3"><div class="sx-st"><b>${C.n||L.length}</b><span>in stock now</span></div><div class="sx-st"><b>${money(C.lo||hero.price)}</b><span>starting at</span></div>${chip(utm(SITE+"/search?q="+encodeURIComponent(s.q),"spotlight"),"Scan to shop","Every one we have")}</div></div>
-   <div class="sx-stack">${P.slice(1).map((p,i)=>`<figure class="sx-back b${i}" style="--t:${tilt[i]}deg"><img src="${img(p.img,500)}" alt=""><em>${money(p.price)}</em></figure>`).join("")}
-    <figure class="sx-hero"><img src="${img(hero.img,800)}" alt=""><figcaption><b>${esc(splitT(hero.name)[0])}</b><em>${money(hero.price)}</em></figcaption></figure></div>
+   <div class="sx-stack"><figure class="sx-hero"><img src="${img(hero.img,800)}" alt=""><figcaption><b>${esc(splitT(hero.name)[0])}</b><em>${money(hero.price)}</em></figcaption></figure><div class="sx-backs">${P.slice(1,3).map((p,i)=>`<figure class="sx-back b${i}"><img src="${img(p.img,400)}" alt=""><em>${money(p.price)}</em></figure>`).join("")}</div></div>
   </section>`)};}
 function warmSpots(){spotList().forEach(s=>loadSpot(s.q,s));}
 function playlist(){DAY=DAYNOW();
