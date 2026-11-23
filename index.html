@@ -993,7 +993,8 @@ body:not(.weak) .vx .vx-c.hero{animation:vxup 1s cubic-bezier(.2,.8,.2,1) both .
 body:not(.weak) .vx .vx-c.side{animation:vxup 1s cubic-bezier(.2,.8,.2,1) both .3s}
 @keyframes vxup{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
 .vx .vx-stats>div span{white-space:nowrap}
-.vx .vx-qr span{white-space:normal!important;width:170px;letter-spacing:.18em!important}
+.vx .vx-qr span{white-space:normal!important;width:220px;letter-spacing:.16em!important;line-height:1.6}
+.vx .vx-feat{margin:28px 0 0;font-size:21px;color:#8E8B84;letter-spacing:.02em;max-width:34ch;line-height:1.45}
 .vx .vx-eye{letter-spacing:.2em;white-space:nowrap;font-size:20px}
 .vx .vx-c.hero{width:500px}.vx .vx-c.side{width:300px}
 .vx .vx-row{gap:40px}
@@ -3328,7 +3329,7 @@ const keyNote=t=>{for(const [re,n,y] of KEYS)if(re.test(t))return {note:n,year:y
 
 
 CONFIG.ticker=["Every book bagged and boarded","Pre-sales close Monday 8pm","New releases every Tuesday","New back issues every Friday","Hold Box: no time limit, no storage fees","We buy and consign collections","CaptCan Cash: 10% back on pre-sales","Free account: scan any code on screen"];
-const BUILD="1123-1640";const SITE="https://www.captcancomics.ca",API="2025-10";
+const BUILD="1123-1700";const SITE="https://www.captcancomics.ca",API="2025-10";
 /* helpers */
 const NW="h1,h2,h3,p,b,span,figcaption,.sub,.txt,.book,.lab,.sm,.when,.after,.lead,.pts div";
 function noWidow(root){root.querySelectorAll(NW).forEach(e=>{if(e.children.length>2)return;const w=document.createTreeWalker(e,NodeFilter.SHOW_TEXT);let last=null;while(w.nextNode()){const n=w.currentNode;n.nodeValue=n.nodeValue.replace(/(\w)-(\w)/g,"$1\u2011$2");if(n.nodeValue.trim())last=n;}if(!last)return;const v=last.nodeValue,i=v.trimEnd().lastIndexOf(" ");if(i>0&&v.trim().split(/ +/).length>2&&v.slice(i+1).trim().length<=10)last.nodeValue=v.slice(0,i)+"\u00a0"+v.slice(i+1);});return root;}
@@ -3630,17 +3631,23 @@ const SIGNDAY=()=>now().toLocaleDateString("en-CA")==="2026-11-18";
 /* ===== Spotlights (Nov 23): creator / character / series screens, built live from in-stock books.
    Built-ins below; staff add their own from the remote (Screens > Build a screen). ===== */
 const DEFSPOTS=[
- {q:"doctor doom",m:"\\bdoom\\b|doomquest|doomwar|doom 2099",x:"patrol|villainess|routes lead",h:"Doctor Doom",eye:"Avengers: Doomsday · in theatres Dec 18",tag:"Ruler of Latveria. Rival of the Fantastic Four. Coming for the whole MCU.",c:"#3DDC68"},
- {q:"absolute batman",m:"absolute batman",h:"Absolute Batman",eye:"DC's biggest book right now",tag:"No mansion. No money. No butler. The Batman built from scratch.",c:"#FFD21F"},
- {q:"spider-man",m:"spider-man",h:"Spider-Man",eye:"Character spotlight",tag:"Since Amazing Fantasy #15, 1962. Still the hero everyone grabs first.",c:"#FF2A36"},
- {q:"fantastic four",m:"fantastic four",h:"Fantastic Four",eye:"Doom's oldest rivals",tag:"Marvel's first family, where Doom got his start in 1962.",c:"#2F8BFF"},
- {q:"x-men",m:"x-men",h:"The X-Men",eye:"Character spotlight",tag:"Children of the atom. Every era, every team, on our shelves.",c:"#FFC21A"},
- {q:"momoko",m:"momoko",h:"Peach Momoko",eye:"Cover artist spotlight",tag:"The most wanted variant artist in comics right now.",c:"#FF5FA2"}];
+ {q:"doctor doom",coll:"character-doctor-doom",m:"\\bdoom\\b|doomquest|doomwar|doom 2099",x:"patrol|villainess|routes lead",h:"Doctor Doom",eye:"Avengers: Doomsday · in theatres Dec 18",tag:"Ruler of Latveria. Rival of the Fantastic Four. Coming for the whole MCU.",c:"#3DDC68"},
+ {q:"absolute batman",coll:"absolute-batman",m:"absolute batman",h:"Absolute Batman",eye:"DC's biggest book right now",tag:"No mansion. No money. No butler. The Batman built from scratch.",c:"#FFD21F"},
+ {q:"spider-man",coll:"character-spider-man",m:"spider-man",h:"Spider-Man",eye:"Character spotlight",tag:"Since Amazing Fantasy #15, 1962. Still the hero everyone grabs first.",c:"#FF2A36"},
+ {q:"fantastic four",coll:"character-fantastic-four",m:"fantastic four",h:"Fantastic Four",eye:"Doom's oldest rivals",tag:"Marvel's first family, where Doom got his start in 1962.",c:"#2F8BFF"},
+ {q:"x-men",coll:"character-x-men",m:"x-men",h:"The X-Men",eye:"Character spotlight",tag:"Children of the atom. Every era, every team, on our shelves.",c:"#FFC21A"},
+ {q:"momoko",coll:"cover-artist-peach-momoko",m:"momoko",h:"Peach Momoko",eye:"Cover artist spotlight",tag:"The most wanted variant artist in comics right now.",c:"#FF5FA2"}];
 let SPOTS_CUSTOM=[];const SPOTC={};
 const spotList=()=>[...(SPOTS_CUSTOM||[]),...DEFSPOTS];
 const spotH=s=>s.h||esc(String(s.q).replace(/\b\w/g,c=>c.toUpperCase()));
 const PREORDER=hd=>/^\d+$/.test(hd)||/^\d{4}[a-z]{2}\d{3,5}$/i.test(hd);
-async function loadSpot(q,rule){const k=String(q).toLowerCase().trim();rule=rule||spotList().find(s=>String(s.q).toLowerCase().trim()===k)||{};const MR=new RegExp(rule.m||k.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"),"i"),XR=rule.x?new RegExp(rule.x,"i"):null;if(!k)return [];const c=SPOTC[k];if(c&&Date.now()-c.t<30*60e3)return c.L;
+async function collPage(handle,after){const d=await sf(`{collection(handle:${J(handle)}){title products(first:250,sortKey:BEST_SELLING,filters:[{available:true}]${after?`,after:${J(after)}`:""}){nodes{title handle availableForSale featuredImage{url} priceRange{minVariantPrice{amount}}} pageInfo{hasNextPage endCursor}}}}`);return d.collection;}
+async function loadColl(handle){let n=0,after=null,first=null,lo=1e9,more=false;for(let pg=0;pg<8;pg++){const c=await collPage(handle,after);if(!c)return null;const ps=c.products;if(!first)first=ps.nodes;for(const p of ps.nodes){if(p.availableForSale===false)continue;n++;const pr=+p.priceRange.minVariantPrice.amount;if(pr>0)lo=Math.min(lo,pr);}if(!ps.pageInfo.hasNextPage){more=false;break;}more=true;after=ps.pageInfo.endCursor;}
+  const seen=new Set(),L=[];for(const p of norm(first||[])){if(PREORDER(p.handle)||!(p.price>0))continue;const bk=bookKey(p.title);if(seen.has(bk))continue;seen.add(bk);L.push({img:p.img,name:p.title.replace(/\s*\(\d{4}\)/,"").replace(/\s+/g," ").trim(),price:p.price,handle:p.handle});if(L.length>=8)break;}
+  return {L,n,lo:lo<1e9?lo:0,more,coll:handle};}
+const slug=s=>String(s).toLowerCase().trim().replace(/['’.]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+async function loadSpot(q,rule){const k=String(q).toLowerCase().trim();rule=rule||spotList().find(s=>String(s.q).toLowerCase().trim()===k)||{};
+  if(!(SPOTC[k]&&Date.now()-SPOTC[k].t<30*60e3)){const tries=rule.coll?[rule.coll]:["character-"+slug(k),"cover-artist-"+slug(k),slug(k),slug(k)+"-web"];for(const hd of tries){try{const r=await loadColl(hd);if(r&&r.L.length>=3){SPOTC[k]=Object.assign({t:Date.now()},r);return r.L;}}catch(x){}}}const MR=new RegExp(rule.m||k.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"),"i"),XR=rule.x?new RegExp(rule.x,"i"):null;if(!k)return [];const c=SPOTC[k];if(c&&Date.now()-c.t<30*60e3)return c.L;
   try{const d=await sf(`{products(first:60,sortKey:BEST_SELLING,query:${J(k+" available_for_sale:true")}){${PF}}}`);
     let pool=norm(d.products.nodes).filter(p=>p.price>0&&!PREORDER(p.handle)&&!(XR&&XR.test(p.title)));const tight=pool.filter(p=>MR.test(p.title));if(tight.length>=3||rule.m)pool=tight;
     const seen=new Set(),L=[];let n=0,lo=1e9;for(const p of pool){n++;lo=Math.min(lo,p.price);const bk=bookKey(p.title);if(seen.has(bk)||L.length>=8)continue;seen.add(bk);L.push({img:p.img,name:p.title.replace(/\s*\(\d{4}\)/,"").replace(/\s+/g," ").trim(),price:p.price,handle:p.handle});}
@@ -3652,20 +3659,19 @@ function spotScene(s){const C=SPOTC[String(s.q).toLowerCase().trim()]||{},L=C.L|
   return {id:"spotx",dur:14,el:$(`<section class="scene vx">
    <div class="vx-light"></div><div class="vx-shelf"></div>
    <div class="vx-copy"><p class="vx-eye in">${esc(s.eye||"Spotlight")}</p><h1 class="vx-title in d1" style="font-size:${fs}px">${esc(name)}</h1><i class="vx-rule in d1"></i>${s.tag?`<p class="vx-tag in d2">${esc(s.tag)}</p>`:""}
-    <div class="vx-stats in d3"><div><b>${C.n||L.length}</b><span>in stock</span></div><div><b>${money(C.lo||hero.price)}</b><span>from</span></div><div class="vx-qr"><img src="${qrURL(utm(SITE+"/search?q="+encodeURIComponent(s.q),"spotlight"))}" alt=""><span>Scan to shop<br>all of them</span></div></div></div>
+    <div class="vx-stats in d3"><div><b>${(C.n||L.length).toLocaleString()}${C.more?"+":""}</b><span>in stock now</span></div><div><b>${money(C.lo||hero.price)}</b><span>starting at</span></div><div class="vx-qr"><img src="${qrURL(utm(SITE+(C.coll?"/collections/"+C.coll:"/search?q="+encodeURIComponent(s.q)),"spotlight"))}" alt=""><span>Scan for every<br>${esc(name)} book<br>we have</span></div></div><p class="vx-feat in d3">On the site, tap the heart on any book and we email you the second it lands back in stock.</p></div>
    <div class="vx-row">${cov(P[1],"side l")}${cov(hero,"hero")}${cov(P[2],"side r")}</div>
   </section>`)};}
 function warmSpots(){spotList().forEach(s=>loadSpot(s.q,s));}
-function playlist(){DAY=DAYNOW();
+function playlist(){DAY=DAYNOW();const SPOT=()=>{const l=spotList();for(let g=0;g<l.length;g++){const sc=spotScene(l[nx("spotq",l.length)]);if(sc)return sc;}return null;};
   const day={1:[S.presale,S.soon],2:[S.board,S.presale],3:[S.hero,S.board],4:[S.story,S.soon],5:[S.keys,S.story],6:[S.keys,S.merch],0:[S.keys,S.merch]}[DAY];
-  if(MODE==="event"||(MODE==="mix"&&SIGNDAY()))return [S.sign,S.chain,S.board,S.trailer,S.chainall,S.cgcss,S.hero,S.feat,S.sign,S.dwj,S.trailer,S.monk,S.wall,S.chain,S.inc,S.join,S.trailer,S.sign,S.chainall,S.hero,S.trades,S.cgcss,S.feat,S.app,S.sign,S.trailer,S.chain,S.cotd,S.flow,S.market.bind(null,0),S.news,S.fact,S.vote,S.grade,S.doom,S.monk,S.about,S.news.bind(null,1),S.fact,S.spot,S.flow,S.hero,S.trailer,S.sign,S.dwj,S.chainall,S.run,S.inc,S.trailer,S.sign,S.chain,S.excl,S.sold,S.blow,S.keys,S.feat,S.svc,S.about,S.presale,S.join];
-  if(MODE==="sell")return [S.chain,S.board,S.hero,S.wall,S.hero,S.run,S.blow,S.keys,S.inc,S.hero,day[0],S.trades,S.presale,S.soon,S.excl,S.hero,S.feat,S.wall,S.chainall,S.monk,S.merch,S.app,S.join,S.story,S.blow,day[1]];
-  if(MODE==="line")return [S.quizFirst,S.hero,S.join,S.chain,S.quizPrice,S.wall,S.lesson,S.about,S.hero,S.howto,S.inc,S.quizFirst,S.sold,S.join,S.run,S.lesson,S.trades,S.school,S.hero];
+  if(MODE==="event"||(MODE==="mix"&&SIGNDAY()))return [SPOT,SPOT,S.board,S.trailer,SPOT,SPOT,S.hero,S.feat,SPOT,SPOT,S.trailer,SPOT,S.wall,SPOT,S.inc,S.join,S.trailer,SPOT,SPOT,S.hero,S.trades,SPOT,S.feat,S.app,SPOT,S.trailer,SPOT,S.cotd,S.market.bind(null,0),S.news,S.fact,S.vote,S.grade,S.doom,SPOT,S.about,S.news.bind(null,1),S.fact,S.spot,S.hero,S.trailer,SPOT,SPOT,SPOT,S.run,S.inc,S.trailer,SPOT,SPOT,S.excl,S.sold,S.blow,S.keys,S.feat,S.svc,S.about,S.presale,S.join];
+  if(MODE==="sell")return [SPOT,S.board,S.hero,S.wall,S.hero,S.run,S.blow,S.keys,S.inc,S.hero,day[0],S.trades,S.presale,S.soon,S.excl,S.hero,S.feat,S.wall,SPOT,SPOT,S.merch,S.app,S.join,S.story,S.blow,day[1]];
+  if(MODE==="line")return [S.quizFirst,S.hero,S.join,SPOT,S.quizPrice,S.wall,S.lesson,S.about,S.hero,S.howto,S.inc,S.quizFirst,S.sold,S.join,S.run,S.lesson,S.trades,S.school,S.hero];
   if(MODE==="market")return [S.market.bind(null,0),S.news,S.fact,S.market.bind(null,1),S.news.bind(null,1),S.alpha,S.fact,S.vote,S.sold,S.vel,S.trailer,S.timeline.bind(null,0),S.timeline.bind(null,1),S.quizFirst,S.trailer,S.join];
   if(MODE==="trailers")return [S.trailer,S.hero,S.trailer,S.wall,S.trailer,S.join,S.trailer,S.timeline.bind(null,0)];
   /* everyday loop: product first, a fun or useful screen every 3 to 4 screens; explainers stay on the remote */
-  const SPOT=()=>{const l=spotList();for(let g=0;g<l.length;g++){const sc=spotScene(l[nx("spotq",l.length)]);if(sc)return sc;}return null;};
-  return [...(loop%4===0?[S.open]:[]),S.board,SPOT,S.flow,S.hero,S.trailer,S.wall,S.cotd,S.keys,SPOT,S.grade,S.news,S.vote,S.doom,S.run,S.blow,S.fact,S.join,S.inc,S.sold,S.trailer,S.spot,S.market.bind(null,0),S.nums,S.hero,S.trades,S.grade,S.upload,S.presale,S.soon,S.excl,S.flow,S.news.bind(null,1),S.quizFirst,SPOT,S.feat,S.timeline.bind(null,loop%2),S.merch,S.fact,S.cash,S.svc,day[0],day[1],S.join];}
+    return [...(loop%4===0?[S.open]:[]),S.board,SPOT,S.hero,S.trailer,S.wall,S.cotd,S.keys,SPOT,S.grade,S.news,S.vote,S.doom,S.run,S.blow,S.fact,S.join,S.inc,S.sold,S.trailer,S.spot,S.market.bind(null,0),S.nums,S.hero,S.trades,S.grade,S.upload,S.presale,S.soon,S.excl,S.news.bind(null,1),S.quizFirst,SPOT,S.feat,S.timeline.bind(null,loop%2),S.merch,S.fact,S.cash,S.svc,day[0],day[1],S.join];}
 /* engine: auto-plays, keeps a history so staff can step back and forward, can be paused, and can take a pushed screen from the desk */
 const host=document.getElementById("host"),cut=document.getElementById("cut");let queue=[],current=null,lastId="",timer=null,paused=false,busy=false,hist=[],hpos=-1,curMs=10000,startedAt=0,remain=0;
 const clone=o=>JSON.parse(JSON.stringify(o));
