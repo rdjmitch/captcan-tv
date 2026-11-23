@@ -3290,7 +3290,7 @@ const keyNote=t=>{for(const [re,n,y] of KEYS)if(re.test(t))return {note:n,year:y
 
 
 CONFIG.ticker=["Every book bagged and boarded","Pre-sales close Monday 8pm","New releases every Tuesday","New back issues every Friday","Hold Box: no time limit, no storage fees","We buy and consign collections","CaptCan Cash: 10% back on pre-sales","Free account: scan any code on screen"];
-const BUILD="1123-1440";const SITE="https://www.captcancomics.ca",API="2025-10";
+const BUILD="1123-1500";const SITE="https://www.captcancomics.ca",API="2025-10";
 /* helpers */
 const NW="h1,h2,h3,p,b,span,figcaption,.sub,.txt,.book,.lab,.sm,.when,.after,.lead,.pts div";
 function noWidow(root){root.querySelectorAll(NW).forEach(e=>{if(e.children.length>2)return;const w=document.createTreeWalker(e,NodeFilter.SHOW_TEXT);let last=null;while(w.nextNode()){const n=w.currentNode;n.nodeValue=n.nodeValue.replace(/(\w)-(\w)/g,"$1\u2011$2");if(n.nodeValue.trim())last=n;}if(!last)return;const v=last.nodeValue,i=v.trimEnd().lastIndexOf(" ");if(i>0&&v.trim().split(/ +/).length>2&&v.slice(i+1).trim().length<=10)last.nodeValue=v.slice(0,i)+"\u00a0"+v.slice(i+1);});return root;}
@@ -3588,6 +3588,26 @@ const DAYNOW=()=>now().getDay();let DAY=DAYNOW();
 let MODE="mix",SPEED=1,BANNER="";
 const MODES={mix:"Full mix",event:"Signing day",sell:"Selling",line:"Line-up",market:"Market & news",trailers:"Trailers"};
 const SIGNDAY=()=>now().toLocaleDateString("en-CA")==="2026-11-18";
+
+/* ===== Spotlights (Nov 23): creator / character / series screens, built live from in-stock books.
+   Built-ins below; staff add their own from the remote (Screens > Build a screen). ===== */
+const DEFSPOTS=[
+ {q:"doctor doom",h:"Doctor <em>Doom</em>",eye:"Avengers: Doomsday · in theatres Dec 18"},
+ {q:"absolute batman",h:"Absolute <em>Batman</em>",eye:"DC's biggest book right now"},
+ {q:"spider-man",h:"<em>Spider-Man</em>",eye:"Character spotlight"},
+ {q:"fantastic four",h:"Fantastic <em>Four</em>",eye:"Doom's oldest rivals"},
+ {q:"x-men",h:"The <em>X-Men</em>",eye:"Character spotlight"},
+ {q:"momoko",h:"Peach <em>Momoko</em>",eye:"Cover artist spotlight"}];
+let SPOTS_CUSTOM=[];const SPOTC={};
+const spotList=()=>[...(SPOTS_CUSTOM||[]),...DEFSPOTS];
+const spotH=s=>s.h||esc(String(s.q).replace(/\b\w/g,c=>c.toUpperCase()));
+async function loadSpot(q){const k=String(q).toLowerCase().trim();if(!k)return [];const c=SPOTC[k];if(c&&Date.now()-c.t<30*60e3)return c.L;
+  try{const d=await sf(`{products(first:60,sortKey:BEST_SELLING,query:${J(k+" available_for_sale:true")}){${PF}}}`);
+    const seen=new Set(),L=[];for(const p of norm(d.products.nodes)){const bk=bookKey(p.title);if(seen.has(bk)||!(p.price>0))continue;seen.add(bk);L.push({img:p.img,name:p.title.replace(/\s*\(\d{4}\)/,"").replace(/\s+/g," ").trim(),price:p.price,handle:p.handle});if(L.length>=8)break;}
+    SPOTC[k]={t:Date.now(),L};return L;}catch(x){return (c&&c.L)||[];}}
+function spotScene(s){const L=(SPOTC[String(s.q).toLowerCase().trim()]||{}).L||[];if(L.length<3)return null;
+  return bigs("spotq",L,{n:4,eye:esc(s.eye||"Spotlight"),h:spotH(s),dur:13,qr:[utm(SITE+"/search?q="+encodeURIComponent(s.q),"spotlight"),"Scan to shop",L.length+"+ in stock"]});}
+function warmSpots(){spotList().forEach(s=>loadSpot(s.q));}
 function playlist(){DAY=DAYNOW();
   const day={1:[S.presale,S.soon],2:[S.board,S.presale],3:[S.hero,S.board],4:[S.story,S.soon],5:[S.keys,S.story],6:[S.keys,S.merch],0:[S.keys,S.merch]}[DAY];
   if(MODE==="event"||(MODE==="mix"&&SIGNDAY()))return [S.sign,S.chain,S.board,S.trailer,S.chainall,S.cgcss,S.hero,S.feat,S.sign,S.dwj,S.trailer,S.monk,S.wall,S.chain,S.inc,S.join,S.trailer,S.sign,S.chainall,S.hero,S.trades,S.cgcss,S.feat,S.app,S.sign,S.trailer,S.chain,S.cotd,S.flow,S.market.bind(null,0),S.news,S.fact,S.vote,S.grade,S.doom,S.monk,S.about,S.news.bind(null,1),S.fact,S.spot,S.flow,S.hero,S.trailer,S.sign,S.dwj,S.chainall,S.run,S.inc,S.trailer,S.sign,S.chain,S.excl,S.sold,S.blow,S.keys,S.feat,S.svc,S.about,S.presale,S.join];
@@ -3596,7 +3616,8 @@ function playlist(){DAY=DAYNOW();
   if(MODE==="market")return [S.market.bind(null,0),S.news,S.fact,S.market.bind(null,1),S.news.bind(null,1),S.alpha,S.fact,S.vote,S.sold,S.vel,S.trailer,S.timeline.bind(null,0),S.timeline.bind(null,1),S.quizFirst,S.trailer,S.join];
   if(MODE==="trailers")return [S.trailer,S.hero,S.trailer,S.wall,S.trailer,S.join,S.trailer,S.timeline.bind(null,0)];
   /* everyday loop: product first, a fun or useful screen every 3 to 4 screens; explainers stay on the remote */
-  return [...(loop%4===0?[S.open]:[]),S.board,S.flow,S.hero,S.trailer,S.wall,S.cotd,S.keys,S.grade,S.news,S.vote,S.doom,S.run,S.blow,S.fact,S.join,S.inc,S.sold,S.trailer,S.spot,S.market.bind(null,0),S.nums,S.hero,S.trades,S.grade,S.upload,S.presale,S.soon,S.excl,S.flow,S.news.bind(null,1),S.quizFirst,S.feat,S.timeline.bind(null,loop%2),S.merch,S.fact,S.cash,S.svc,day[0],day[1],S.join];}
+  const SPOT=()=>{const l=spotList();for(let g=0;g<l.length;g++){const sc=spotScene(l[nx("spotq",l.length)]);if(sc)return sc;}return null;};
+  return [...(loop%4===0?[S.open]:[]),S.board,SPOT,S.flow,S.hero,S.trailer,S.wall,S.cotd,S.keys,SPOT,S.grade,S.news,S.vote,S.doom,S.run,S.blow,S.fact,S.join,S.inc,S.sold,S.trailer,S.spot,S.market.bind(null,0),S.nums,S.hero,S.trades,S.grade,S.upload,S.presale,S.soon,S.excl,S.flow,S.news.bind(null,1),S.quizFirst,SPOT,S.feat,S.timeline.bind(null,loop%2),S.merch,S.fact,S.cash,S.svc,day[0],day[1],S.join];}
 /* engine: auto-plays, keeps a history so staff can step back and forward, can be paused, and can take a pushed screen from the desk */
 const host=document.getElementById("host"),cut=document.getElementById("cut");let queue=[],current=null,lastId="",timer=null,paused=false,busy=false,hist=[],hpos=-1,curMs=10000,startedAt=0,remain=0;
 const clone=o=>JSON.parse(JSON.stringify(o));
@@ -3623,7 +3644,7 @@ async function go(dir,push){if(busy)return;busy=true;clearTimeout(timer);
 function setPaused(p){paused=p;document.body.classList.toggle("paused",p);if(p){clearTimeout(timer);remain=Math.max(1000,remain-(Date.now()-startedAt));progress(null);}else schedule(remain||curMs);}
 const next=()=>go(1);
 /* push a specific screen (from the desk remote) */
-const PUSH={book:p=>S.book(p),msg:m=>S.msg(m),join:()=>S.join(),cash:()=>S.cash(),sell:()=>S.svc(1),consign:()=>S.svc(2),pressing:()=>S.svc(3),holdbox:()=>S.svc(4),presale:()=>S.presale(),wall:()=>S.wall(),board:()=>S.board(),hero:()=>S.hero(),run:()=>S.run(),blow:()=>S.blow(),keys:()=>S.keys(),soon:()=>S.soon(),excl:()=>S.excl(),merch:()=>S.merch(),market:()=>S.market(0),market2:()=>S.market(1),alpha:()=>S.alpha(),sold:()=>S.sold(),vel:()=>S.vel(),timeline:()=>S.timeline(0),timeline2:()=>S.timeline(1),quiz:()=>S.quizFirst(),quizprice:()=>S.quizPrice(),ratio:()=>S.lesson(0),cpv:()=>S.lesson(1),cgc:()=>S.school(),eras:()=>S.eras(),artists:()=>S.artists(),howto:()=>S.howto(),trailer:i=>S.trailer(i),open:()=>S.open(),chain:()=>S.chain(),chainall:()=>S.chainall(),inc:()=>S.inc(),trades:()=>S.trades(),about:()=>S.about(0),about2:()=>S.about(1),sign:()=>S.sign(),cgcss:()=>S.cgcss(),dwj:()=>S.dwj(),monk:()=>S.monk(),app:()=>S.app(),feat:()=>S.feat(),news:()=>S.news(0),news2:()=>S.news(1),fact:()=>S.fact(),cotd:()=>S.cotd(),vote:()=>S.vote(),spot:()=>S.spot(),upload:()=>S.upload(),flow:()=>S.flow(),grade:()=>S.grade(),doom:()=>S.doom(),nums:()=>S.nums()};
+const PUSH={spotq:a=>{const s=typeof a==="string"?{q:a}:(a||{});const k=String(s.q||"").toLowerCase().trim();if(!(SPOTC[k]&&SPOTC[k].L.length)){loadSpot(k).then(()=>{if(SPOTC[k]&&SPOTC[k].L.length>=3)pushScreen("spotq",s,s.hold||60);});return null;}return spotScene(s);},book:p=>S.book(p),msg:m=>S.msg(m),join:()=>S.join(),cash:()=>S.cash(),sell:()=>S.svc(1),consign:()=>S.svc(2),pressing:()=>S.svc(3),holdbox:()=>S.svc(4),presale:()=>S.presale(),wall:()=>S.wall(),board:()=>S.board(),hero:()=>S.hero(),run:()=>S.run(),blow:()=>S.blow(),keys:()=>S.keys(),soon:()=>S.soon(),excl:()=>S.excl(),merch:()=>S.merch(),market:()=>S.market(0),market2:()=>S.market(1),alpha:()=>S.alpha(),sold:()=>S.sold(),vel:()=>S.vel(),timeline:()=>S.timeline(0),timeline2:()=>S.timeline(1),quiz:()=>S.quizFirst(),quizprice:()=>S.quizPrice(),ratio:()=>S.lesson(0),cpv:()=>S.lesson(1),cgc:()=>S.school(),eras:()=>S.eras(),artists:()=>S.artists(),howto:()=>S.howto(),trailer:i=>S.trailer(i),open:()=>S.open(),chain:()=>S.chain(),chainall:()=>S.chainall(),inc:()=>S.inc(),trades:()=>S.trades(),about:()=>S.about(0),about2:()=>S.about(1),sign:()=>S.sign(),cgcss:()=>S.cgcss(),dwj:()=>S.dwj(),monk:()=>S.monk(),app:()=>S.app(),feat:()=>S.feat(),news:()=>S.news(0),news2:()=>S.news(1),fact:()=>S.fact(),cotd:()=>S.cotd(),vote:()=>S.vote(),spot:()=>S.spot(),upload:()=>S.upload(),flow:()=>S.flow(),grade:()=>S.grade(),doom:()=>S.doom(),nums:()=>S.nums()};
 function pushScreen(name,arg,hold){const f=PUSH[name];if(!f)return;let sc=null;try{sc=f(arg);}catch(e){}if(!sc)return;go(0,{sc,hold:hold||(sc.manual?null:sc.dur)}).then(()=>{});}
 function buildTicker(){const lead={1:"Pre-sales close tonight at 8pm",2:"This week's new releases go up today",3:"New comic book day",5:"New back issues go up today"}[DAYNOW()];
   const mk=MARKET.hot10.slice(0,3).map(m=>`Market: ${m.t} ${m.up}`);
@@ -3664,7 +3685,7 @@ const YTP={state:"idle",t:null,player:null,next:0,k:0,want:false,bufT:0,onEnd:nu
     LASTTR=Date.now();CURPL=p;CURV=null;Radio.duck(true);this.w.classList.add("on");this.ee=setInterval(()=>{try{const d=p.getDuration(),c=p.getCurrentTime();if(d>10&&c>d-1.6&&this.onEnd)this.onEnd();}catch(x){}},500);try{p.seekTo(0,true);p.playVideo();}catch(x){}
     setTimeout(()=>{if(TVOL>0){try{p.unMute();p.setVolume(TVOL);}catch(x){}}},350);this.log("show");},
   hide(){clearInterval(this.ee);Radio.duck(false);CURPL=null;this.kill();this.next=Date.now()+20000;}};
-addEventListener("resize",fit);fit();clock();setInterval(clock,1e4);
+addEventListener("resize",fit);fit();setTimeout(()=>{try{if(!IS_REMOTE){warmSpots();setInterval(warmSpots,30*60e3);}}catch(x){}},1500);clock();setInterval(clock,1e4);
 /* at your own pace: click right = next, left = back; keyboard or Fire TV remote arrows; OK / space = pause */
 document.getElementById("stage").addEventListener("click",e=>{Radio.unlock();soundUnlock();if(!document.fullscreenElement){try{document.documentElement.requestFullscreen().catch(()=>{});}catch(x){}return;}go(e.clientX>innerWidth/2?1:-1);});
 addEventListener("keydown",e=>{const k=e.key;const tg=e.target;if(IS_REMOTE||(tg&&(/^(INPUT|TEXTAREA|SELECT|BUTTON)$/.test(tg.tagName)||tg.isContentEditable)))return;goFull();Radio.unlock();soundUnlock();if(["ArrowRight","ArrowDown","PageDown","MediaTrackNext","MediaFastForward"].includes(k)){e.preventDefault();go(1);}else if(["ArrowLeft","ArrowUp","PageUp","MediaTrackPrevious","MediaRewind"].includes(k)){e.preventDefault();go(-1);}else if([" ","Enter","MediaPlayPause","Select"].includes(k)){e.preventDefault();if(SOUNDWAIT()){return;}setPaused(!paused);}});
@@ -3688,7 +3709,7 @@ const Radio={a:null,on:false,url:"",name:"",vol:.35,ducked:false,locked:true,
   dog(){const a=this.a;if(!a||!this.on||this.ducked||this.locked)return;if(a.paused||a.ended){this.st.drop++;this.st.fix++;a.src=this.url;this.play();}}};
 setInterval(()=>{try{Radio.dog();}catch(x){}},6000);
 /* ===== TV side: listen for desk commands ===== */
-function applyState(s){if(!s)return;if(s.tron!=null)TRON=!!s.tron;if(Array.isArray(s.trailers))UTR=s.trailers;if(!IS_REMOTE){try{const o=JSON.parse(localStorage.getItem("cctvTV")||"{}");["mode","speed","banner","radio","sig","feat","serve","tvol","trailers","tron"].forEach(k=>{if(s[k]!=null)o[k]=s[k];});localStorage.setItem("cctvTV",JSON.stringify(o));}catch(x){}}if(s.serve!=null){SERVE=+s.serve||0;updTk();}if(s.tvol!=null&&+s.tvol!==TVOL){TVOL=+s.tvol;trVol();}if(s.sig){const ch=JSON.stringify(s.sig)!==JSON.stringify(SIG);SIG=s.sig;if(ch&&!IS_REMOTE)buildTicker();if(ch&&!IS_REMOTE&&s.sigPush)setTimeout(()=>pushScreen("sign",null,30),300);}if(s.feat)FEAT=s.feat;if(s.mode&&MODES[s.mode]&&s.mode!==MODE){MODE=s.mode;queue=[];}if(s.speed)SPEED=s.speed;if(s.banner!=null&&s.banner!==BANNER){BANNER=s.banner;buildTicker();}if(s.radio)Radio.apply(s.radio);}
+function applyState(s){if(!s)return;if(s.tron!=null)TRON=!!s.tron;if(Array.isArray(s.trailers))UTR=s.trailers;if(!IS_REMOTE){try{const o=JSON.parse(localStorage.getItem("cctvTV")||"{}");["mode","speed","banner","radio","sig","feat","serve","tvol","trailers","tron","spots"].forEach(k=>{if(s[k]!=null)o[k]=s[k];});localStorage.setItem("cctvTV",JSON.stringify(o));}catch(x){}}if(s.serve!=null){SERVE=+s.serve||0;updTk();}if(s.tvol!=null&&+s.tvol!==TVOL){TVOL=+s.tvol;trVol();}if(s.sig){const ch=JSON.stringify(s.sig)!==JSON.stringify(SIG);SIG=s.sig;if(ch&&!IS_REMOTE)buildTicker();if(ch&&!IS_REMOTE&&s.sigPush)setTimeout(()=>pushScreen("sign",null,30),300);}if(s.feat)FEAT=s.feat;if(s.spots){SPOTS_CUSTOM=s.spots;if(!IS_REMOTE)warmSpots();}if(s.mode&&MODES[s.mode]&&s.mode!==MODE){MODE=s.mode;queue=[];}if(s.speed)SPEED=s.speed;if(s.banner!=null&&s.banner!==BANNER){BANNER=s.banner;buildTicker();}if(s.radio)Radio.apply(s.radio);}
 function handle(m){if(!m||!m.cmd||window.DEADTAB||NOTTV)return;
   if(m.cmd==="state"){applyState(m);if(m.ack)post(ackMsg(),"-ack");return;}
   if(Date.now()-(m.at||0)>120000)return;
@@ -3785,7 +3806,11 @@ function remoteUI(){
     <input id="q" placeholder="Spawn 1, Absolute Batman, Momoko…" autocomplete="off" enterkeyhint="search"><div class="res" id="res"></div>
      <h3>Quick picks</h3><div class="chips" id="qk">${[["hot","Hot this week"],["keys","Friday keys"],["inc","Incentives"],["chain","Monk exclusives"],["blow","On sale"]].filter(x=>(FEED[x[0]]||[]).length).map((x,i)=>`<button data-qk="${x[0]}"${i?"":' class="on"'}>${x[1]}</button>`).join("")}</div><div class="res" id="qkres"></div>
     <h3>Staff picks in rotation</h3><div class="picks" id="picks"></div></section>
-  <section id="t-screens" class="tab"><h2>Every screen</h2><p class="lead">What you see is what goes up. Tap one to put it on the TV.</p>
+  <section id="t-screens" class="tab"><div class="card" id="spcard"><h2>Build a screen</h2><p class="lead">Type a creator, character or series. The TV pulls every in-stock book, best covers and prices. <b>Show now</b> puts it up right away. <b>Add to rotation</b> keeps it playing.</p>
+     <input id="spq" placeholder="Venom, Jim Lee, Absolute Wonder Woman…" autocomplete="off"><input id="sph" placeholder="Headline (optional), e.g. Venom week" autocomplete="off" style="margin-top:8px"><input id="spe" placeholder="Small line on top (optional), e.g. New movie Dec 18" autocomplete="off" style="margin-top:8px">
+     <div class="grid2" style="margin-top:10px"><button class="on" id="spshow">Show now</button><button id="spadd">Add to rotation</button></div>
+     <h3>Your screens in rotation</h3><div class="chips" id="splist"></div>
+     <h3>Built in</h3><div class="chips">${DEFSPOTS.map(s=>`<button data-spb="${esc(s.q)}">${esc(s.q.replace(/\b\w/g,c=>c.toUpperCase()))}</button>`).join("")}</div></div><h2>Every screen</h2><p class="lead">What you see is what goes up. Tap one to put it on the TV.</p>
     <h3>Trailers (sound on)</h3><div class="rtiles">${MARKET.trailers.map((t,i)=>`<div class="rtile" data-p="trailer:yt:${t.id}" role="button" tabindex="0"><div class="pv"><img class="yt" src="https://i.ytimg.com/vi/${t.id}/hqdefault.jpg" alt=""><span class="tag">Trailer</span></div><b>${esc(t.t)}${t.sub?", "+esc(t.sub):""}</b></div>`).join("")}</div>
     <h3>Sell</h3><div class="rtiles">${T("board","Hot this week")}${T("wall","New this week")}${T("hero","#1 seller")}${T("inc","Incentive covers")}${T("trades","Trades and hardcovers")}${T("keys","Just landed")}${T("run","Friday's big run")}${T("blow","25% off blowout")}${T("soon","Coming soon")}${T("excl","Our exclusives")}${T("merch","Merch")}${T("feat","Staff picks")}${T("cotd","Cover of the day")}${T("flow","Moving wall of covers")}${T("spot","Character spotlight")}${T("upload","Friday upload countdown")}</div>
     <h3>Market and news</h3><div class="rtiles">${T("market","Hot 10")}${T("alpha","Market spotlight")}${T("sold","Just sold here")}${T("vel","Moving fastest")}${T("timeline","Movie keys")}${T("news","Comic news")}${T("fact","Did you know")}</div>
@@ -3802,7 +3827,7 @@ function remoteUI(){
     <h3>Background radio</h3><div class="card"><button id="ron" style="width:100%">Radio off</button><div class="rtiles" id="stations" style="margin-top:8px"></div><label>Volume</label><input type="range" id="vol" min="0" max="1" step="0.05" style="padding:0"><label>Add a station (stream link from your business music service)</label><input id="sname" placeholder="Name"><input id="curl" placeholder="https://…" style="margin-top:8px"><button id="cgo" style="width:100%;margin-top:8px">Add station</button></div>
     <h3>Fix it</h3><div class="grid2"><button data-c="reload">Reload the TV</button><button id="ping2">Check the TV</button></div>
     <p class="note">On the TV: → next, ← back, OK pauses. Press OK once after the TV turns on so trailers can play with sound.</p></section>
-  <nav>${[["live","◉","Live"],["sign","✎","Signing"],["books","⌕","Books"],["screens","▦","Screens"],["more","⋯","More"]].map((t,i)=>`<button data-tab="${t[0]}" class="${i?"":"cur"}"><i>${t[1]}</i>${t[2]}</button>`).join("")}</nav>
+  <nav>${[["live","◉","Live"],["sign","✎","Events"],["books","⌕","Books"],["screens","▦","Screens"],["more","⋯","More"]].map((t,i)=>`<button data-tab="${t[0]}" class="${i?"":"cur"}"><i>${t[1]}</i>${t[2]}</button>`).join("")}</nav>
   <div class="toast"></div>`;
   /* previews: render the real slide, scaled down */
   const PVS=new Map();
@@ -3818,8 +3843,18 @@ function remoteUI(){
     const r=W.querySelector("#ron");r.textContent=S0.radio.on?`Radio on · ${S0.radio.name}`:"Radio off";r.classList.toggle("on",S0.radio.on);W.querySelector("#vol").value=S0.radio.vol;W.querySelector("#bn").value=S0.banner||"";
     W.querySelector("#tvol").value=S0.tvol;W.querySelector("#tvl").textContent=S0.tvol>0?"Trailer volume "+S0.tvol+"%":"Trailers play muted";W.querySelector("#tmute").textContent=S0.tvol>0?"Mute trailers":"Unmute trailers";
     W.querySelector("#picks").innerHTML=(S0.feat||[]).length?S0.feat.map((p,i)=>`<div><img src="${img(p.img,200)}" alt=""><button data-unpick="${i}">Remove</button></div>`).join(""):`<p class="note" style="margin:0">None yet. Search a book and tap Pick.</p>`;};
+  /* Build a screen (spotlights) */
+  const spPaint=()=>{const b=W.querySelector("#splist");if(!b)return;const L=S0.spots||[];b.innerHTML=L.length?L.map((s,i)=>`<button data-unspot="${i}">${esc(s.label||s.q)} ✕</button>`).join(""):`<p class="note" style="margin:0">None yet.</p>`;};
+  const spRead=()=>{const q=(W.querySelector("#spq").value||"").trim();if(!q){tip("Type a name first");return null;}const hh=(W.querySelector("#sph").value||"").trim(),ey=(W.querySelector("#spe").value||"").trim();const s={q,label:hh||q,eye:ey||"Spotlight"};if(hh)s.h=esc(hh).replace(/(\S+)$/,"<em>$1</em>");return s;};
+  W.addEventListener("click",e=>{const t=e.target.closest("button");if(!t)return;
+    if(t.id==="spshow"){const s=spRead();if(s){cmd({cmd:"show",screen:"spotq",arg:Object.assign({hold:HOLD},s),hold:HOLD},"Building it on the TV");}}
+    else if(t.id==="spadd"){const s=spRead();if(s){S0.spots=[s,...(S0.spots||[]).filter(x=>x.q.toLowerCase()!==s.q.toLowerCase())].slice(0,12);save();spPaint();tip("Added to the rotation");}}
+    else if(t.dataset.unspot!=null){S0.spots=(S0.spots||[]).filter((x,i)=>i!==+t.dataset.unspot);save();spPaint();tip("Removed");}
+    else if(t.dataset.spb){const s=DEFSPOTS.find(x=>x.q===t.dataset.spb);if(s)cmd({cmd:"show",screen:"spotq",arg:Object.assign({hold:HOLD},s),hold:HOLD},"On the TV now");}});
+  spPaint();
+
   mark();
-  fetch(RELAY+"/json?poll=1&since=48h").then(x=>x.text()).then(t=>{let last=null;t.trim().split("\n").forEach(l=>{try{const m=JSON.parse(JSON.parse(l).message);if(m.cmd==="state")last=m;}catch(x){}});if(last){["mode","speed","banner","stations","radio","sig","feat","serve","tvol","trailers","tron"].forEach(k=>{if(last[k]!=null)S0[k]=last[k];});SIG=S0.sig||SIG;FEAT=S0.feat||[];SERVE=S0.serve||0;mark();}}).catch(()=>{});
+  fetch(RELAY+"/json?poll=1&since=48h").then(x=>x.text()).then(t=>{let last=null;t.trim().split("\n").forEach(l=>{try{const m=JSON.parse(JSON.parse(l).message);if(m.cmd==="state")last=m;}catch(x){}});if(last){["mode","speed","banner","stations","radio","sig","feat","serve","tvol","trailers","tron","spots"].forEach(k=>{if(last[k]!=null)S0[k]=last[k];});SIG=S0.sig||SIG;FEAT=S0.feat||[];SERVE=S0.serve||0;mark();}}).catch(()=>{});
   const serve=n=>{S0.serve=Math.max(0,n);SERVE=S0.serve;save();mark();tip(S0.serve?"Now signing #"+S0.serve:"Ticket numbers off");};
   W.addEventListener("click",e=>{const b=e.target.closest("button,[data-p]");if(!b)return;
     if(b.dataset.tab){setTab(b.dataset.tab);return;}
