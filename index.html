@@ -3329,7 +3329,7 @@ const keyNote=t=>{for(const [re,n,y] of KEYS)if(re.test(t))return {note:n,year:y
 
 
 CONFIG.ticker=["Every book bagged and boarded","Pre-sales close Monday 8pm","New releases every Tuesday","New back issues every Friday","Hold Box: no time limit, no storage fees","We buy and consign collections","CaptCan Cash: 10% back on pre-sales","Free account: scan any code on screen"];
-const BUILD="1123-1700";const SITE="https://www.captcancomics.ca",API="2025-10";
+const BUILD="1123-1600b";const SITE="https://www.captcancomics.ca",API="2025-10";
 /* helpers */
 const NW="h1,h2,h3,p,b,span,figcaption,.sub,.txt,.book,.lab,.sm,.when,.after,.lead,.pts div";
 function noWidow(root){root.querySelectorAll(NW).forEach(e=>{if(e.children.length>2)return;const w=document.createTreeWalker(e,NodeFilter.SHOW_TEXT);let last=null;while(w.nextNode()){const n=w.currentNode;n.nodeValue=n.nodeValue.replace(/(\w)-(\w)/g,"$1\u2011$2");if(n.nodeValue.trim())last=n;}if(!last)return;const v=last.nodeValue,i=v.trimEnd().lastIndexOf(" ");if(i>0&&v.trim().split(/ +/).length>2&&v.slice(i+1).trim().length<=10)last.nodeValue=v.slice(0,i)+"\u00a0"+v.slice(i+1);});return root;}
@@ -3636,18 +3636,20 @@ const DEFSPOTS=[
  {q:"spider-man",coll:"character-spider-man",m:"spider-man",h:"Spider-Man",eye:"Character spotlight",tag:"Since Amazing Fantasy #15, 1962. Still the hero everyone grabs first.",c:"#FF2A36"},
  {q:"fantastic four",coll:"character-fantastic-four",m:"fantastic four",h:"Fantastic Four",eye:"Doom's oldest rivals",tag:"Marvel's first family, where Doom got his start in 1962.",c:"#2F8BFF"},
  {q:"x-men",coll:"character-x-men",m:"x-men",h:"The X-Men",eye:"Character spotlight",tag:"Children of the atom. Every era, every team, on our shelves.",c:"#FFC21A"},
+ {q:"todd mcfarlane",coll:"cover-artist-todd-mcfarlane",m:"mcfarlane|spawn|spider-man",h:"Todd McFarlane",eye:"Cover artist spotlight",tag:"The artist behind Spawn, Venom's look and the 1990 Spider-Man run.",c:"#C9A759"},
  {q:"momoko",coll:"cover-artist-peach-momoko",m:"momoko",h:"Peach Momoko",eye:"Cover artist spotlight",tag:"The most wanted variant artist in comics right now.",c:"#FF5FA2"}];
 let SPOTS_CUSTOM=[];const SPOTC={};
 const spotList=()=>[...(SPOTS_CUSTOM||[]),...DEFSPOTS];
 const spotH=s=>s.h||esc(String(s.q).replace(/\b\w/g,c=>c.toUpperCase()));
 const PREORDER=hd=>/^\d+$/.test(hd)||/^\d{4}[a-z]{2}\d{3,5}$/i.test(hd);
 async function collPage(handle,after){const d=await sf(`{collection(handle:${J(handle)}){title products(first:250,sortKey:BEST_SELLING,filters:[{available:true}]${after?`,after:${J(after)}`:""}){nodes{title handle availableForSale featuredImage{url} priceRange{minVariantPrice{amount}}} pageInfo{hasNextPage endCursor}}}}`);return d.collection;}
-async function loadColl(handle){let n=0,after=null,first=null,lo=1e9,more=false;for(let pg=0;pg<8;pg++){const c=await collPage(handle,after);if(!c)return null;const ps=c.products;if(!first)first=ps.nodes;for(const p of ps.nodes){if(p.availableForSale===false)continue;n++;const pr=+p.priceRange.minVariantPrice.amount;if(pr>0)lo=Math.min(lo,pr);}if(!ps.pageInfo.hasNextPage){more=false;break;}more=true;after=ps.pageInfo.endCursor;}
+async function loadColl(handle,rule){let n=0,after=null,first=null,lo=1e9,more=false;for(let pg=0;pg<8;pg++){const c=await collPage(handle,after);if(!c)return null;const ps=c.products;if(!first)first=ps.nodes;for(const p of ps.nodes){if(p.availableForSale===false)continue;n++;const pr=+p.priceRange.minVariantPrice.amount;if(pr>0)lo=Math.min(lo,pr);}if(!ps.pageInfo.hasNextPage){more=false;break;}more=true;after=ps.pageInfo.endCursor;}
   const seen=new Set(),L=[];for(const p of norm(first||[])){if(PREORDER(p.handle)||!(p.price>0))continue;const bk=bookKey(p.title);if(seen.has(bk))continue;seen.add(bk);L.push({img:p.img,name:p.title.replace(/\s*\(\d{4}\)/,"").replace(/\s+/g," ").trim(),price:p.price,handle:p.handle});if(L.length>=8)break;}
+  if(rule&&rule.m){const MR=new RegExp(rule.m,"i");L.sort((a,b)=>(MR.test(b.name)?1:0)-(MR.test(a.name)?1:0));}
   return {L,n,lo:lo<1e9?lo:0,more,coll:handle};}
 const slug=s=>String(s).toLowerCase().trim().replace(/['’.]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
 async function loadSpot(q,rule){const k=String(q).toLowerCase().trim();rule=rule||spotList().find(s=>String(s.q).toLowerCase().trim()===k)||{};
-  if(!(SPOTC[k]&&Date.now()-SPOTC[k].t<30*60e3)){const tries=rule.coll?[rule.coll]:["character-"+slug(k),"cover-artist-"+slug(k),slug(k),slug(k)+"-web"];for(const hd of tries){try{const r=await loadColl(hd);if(r&&r.L.length>=3){SPOTC[k]=Object.assign({t:Date.now()},r);return r.L;}}catch(x){}}}const MR=new RegExp(rule.m||k.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"),"i"),XR=rule.x?new RegExp(rule.x,"i"):null;if(!k)return [];const c=SPOTC[k];if(c&&Date.now()-c.t<30*60e3)return c.L;
+  if(!(SPOTC[k]&&Date.now()-SPOTC[k].t<30*60e3)){const tries=rule.coll?[rule.coll]:["character-"+slug(k),"cover-artist-"+slug(k),slug(k),slug(k)+"-web"];for(const hd of tries){try{const r=await loadColl(hd,rule);if(r&&r.L.length>=3){SPOTC[k]=Object.assign({t:Date.now()},r);return r.L;}}catch(x){}}}const MR=new RegExp(rule.m||k.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"),"i"),XR=rule.x?new RegExp(rule.x,"i"):null;if(!k)return [];const c=SPOTC[k];if(c&&Date.now()-c.t<30*60e3)return c.L;
   try{const d=await sf(`{products(first:60,sortKey:BEST_SELLING,query:${J(k+" available_for_sale:true")}){${PF}}}`);
     let pool=norm(d.products.nodes).filter(p=>p.price>0&&!PREORDER(p.handle)&&!(XR&&XR.test(p.title)));const tight=pool.filter(p=>MR.test(p.title));if(tight.length>=3||rule.m)pool=tight;
     const seen=new Set(),L=[];let n=0,lo=1e9;for(const p of pool){n++;lo=Math.min(lo,p.price);const bk=bookKey(p.title);if(seen.has(bk)||L.length>=8)continue;seen.add(bk);L.push({img:p.img,name:p.title.replace(/\s*\(\d{4}\)/,"").replace(/\s+/g," ").trim(),price:p.price,handle:p.handle});}
