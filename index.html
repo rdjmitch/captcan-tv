@@ -3326,7 +3326,7 @@ const keyNote=t=>{for(const [re,n,y] of KEYS)if(re.test(t))return {note:n,year:y
 
 
 CONFIG.ticker=["Every book bagged and boarded","Pre-sales close Monday 8pm","New releases every Tuesday","New back issues every Friday","Hold Box: no time limit, no storage fees","We buy and consign collections","CaptCan Cash: 10% back on pre-sales","Free account: scan any code on screen"];
-const BUILD="1123-1530";const SITE="https://www.captcancomics.ca",API="2025-10";
+const BUILD="1123-1550";const SITE="https://www.captcancomics.ca",API="2025-10";
 /* helpers */
 const NW="h1,h2,h3,p,b,span,figcaption,.sub,.txt,.book,.lab,.sm,.when,.after,.lead,.pts div";
 function noWidow(root){root.querySelectorAll(NW).forEach(e=>{if(e.children.length>2)return;const w=document.createTreeWalker(e,NodeFilter.SHOW_TEXT);let last=null;while(w.nextNode()){const n=w.currentNode;n.nodeValue=n.nodeValue.replace(/(\w)-(\w)/g,"$1\u2011$2");if(n.nodeValue.trim())last=n;}if(!last)return;const v=last.nodeValue,i=v.trimEnd().lastIndexOf(" ");if(i>0&&v.trim().split(/ +/).length>2&&v.slice(i+1).trim().length<=10)last.nodeValue=v.slice(0,i)+"\u00a0"+v.slice(i+1);});return root;}
@@ -3628,18 +3628,20 @@ const SIGNDAY=()=>now().toLocaleDateString("en-CA")==="2026-11-18";
 /* ===== Spotlights (Nov 23): creator / character / series screens, built live from in-stock books.
    Built-ins below; staff add their own from the remote (Screens > Build a screen). ===== */
 const DEFSPOTS=[
- {q:"doctor doom",h:"Doctor Doom",eye:"Avengers: Doomsday · in theatres Dec 18",tag:"Ruler of Latveria. Rival of the Fantastic Four. Coming for the whole MCU.",c:"#3DDC68"},
- {q:"absolute batman",h:"Absolute Batman",eye:"DC's biggest book right now",tag:"No mansion. No money. No butler. The Batman built from scratch.",c:"#FFD21F"},
- {q:"spider-man",h:"Spider-Man",eye:"Character spotlight",tag:"Since Amazing Fantasy #15, 1962. Still the hero everyone grabs first.",c:"#FF2A36"},
- {q:"fantastic four",h:"Fantastic Four",eye:"Doom's oldest rivals",tag:"Marvel's first family, where Doom got his start in 1962.",c:"#2F8BFF"},
- {q:"x-men",h:"The X-Men",eye:"Character spotlight",tag:"Children of the atom. Every era, every team, on our shelves.",c:"#FFC21A"},
- {q:"momoko",h:"Peach Momoko",eye:"Cover artist spotlight",tag:"The most wanted variant artist in comics right now.",c:"#FF5FA2"}];
+ {q:"doctor doom",m:"\\bdoom\\b|doomquest|doomwar|doom 2099",x:"patrol|villainess|routes lead",h:"Doctor Doom",eye:"Avengers: Doomsday · in theatres Dec 18",tag:"Ruler of Latveria. Rival of the Fantastic Four. Coming for the whole MCU.",c:"#3DDC68"},
+ {q:"absolute batman",m:"absolute batman",h:"Absolute Batman",eye:"DC's biggest book right now",tag:"No mansion. No money. No butler. The Batman built from scratch.",c:"#FFD21F"},
+ {q:"spider-man",m:"spider-man",h:"Spider-Man",eye:"Character spotlight",tag:"Since Amazing Fantasy #15, 1962. Still the hero everyone grabs first.",c:"#FF2A36"},
+ {q:"fantastic four",m:"fantastic four",h:"Fantastic Four",eye:"Doom's oldest rivals",tag:"Marvel's first family, where Doom got his start in 1962.",c:"#2F8BFF"},
+ {q:"x-men",m:"x-men",h:"The X-Men",eye:"Character spotlight",tag:"Children of the atom. Every era, every team, on our shelves.",c:"#FFC21A"},
+ {q:"momoko",m:"momoko",h:"Peach Momoko",eye:"Cover artist spotlight",tag:"The most wanted variant artist in comics right now.",c:"#FF5FA2"}];
 let SPOTS_CUSTOM=[];const SPOTC={};
 const spotList=()=>[...(SPOTS_CUSTOM||[]),...DEFSPOTS];
 const spotH=s=>s.h||esc(String(s.q).replace(/\b\w/g,c=>c.toUpperCase()));
-async function loadSpot(q){const k=String(q).toLowerCase().trim();if(!k)return [];const c=SPOTC[k];if(c&&Date.now()-c.t<30*60e3)return c.L;
+const PREORDER=hd=>/^\d+$/.test(hd)||/^\d{4}[a-z]{2}\d{3,5}$/i.test(hd);
+async function loadSpot(q,rule){const k=String(q).toLowerCase().trim();rule=rule||spotList().find(s=>String(s.q).toLowerCase().trim()===k)||{};const MR=new RegExp(rule.m||k.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"),"i"),XR=rule.x?new RegExp(rule.x,"i"):null;if(!k)return [];const c=SPOTC[k];if(c&&Date.now()-c.t<30*60e3)return c.L;
   try{const d=await sf(`{products(first:60,sortKey:BEST_SELLING,query:${J(k+" available_for_sale:true")}){${PF}}}`);
-    const seen=new Set(),L=[];let n=0,lo=1e9;for(const p of norm(d.products.nodes)){if(!(p.price>0))continue;n++;lo=Math.min(lo,p.price);const bk=bookKey(p.title);if(seen.has(bk)||L.length>=8)continue;seen.add(bk);L.push({img:p.img,name:p.title.replace(/\s*\(\d{4}\)/,"").replace(/\s+/g," ").trim(),price:p.price,handle:p.handle});}
+    let pool=norm(d.products.nodes).filter(p=>p.price>0&&!PREORDER(p.handle)&&!(XR&&XR.test(p.title)));const tight=pool.filter(p=>MR.test(p.title));if(tight.length>=3||rule.m)pool=tight;
+    const seen=new Set(),L=[];let n=0,lo=1e9;for(const p of pool){n++;lo=Math.min(lo,p.price);const bk=bookKey(p.title);if(seen.has(bk)||L.length>=8)continue;seen.add(bk);L.push({img:p.img,name:p.title.replace(/\s*\(\d{4}\)/,"").replace(/\s+/g," ").trim(),price:p.price,handle:p.handle});}
     SPOTC[k]={t:Date.now(),L,n,lo};return L;}catch(x){return (c&&c.L)||[];}}
 function spotScene(s){const C=SPOTC[String(s.q).toLowerCase().trim()]||{},L=C.L||[];if(L.length<3)return null;
   const ac=s.c||"#EB1C24",pg=nx("spotx:"+s.q,Math.max(1,L.length-3)),P=[L[pg],...L.filter((x,i)=>i!==pg).slice(0,3)],hero=P[0];
@@ -3653,7 +3655,7 @@ function spotScene(s){const C=SPOTC[String(s.q).toLowerCase().trim()]||{},L=C.L|
    <div class="sx-stack">${P.slice(1).map((p,i)=>`<figure class="sx-back b${i}" style="--t:${tilt[i]}deg"><img src="${img(p.img,500)}" alt=""><em>${money(p.price)}</em></figure>`).join("")}
     <figure class="sx-hero"><img src="${img(hero.img,800)}" alt=""><figcaption><b>${esc(splitT(hero.name)[0])}</b><em>${money(hero.price)}</em></figcaption></figure></div>
   </section>`)};}
-function warmSpots(){spotList().forEach(s=>loadSpot(s.q));}
+function warmSpots(){spotList().forEach(s=>loadSpot(s.q,s));}
 function playlist(){DAY=DAYNOW();
   const day={1:[S.presale,S.soon],2:[S.board,S.presale],3:[S.hero,S.board],4:[S.story,S.soon],5:[S.keys,S.story],6:[S.keys,S.merch],0:[S.keys,S.merch]}[DAY];
   if(MODE==="event"||(MODE==="mix"&&SIGNDAY()))return [S.sign,S.chain,S.board,S.trailer,S.chainall,S.cgcss,S.hero,S.feat,S.sign,S.dwj,S.trailer,S.monk,S.wall,S.chain,S.inc,S.join,S.trailer,S.sign,S.chainall,S.hero,S.trades,S.cgcss,S.feat,S.app,S.sign,S.trailer,S.chain,S.cotd,S.flow,S.market.bind(null,0),S.news,S.fact,S.vote,S.grade,S.doom,S.monk,S.about,S.news.bind(null,1),S.fact,S.spot,S.flow,S.hero,S.trailer,S.sign,S.dwj,S.chainall,S.run,S.inc,S.trailer,S.sign,S.chain,S.excl,S.sold,S.blow,S.keys,S.feat,S.svc,S.about,S.presale,S.join];
