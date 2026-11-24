@@ -85,3 +85,8 @@ Read this first in any new chat about the store TV or the intro.
 4. Tuesday upload and Wednesday new-release programming.
 5. Remote: simple everyday remote plus the drag-and-drop builder and the one view of everything (Lineup tab is the start).
 - The Marvel-style intro belongs to CaptCan 6; its slot is `SCREENS.intro`.
+
+### Update Nov 24, 12:25pm: the new channel is LIVE on the TV
+- Reilly said yes. `next.html` was copied over `index.html` (BUILD 1124-1445k), the stick was reloaded over the relay (`{cmd:"reload",only:"AFT"}`) and someone pressed OK. Stick ack at 12:24: full screen, 60 fps, Doomsday trailer live, next cartoon opening ready behind it, no failures.
+- From here edit `index.html` directly. `next.html` and `tools/channel/patch.py` are leftovers from the build and can be deleted once the channel has run a full day.
+- Watch `ch` in the ack: `nf` (failed loads), `ads`/`adid` (ads waited out, seconds per clip), `fi` (filler reels), `sk` (skipped clips), `stl` (stalls).
