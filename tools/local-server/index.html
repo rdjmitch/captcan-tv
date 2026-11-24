@@ -1,0 +1,7 @@
+<!doctype html><html><head><meta charset="utf-8"><title>CaptCan TV</title><style>html,body{margin:0;background:#000;color:#777;font:22px sans-serif}</style></head><body><p style="padding:40px">CaptCan TV is starting</p>
+<script>
+/* Loader for the Mac mini folder. The channel page itself always comes from GitHub (so edits never need this folder
+   touched); because it is written into this address, clips/<id>.mp4 and clips/manifest.json load from the Mac mini. */
+(function go(n){fetch("https://rdjmitch.github.io/captcan-tv/index.html?v="+Date.now(),{cache:"no-store"}).then(function(r){if(!r.ok)throw 0;return r.text();})
+ .then(function(t){document.open();document.write(t);document.close();}).catch(function(){setTimeout(function(){go(n+1);},n<12?5000:30000);});})(0);
+</script></body></html>

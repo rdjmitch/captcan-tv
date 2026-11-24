@@ -105,3 +105,12 @@ Read this first in any new chat about the store TV or the intro.
 - Look: each letter of the title is cut from a different cover, centred on the character's face (`letters[].x/y/z` = focal point and zoom, picked by eye), white outline, no glitch cuts, no blurred backdrop, no reflections. Then a shelf of full covers gliding past at 870px tall, then a two-row wall sliding in opposite directions, then the title again over the dimmed wall. No full-screen logo ending, only a small corner logo on the shelf shot.
 - Doom v2 uses 25 in-stock Doctor Doom covers (Doom Patrol and non-Doom covers left out so the books match the title).
 - Waiting on his yes before it replaces `v/doom.mp4`. Then rebuild Absolute Batman, Midnight and Black Suit the same way and add new themes.
+
+### Update Nov 24, 1:15pm (BUILD 1124-1530n)
+- Reilly approved the new Doom reel ("that's the type of thing"): `v/doom.mp4` replaced (18.5s, no logo ending, `noend:1`). Rebuild the other three the same way.
+- Never two reels in a row: a filler now brings forward a ready clip instead when a reel just played.
+- CLIP FILES (what Reilly means by "the things previously built are still not playing"): he wants clips from the files he supplied, not YouTube (he sees the uploader's badge top right, soft picture). The files are on the Mac mini in `~/Movies/TV/CaptCanTV/clips/<YouTubeID>.mp4` + `clips/manifest.json`, never in this public repo.
+  - The page now plays `clips/<id>.mp4` (scene `S.fileclip`, clean, full screen, no YouTube) for every id in `clips/manifest.json`, but only when the page is opened from the Mac mini (`LOCAL` = http address). Trailers and anything without a file still use YouTube.
+  - `tools/local-server/index.html` is a loader for the Mac folder: it pulls the live page from GitHub and writes it into the Mac's address, so the Mac folder never needs editing again. Reels then load from GitHub (`VB`).
+  - The remote `goto` command now accepts `http://<private LAN ip>:8788/`.
+  - BLOCKED: this chat could not get the Mac folder (folder access was refused) and nothing answers on the Mac's port 8788, so the server has not been started. Needs Reilly: add the folder `Movies/TV/CaptCanTV` to the chat, and double-click `Start CaptCan TV.command` in it. Then: put the loader `index.html` in the folder, read `address.txt`, send `{cmd:"goto",url:"http://<address>:8788/?tv"}`, check the ack shows `loc:true` and `files:19`, `fc` counting up.
