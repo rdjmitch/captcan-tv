@@ -2,7 +2,7 @@ name: Build Fire TV app
 on:
   push:
     branches: [main]
-    paths: ['tools/firetv-app/**', '.github/workflows/firetv-app.yml']
+    paths: ['tools/firetv-app/src/**', 'tools/firetv-app/res/**', 'tools/firetv-app/AndroidManifest.xml', 'tools/firetv-app/build.sh', 'tools/firetv-app/VERSION']
   workflow_dispatch:
 permissions:
   contents: write
