@@ -126,7 +126,7 @@ function mkYT(n){return {n,state:"idle",t:null,player:null,bufT:0,onEnd:null,onP
     this.onPlay=reveal;try{p.mute();p.seekTo(t.s||0,true);p.playVideo();}catch(x){}
     clearInterval(this.nv);this.nv=setInterval(()=>{if(this.t!==t||this.state!=="live"||this.started){clearInterval(this.nv);return;}
       try{if(p.getPlayerState()===1){reveal();return;}p.playVideo();}catch(x){}
-      if(Date.now()-t0>9000){clearInterval(this.nv);CH.st.nf=(CH.st.nf||0)+1;CH.st.bad[t.id]=(CH.st.bad[t.id]||0)+1;CH.st.err="nostart "+t.id+" @"+new Date().toTimeString().slice(0,5);if(CH.st.bad[t.id]>=2){CH.bench[t.id]=Date.now()+10*60000;CH.st.bad[t.id]=0;}if(this.onEnd)this.onEnd();}},pre?400:1500);},
+      if(Date.now()-t0>7000){clearInterval(this.nv);CH.st.nf=(CH.st.nf||0)+1;CH.st.bad[t.id]=(CH.st.bad[t.id]||0)+1;CH.st.err="nostart "+t.id+" @"+new Date().toTimeString().slice(0,5);if(CH.st.bad[t.id]>=2){CH.bench[t.id]=Date.now()+10*60000;CH.st.bad[t.id]=0;}if(this.onEnd)this.onEnd();}},pre?400:1500);},
   /* the radio only comes back if no other clip starts straight after this one */
   hide(){if(CURPL===this.player)CURPL=null;this.kill();clearTimeout(YTM.rd);YTM.rd=setTimeout(()=>{if(!YTS.some(y=>y.state==="live"))Radio.duck(false);},1500);setTimeout(()=>{try{YTM.sync();}catch(x){}},300);}};}
 const YTS=[mkYT(0),mkYT(1)];
