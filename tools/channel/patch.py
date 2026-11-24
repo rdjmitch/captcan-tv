@@ -64,7 +64,7 @@ const CH={n:0,trn:0,bag:{},bench:{},rb:false,st:{shown:0,fill:0,skip:0,stall:0,b
       queue.unshift(f);if(alt){const a=alt();if(a)return a;}
       this.st.fill++;const r=this.draw("reel");return r?S.reel(r.id):null;}
     let sc=null;try{sc=slot.it.fn?slot.it.fn():null;}catch(x){}return ok(sc);},
-  stats(){const s=this.st;return {sh:s.shown,fi:s.fill,sk:s.skip,stl:s.stall,w:s.waits.slice(-8),bad:s.bad,err:s.err,blk:this.n,q:queue.slice(0,8).map(q=>q.slot?q.slot.kind+":"+String(q.slot.it.id).slice(0,6):"?")};}};
+  stats(){const s=this.st;return {sh:s.shown,fi:s.fill,sk:s.skip,stl:s.stall,nf:s.nf||0,w:s.waits.slice(-8),bad:s.bad,err:s.err,blk:this.n,q:queue.slice(0,8).map(q=>q.slot?q.slot.kind+":"+String(q.slot.it.id).slice(0,6):"?")};}};
 CH.load();
 '''
 between('const FLOW={any:["reel","clip"]','function playlist(){',CH)
@@ -81,20 +81,22 @@ function mkYT(n){return {n,state:"idle",t:null,player:null,bufT:0,onEnd:null,w:n
   box(){if(this.w)return;const st=document.getElementById("stage");if(!st)return;this.w=document.createElement("div");this.w.className="ytpre";this.w.innerHTML='<div class="f"></div><div class="ovl"></div>';
     let vc=document.getElementById("vcover");if(!vc){vc=document.createElement("div");vc.id="vcover";st.appendChild(vc);}st.insertBefore(this.w,vc);
     this.f=this.w.querySelector(".f");this.o=this.w.querySelector(".ovl");},
-  load(t,want){if(this.state!=="idle")this.kill();this.box();if(!this.w)return;this.t=t;this.want=!!want;this.state="loading";const self=this,t0=Date.now();let pb=false;
+  load(t,want){if(this.state!=="idle")this.kill();this.box();if(!this.w)return;this.t=t;this.want=!!want;this.state="loading";const self=this,t0=Date.now();let pb=false,rdy=0,lastSt="none";
     this.f.innerHTML="";const b=document.createElement("div");this.f.appendChild(b);
     try{this.player=new YT.Player(b,{videoId:t.id,width:WEAKTV?854:1920,height:WEAKTV?480:1080,host:YTHOST,playerVars:{autoplay:1,mute:1,controls:0,rel:0,modestbranding:1,playsinline:1,iv_load_policy:3,disablekb:1,fs:0,cc_load_policy:0,start:(t.s||0)},events:{
-      onReady:e=>{try{if(WEAKTV){const fr=e.target.getIframe();[["position","absolute"],["left","0"],["top","0"],["right","auto"],["bottom","auto"],["width","854px"],["height","480px"],["transform","scale(2.2484)"],["transform-origin","0 0"]].forEach(([k,v])=>fr.style.setProperty(k,v,"important"));}e.target.mute();e.target.playVideo();}catch(x){}},
-      onStateChange:e=>{const p=e.target;
+      onReady:e=>{try{if(WEAKTV){const fr=e.target.getIframe();[["position","absolute"],["left","0"],["top","0"],["right","auto"],["bottom","auto"],["width","854px"],["height","480px"],["transform","scale(2.2484)"],["transform-origin","0 0"]].forEach(([k,v])=>fr.style.setProperty(k,v,"important"));}rdy=Date.now();e.target.mute();e.target.playVideo();}catch(x){}},
+      onStateChange:e=>{const p=e.target;lastSt=e.data;
         if(self.state==="live"){if(e.data===3&&!self.bufT)self.bufT=Date.now();if(e.data===1)self.bufT=0;if(e.data===0&&self.onEnd)self.onEnd();return;}
         if(self.state==="loading"&&self.t===t&&e.data===1&&!pb){pb=true;const t1=Date.now();try{p.pauseVideo();}catch(x){}
           clearInterval(self.iv);self.iv=setInterval(()=>{if(self.state!=="loading"||self.t!==t){clearInterval(self.iv);return;}try{const d=p.getDuration()||150,ahead=(p.getVideoLoadedFraction()||0)*d-(t.s||0);
-            if(ahead>=8||Date.now()-t1>12000){clearInterval(self.iv);try{p.seekTo(t.s||0,true);p.pauseVideo();}catch(x){}self.state="ready";clearTimeout(self.to);CH.wait(Math.round((Date.now()-t0)/1e3));
+            if(ahead>=8||Date.now()-t1>12000){clearInterval(self.iv);try{p.seekTo(t.s||0,true);p.pauseVideo();}catch(x){}self.state="ready";clearTimeout(self.to);delete CH.st.bad[t.id];CH.wait(Math.round((Date.now()-t0)/1e3));
               if(self.want){self.want=false;pushScreen("trailer","yt:"+t.id);}}}catch(x){}},500);}},
       onError:e=>{if(self.t===t)self.fail("err"+(e&&e.data));}}});}catch(x){this.fail("throw");return;}
-    clearTimeout(this.to);this.to=setTimeout(()=>{if(self.state==="loading"&&self.t===t&&!pb)self.fail("timeout");},45000);},
-  /* a clip that fails twice sits out for 30 minutes so it cannot hold the channel up */
-  fail(why){const id=this.t&&this.t.id;if(id){CH.st.bad[id]=(CH.st.bad[id]||0)+1;CH.st.err=why+" "+id;if(CH.st.bad[id]>=2)CH.bench[id]=Date.now()+30*60000;}this.kill();},
+    /* a player that is ready but has not started gets a nudge every 4s; no start within 25s = give up on this try and load again */
+    clearInterval(this.iv);this.iv=setInterval(()=>{if(self.state!=="loading"||self.t!==t||pb){if(!pb)clearInterval(self.iv);return;}if(rdy){try{self.player.mute();self.player.playVideo();}catch(x){}}},4000);
+    clearTimeout(this.to);this.to=setTimeout(()=>{if(self.state==="loading"&&self.t===t&&!pb)self.fail("timeout "+(rdy?"st"+lastSt:"notready"));},25000);},
+  /* a clip that fails twice in a row sits out for 10 minutes so it cannot hold the channel up */
+  fail(why){const id=this.t&&this.t.id;if(id){CH.st.nf=(CH.st.nf||0)+1;CH.st.bad[id]=(CH.st.bad[id]||0)+1;CH.st.err=why+" "+id+" @"+new Date().toTimeString().slice(0,5);if(CH.st.bad[id]>=2){CH.bench[id]=Date.now()+10*60000;CH.st.bad[id]=0;}}this.kill();setTimeout(()=>{try{YTM.sync();}catch(x){}},500);},
   kill(){clearInterval(this.iv);clearInterval(this.ee);clearTimeout(this.to);try{this.player&&this.player.destroy();}catch(x){}this.player=null;if(this.f)this.f.innerHTML="";if(this.o)this.o.innerHTML="";if(this.w)this.w.classList.remove("on");this.state="idle";this.t=null;this.bufT=0;this.want=false;this.onEnd=null;this.hold=0;},
   scene(){const self=this,t=this.t;this.hold=Date.now()+6000;const el=$('<section class="scene trailer ytp"></section>');let d=0;try{d=this.player.getDuration()||0;}catch(x){}
     /* run for the clip's real length (never cut a trailer short); a clip with no end time is capped at 5 minutes */
