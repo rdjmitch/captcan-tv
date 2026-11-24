@@ -96,10 +96,12 @@ function mkYT(n){return {n,state:"idle",t:null,player:null,bufT:0,onEnd:null,w:n
   /* a clip that fails twice sits out for 30 minutes so it cannot hold the channel up */
   fail(why){const id=this.t&&this.t.id;if(id){CH.st.bad[id]=(CH.st.bad[id]||0)+1;CH.st.err=why+" "+id;if(CH.st.bad[id]>=2)CH.bench[id]=Date.now()+30*60000;}this.kill();},
   kill(){clearInterval(this.iv);clearInterval(this.ee);clearTimeout(this.to);try{this.player&&this.player.destroy();}catch(x){}this.player=null;if(this.f)this.f.innerHTML="";if(this.o)this.o.innerHTML="";if(this.w)this.w.classList.remove("on");this.state="idle";this.t=null;this.bufT=0;this.want=false;this.onEnd=null;this.hold=0;},
-  scene(){const self=this,t=this.t;this.hold=Date.now()+6000;const el=$('<section class="scene trailer ytp"></section>');const len=(t.e||0)>(t.s||0)?(t.e-(t.s||0)):0;
-    const sc={id:"trailer",rep:true,chrome:"cinema",dur:Math.max(170,len+15),el,manual:true};let T2=[],done=false;
+  scene(){const self=this,t=this.t;this.hold=Date.now()+6000;const el=$('<section class="scene trailer ytp"></section>');let d=0;try{d=this.player.getDuration()||0;}catch(x){}
+    /* run for the clip's real length (never cut a trailer short); a clip with no end time is capped at 5 minutes */
+    const len=Math.min(300,Math.max(0,(t.e||d||0)-(t.s||0)))||170;
+    const sc={id:"trailer",rep:true,chrome:"cinema",dur:len+8,el,manual:true};let T2=[],done=false;
     const end=()=>{if(done)return;done=true;T2.forEach(x=>{clearTimeout(x);clearInterval(x);});sc.onEnd&&sc.onEnd();};
-    el._start=()=>{if(self.state!=="ready"||self.t!==t){end();return;}self.onEnd=end;self.show();T2.push(setTimeout(end,Math.max(175,len+20)*1000));T2.push(setInterval(()=>{if(self.bufT&&Date.now()-self.bufT>8000){CH.st.stall++;CH.st.err="stall "+t.id;end();}},1000));};
+    el._start=()=>{if(self.state!=="ready"||self.t!==t){end();return;}self.onEnd=end;self.show();T2.push(setTimeout(end,(len+6)*1000));T2.push(setInterval(()=>{if(self.bufT&&Date.now()-self.bufT>8000){CH.st.stall++;CH.st.err="stall "+t.id;end();}},1000));};
     el._cleanup=()=>{T2.forEach(x=>{clearTimeout(x);clearInterval(x);});if(self.t===t)self.hide();};return sc;},
   show(){const t=this.t,p=this.player;this.state="live";this.bufT=0;this.hold=0;
     const dd=(()=>{if(!t.rel)return"";const a=new Date(t.rel+"T00:00:00"),n=now(),b=new Date(n.getFullYear(),n.getMonth(),n.getDate()),d=Math.round((a-b)/864e5);return d>0?`<span class="d"><b>${d}</b> ${d===1?"day to go":"days to go"}</span>`:`<span class="d">In theatres now</span>`;})()||(t.when?`<span class="d">${esc(t.when)}</span>`:"");
@@ -155,24 +157,25 @@ LU=r'''function lineupHTML(){const TY={trl:"Trailer",c:"Cartoon opening",s:"Movi
   const pools={},per={};Object.keys(KINDS).forEach(k=>pools[k]=CH.pool(k));BLOCKS.forEach(b=>b.forEach(k=>per[k]=(per[k]||0)+1/BLOCKS.length));
   const blockSec=Object.keys(per).reduce((a,k)=>a+(pools[k].length?per[k]*KSEC[k]:0),0),blockMin=Math.round(blockSec/60);
   const mins=m=>m<90?Math.round(m)+" min":(Math.round(m/6)/10)+" hours";
-  const every=k=>{const n=pools[k].length;if(!n||!per[k])return "";if(k==="trl"){const rest=pools.trl.filter(x=>x.id!==LEADTR).length,gap=blockSec/60/per.trl;return pools.trl.some(x=>x.id===LEADTR)?"Avengers: Doomsday final trailer about every "+mins(gap*(rest?2:1))+(rest?", the others about every "+mins(gap*2*rest):""):"each about every "+mins(gap*n);}
-    return "each one comes back about every "+mins(n/per[k]*blockSec/60);};
+  const every=k=>{const n=pools[k].length;if(!n||!per[k])return "";if(k==="trl"){const rest=pools.trl.filter(x=>x.id!==LEADTR).length,gap=blockSec/60/per.trl;return pools.trl.some(x=>x.id===LEADTR)?"Avengers: Doomsday final trailer about every "+mins(gap*(rest?2:1))+(rest?", the others about every "+mins(gap*2*rest):""):"Each about every "+mins(gap*n);}
+    return "Each one comes back about every "+mins(n/per[k]*blockSec/60);};
   const len=x=>x.e?Math.round(((x.e||0)-(x.s||0))/6)/10+" min":(x.ty?"plays in full":"full trailer");
   const chip=k=>`<span class="${pools[k].length?"":"off"}">${KINDS[k]}</span>`;
   const clipGrid=k=>`<div class="lugrid">${pools[k].map(x=>`<div class="luc" data-p="trailer:yt:${x.id}" role="button" tabindex="0"><img src="https://i.ytimg.com/vi/${x.id}/mqdefault.jpg" alt=""><b>${esc(x.t)}</b><span>${esc(x.sub||"")} · ${len(x)}</span></div>`).join("")}</div>`;
-  const empty=Object.keys(SCREENS).filter(k=>!pools[k].length).map(k=>KINDS[k].toLowerCase());
+  const empty=Object.keys(SCREENS).filter(k=>!pools[k].length).map(k=>KINDS[k]);
   return `<style>.blk{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:8px 0 12px}.blk i{font-style:normal;font-weight:800;color:#b5b5be;font-size:13px;margin-right:4px}.blk span{background:#1b1b1f;border:1px solid #34343c;border-radius:999px;padding:7px 12px;font-size:13px;font-weight:700}.blk span.off{opacity:.38;border-style:dashed;font-weight:500}</style>
    <h3>How the channel runs</h3>
    <p class="lunote">The TV plays in blocks of about ${blockMin} minutes and the two blocks take turns. Each kind of screen has its own shuffled pile, so nothing repeats until everything else of its kind has played. The next two clips load in the background while the TV plays, so there is no waiting screen.</p>
    ${BLOCKS.map((b,j)=>`<div class="blk"><i>Block ${j+1}</i>${b.map(chip).join("")}</div>`).join("")}
    ${empty.length?`<p class="lunote">Faded slots (${empty.join(", ")}) are built into the channel and skipped until those screens are approved.</p>`:""}
-   <h3>Art reels (${REELS.length})</h3><p class="lunote">${every("reel")}. Tap one to put it on the TV now.</p>
+   <h3>Art reels (${REELS.length})</h3><p class="lunote">Each one comes back about every ${mins(pools.reel.length/per.reel*blockSec/60)}. Tap one to put it on the TV now.</p>
    <div class="lugrid">${REELS.map(r=>`<div class="luc" data-p="reel:${r.k}" role="button" tabindex="0"><img src="v/${r.k}.jpg" alt=""><b>${r.n}</b><span>${Math.round(r.d)} sec</span></div>`).join("")}</div>
    ${["trl","c","s","k"].map(k=>`<h3>${TY[k]}s (${pools[k].length})</h3><p class="lunote">${every(k)}.</p>${clipGrid(k)}`).join("")}
    <h3>Not in the channel</h3><p class="lunote">Every other screen (Hot this week, staff picks, games, market, services and the rest) only shows when someone puts it up from the Screens tab.</p>`;}
 '''
 between('function lineupHTML(){const F=flowToday()','function remoteUI(){',LU)
 rep('    return flowToday().map(k=>()=>FLOWFN[k]());}','    return CH.block();}')
+rep('const ms=hold?hold*1000:sc.dur*1000*SPEED;','const ms=hold?hold*1000:sc.dur*1000*(sc.manual?1:SPEED);')
 left=[m for m in re.findall(r'YTP\.\w+|flowToday|FLOWINFO|FLOWFN|#ytpre|"ytpre"',s)]
 print('leftover refs:',set(left))
 open(sys.argv[2],'w').write(s)
