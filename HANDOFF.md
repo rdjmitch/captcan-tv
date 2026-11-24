@@ -126,3 +126,10 @@ Read this first in any new chat about the store TV or the intro.
 - Since 4:01pm the stick plays from the Mac mini files (ack 4:06pm: loc true, 19 files, 3 file clips played, no failures). Trailers were NOT loading there: the YouTube player script finished before the page was ready for it (loader page), so `YTREADY` stayed false. Fixed in 1630q (the 3s tick picks it up).
 - 1630q also adds hard replay guards: no clip or trailer inside 20 minutes of its last play (`CH.GAP`), Doomsday final trailer at most once every 30 minutes (`CH.LEADGAP`), both remembered across reloads (`seen`).
 - Lesson: check what staff are doing on the relay (mode changes, pause) before calling the channel fine; a ping that says "playing" says nothing about how it feels in the room.
+
+### Update Nov 24, 5:40pm (BUILD 1124-1735t)
+- WHY THE TV SHOWED ONLY THE FOUR REELS from about 4:10 to 4:56pm (137 reels, 3 clips): staff had switched "Trailers off" on the remote at about 1:15pm to stop the Doomsday repeats, and the channel code treated that as "no clips of any kind". Fixed: Trailers off now only removes trailers; cartoon openings, movie scenes and talking clips keep playing. `tron` is now in the ack.
+- At 4:56:27pm the stick left full screen and has not answered since: someone pressed Back or Home on the Fire remote, so the TV is off the channel. Nobody has reopened it as of 5:40pm.
+- New: when the stick opens the internet copy (captcancomics.ca/tv) it moves itself to the Mac mini copy (`goHome`, default http://192.168.50.253:8788/?tv, at most once per 30 minutes; the remote state key `home` overrides it, `home:"off"` disables it).
+- The remote's mode buttons (Full mix, Selling and so on) do nothing since the loop was stripped; staff tried them at 1:07 to 1:17pm. That is what "the remote isn't doing anything" is. Remote rebuild still open.
+- Always read `tron`, `paused` and the remote's commands on the relay before judging what the TV is doing.
