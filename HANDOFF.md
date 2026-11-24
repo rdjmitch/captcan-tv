@@ -88,5 +88,13 @@ Read this first in any new chat about the store TV or the intro.
 
 ### Update Nov 24, 12:25pm: the new channel is LIVE on the TV
 - Reilly said yes. `next.html` was copied over `index.html` (BUILD 1124-1445k), the stick was reloaded over the relay (`{cmd:"reload",only:"AFT"}`) and someone pressed OK. Stick ack at 12:24: full screen, 60 fps, Doomsday trailer live, next cartoon opening ready behind it, no failures.
-- From here edit `index.html` directly. `next.html` and `tools/channel/patch.py` are leftovers from the build and can be deleted once the channel has run a full day.
+- From here edit `index.html` directly (`next.html` and the patch script are deleted).
 - Watch `ch` in the ack: `nf` (failed loads), `ads`/`adid` (ads waited out, seconds per clip), `fi` (filler reels), `sk` (skipped clips), `stl` (stalls).
+
+### Update Nov 24, 12:45pm (BUILD 1124-1500m, live on the stick)
+- Captions forced off on every clip (`nocc`). Reel logo ending (last 3.8s of every reel file) now only plays on every 4th reel (`REELN`).
+- Reilly's feedback after seeing the new channel ("not bad"), in his words, all still OPEN:
+  1. It still loops the same things: only 4 reels + 18 clips + 5 trailers exist. Needs more reels and screens, not more engine.
+  2. Clips are low resolution: the uploads themselves are 360p/480p fan uploads. Find official or HD uploads for each (also fixes ads).
+  3. Product picks during clips and trailers must be better, rotate through several books during a clip, and sell harder. Today it is one card (the priciest match for the clip's keyword) after 14s. Show him a still before it goes live.
+  4. Remote: on a computer he wants a timeline like Premiere with that kind of editing; on the phone a simple TV remote. The Lineup tab does not tell him what is playing and why.
