@@ -98,3 +98,10 @@ Read this first in any new chat about the store TV or the intro.
   2. Clips are low resolution: the uploads themselves are 360p/480p fan uploads. Find official or HD uploads for each (also fixes ads).
   3. Product picks during clips and trailers must be better, rotate through several books during a clip, and sell harder. Today it is one card (the priciest match for the clip's keyword) after 14s. Show him a still before it goes live.
   4. Remote: on a computer he wants a timeline like Premiere with that kind of editing; on the phone a simple TV remote. The Lineup tab does not tell him what is playing and why.
+
+### Reel engine v3 (Nov 24, 1pm): built, shown to Reilly, NOT live
+- Reilly on the reels: never back to back, and "way better", naming the image-in-the-letters title as the thing to build on.
+- `tools/art-reel/wall3.html` + `w3_doom.json` + `shots3.js` (Playwright, 30 fps frames, then ffmpeg crf 23). Run from a folder holding `ct/<id>.jpg` (covers from the Shopify CDN at ?width=1100 with the white scan border trimmed), `logo_white_ca.png` and `npm i @fontsource/anton`.
+- Look: each letter of the title is cut from a different cover, centred on the character's face (`letters[].x/y/z` = focal point and zoom, picked by eye), white outline, no glitch cuts, no blurred backdrop, no reflections. Then a shelf of full covers gliding past at 870px tall, then a two-row wall sliding in opposite directions, then the title again over the dimmed wall. No full-screen logo ending, only a small corner logo on the shelf shot.
+- Doom v2 uses 25 in-stock Doctor Doom covers (Doom Patrol and non-Doom covers left out so the books match the title).
+- Waiting on his yes before it replaces `v/doom.mp4`. Then rebuild Absolute Batman, Midnight and Black Suit the same way and add new themes.

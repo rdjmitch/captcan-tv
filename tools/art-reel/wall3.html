@@ -1,0 +1,65 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:AN;src:url(node_modules/@fontsource/anton/files/anton-latin-400-normal.woff2)}
+html,body{margin:0;width:1920px;height:1080px;overflow:hidden;background:#000}
+#stage{position:absolute;inset:0;overflow:hidden;background:#000}
+.layer{position:absolute;inset:0;overflow:hidden}
+.cv{position:absolute;background-size:cover;background-position:50% 50%;border-radius:3px;box-shadow:0 24px 70px rgba(0,0,0,.75),0 0 0 1px rgba(255,255,255,.06)}
+.word{position:absolute;left:0;right:0;display:flex;justify-content:center;font-family:AN;line-height:1;text-transform:uppercase;white-space:nowrap}
+.word .L{position:relative;display:inline-block}
+.word .L i{font-style:normal;display:block}
+.word .L .fill{color:transparent;-webkit-background-clip:text;background-clip:text;background-repeat:no-repeat;position:relative;z-index:2}
+.word .L .edge{position:absolute;left:0;top:0;z-index:1;color:transparent;-webkit-text-stroke:7px rgba(255,255,255,.95)}
+.word .L .back{position:absolute;left:0;top:0;z-index:0;color:#000;text-shadow:0 30px 90px rgba(0,0,0,.9),0 0 60px var(--glow)}
+#vig{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(0,0,0,0) 55%,rgba(0,0,0,.55) 100%);pointer-events:none}
+</style></head><body><div id="stage"></div><div id="vig"></div>
+<script>
+const P=new URLSearchParams(location.search),stage=document.getElementById('stage');
+const cl=(x,a=0,b=1)=>Math.min(b,Math.max(a,x)),seg=(t,a,b)=>cl((t-a)/(b-a)),eo=x=>1-Math.pow(1-x,3),eo5=x=>1-Math.pow(1-x,5),eio=x=>x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2;
+const B=n=>`ct/${n}.jpg`,AR={};
+function layer(){const d=document.createElement('div');d.className='layer';stage.appendChild(d);return d;}
+function cover(par,n,h){const d=document.createElement('div');d.className='cv';d.style.height=h+'px';d.style.width=(h*AR[n])+'px';d.style.backgroundImage=`url(${B(n)})`;par.appendChild(d);return d;}
+/* the theme word, each letter cut out of a different cover, centred on that cover's face */
+function word(par,C,size,top){const w=document.createElement('div');w.className='word';w.style.fontSize=size+'px';w.style.top=top+'px';w.style.letterSpacing=(C.track||0.02)+'em';w.style.setProperty('--glow',C.glow);
+  w.Ls=[...C.title].map((ch,i)=>{const L=document.createElement('span');L.className='L';
+    if(ch===' '){L.innerHTML='<i>&nbsp;</i>';L.style.width=size*0.22+'px';w.appendChild(L);return null;}
+    L.innerHTML=`<i class="back">${ch}</i><i class="fill">${ch}</i><i class="edge">${ch}</i>`;w.appendChild(L);const f=C.letters[i%C.letters.length];L.f=f;L.fill=L.querySelector('.fill');L.fill.style.backgroundImage=`url(${B(f.c)})`;return L;}).filter(Boolean);
+  par.appendChild(w);w.size=size;return w;}
+function placeFill(w,drift){w.Ls.forEach(L=>{const r=L.fill.getBoundingClientRect(),f=L.f,bw=r.width*(f.z||2.2),bh=bw/AR[f.c];
+  L.fill.style.backgroundSize=`${bw}px ${bh}px`;L.fill.style.backgroundPosition=`${r.width/2-f.x*bw}px ${r.height/2-f.y*bh+drift}px`;});}
+let C,L1,L2,L3,L4,W1,W4,shelf,rows=[],bug,lock;
+function build(){
+  document.body.style.setProperty('--glow',C.glow);
+  // 1 title
+  L1=layer();L1.style.background=`radial-gradient(ellipse at 50% 55%,${C.bg1} 0%,${C.bg0} 70%)`;
+  W1=word(L1,C,C.tsize,(1080-C.tsize)/2-10);
+  // 2 shelf: big covers gliding past
+  L2=layer();L2.style.background=`radial-gradient(ellipse at 50% 40%,${C.bg1} 0%,${C.bg0} 75%)`;
+  shelf=document.createElement('div');shelf.style.cssText='position:absolute;left:0;top:44px;height:870px;white-space:nowrap';L2.appendChild(shelf);
+  let x=0;shelf.cs=C.shelf.map(n=>{const c=cover(shelf,n,870);c.style.left=x+'px';c.style.top='0';c.x=x;x+=870*AR[n]+44;return c;});shelf.w=x-44;
+  lock=document.createElement('div');lock.textContent=C.title;lock.style.cssText='position:absolute;left:56px;bottom:40px;font-family:AN;font-size:96px;line-height:1;color:#fff;letter-spacing:.04em;text-transform:uppercase';L2.appendChild(lock);
+  bug=document.createElement('img');bug.src='logo_white_ca.png';bug.style.cssText='position:absolute;right:56px;bottom:52px;width:330px;opacity:.9';L2.appendChild(bug);
+  // 3 mosaic: two rows sliding against each other, edge to edge
+  L3=layer();L3.style.background='#000';const g=document.createElement('div');g.style.cssText='position:absolute;inset:0;transform-origin:50% 50%';L3.appendChild(g);L3.g=g;
+  const rh=526,gap=14;C.rows.forEach((row,ri)=>{const r=document.createElement('div');r.style.cssText=`position:absolute;left:0;top:${gap+ri*(rh+gap)}px;height:${rh}px`;g.appendChild(r);let x=0;
+    [...row,...row].forEach(n=>{const c=cover(r,n,rh);c.style.left=x+'px';c.style.top='0';c.style.boxShadow='none';x+=rh*AR[n]+gap;});r.w=x/2;r.dir=ri%2?1:-1;rows.push(r);});
+  // 4 title over the wall
+  L4=layer();L4.style.background='rgba(0,0,0,0)';W4=word(L4,C,C.tsize,(1080-C.tsize)/2-10);
+  window.TOTAL=C.t[3];
+}
+window.render=function(t){const [a,b,c,d]=C.t;
+  L1.style.display=t<a?'block':'none';L2.style.display=(t>=a&&t<b)?'block':'none';L3.style.display=(t>=b)?'block':'none';L4.style.display=(t>=c)?'block':'none';
+  if(t<a){W1.Ls.forEach((L,i)=>{const p=eo5(seg(t,0.12+i*0.13,0.75+i*0.13));L.style.transform=`translateY(${(1-p)*120}px) scale(${1.12-0.12*p})`;L.style.opacity=seg(t,0.12+i*0.13,0.4+i*0.13);});
+    W1.style.transform=`scale(${1+0.035*seg(t,0,a)})`;placeFill(W1,-26*seg(t,0,a));}
+  if(t>=a&&t<b){const u=seg(t,a,b),lt=t-a;const x0=140,x1=-(shelf.w-1920+140);shelf.style.transform=`translateX(${x0+(x1-x0)*(0.08*eio(u)+0.92*u)}px)`;
+    shelf.cs.forEach((cc,i)=>{const p=eo(seg(lt,0.05+i*0.07,0.6+i*0.07));cc.style.transform=`translateY(${(1-p)*60}px)`;cc.style.opacity=p;});
+    const lp=eo(seg(lt,0.3,0.9));lock.style.opacity=lp;lock.style.transform=`translateX(${-30*(1-lp)}px)`;bug.style.opacity=.9*eo(seg(lt,0.5,1.1));}
+  if(t>=b){const lt=t-b;rows.forEach(r=>{const off=(lt*C.rowSpeed)%r.w;r.style.transform=`translateX(${r.dir<0?-off:-(r.w-off)}px)`;});
+    const p=eo(seg(lt,0,1.1));L3.g.style.transform=`scale(${1.1-0.1*p})`;
+    const k=t>=c?eo(seg(t,c,c+0.5)):0;L3.g.style.filter=k>0?`brightness(${1-0.72*k}) saturate(${1-0.25*k}) blur(${5*k}px)`:'';}
+  if(t>=c){const lt=t-c;W4.Ls.forEach((L,i)=>{const p=eo5(seg(lt,0.05+i*0.08,0.55+i*0.08));L.style.transform=`scale(${1.35-0.35*p})`;L.style.opacity=seg(lt,0.05+i*0.08,0.25+i*0.08);});
+    W4.style.transform=`scale(${1+0.03*seg(t,c,d)})`;placeFill(W4,-20*seg(t,c,d));}
+};
+fetch(P.get('c')).then(r=>r.json()).then(async cfg=>{C=cfg;const ns=[...new Set([...C.shelf,...C.rows.flat(),...C.letters.map(l=>l.c)])];
+  await Promise.all(ns.map(n=>new Promise(res=>{const i=new Image();i.onload=()=>{AR[n]=i.naturalWidth/i.naturalHeight;res();};i.onerror=res;i.src=B(n);})));
+  await document.fonts.load('100px AN');build();render(0);window.READY=1;});
+</script></body></html>
