@@ -37,3 +37,13 @@ Trailer, cartoon opening, movie scene, talking clip, cartoon opening, movie scen
 
 ## Not checked
 Whether each video plays when embedded on the TV. Some uploaders block that. Clip channels (Movieclips, JoBlo, Top Movie Clips) can be taken down.
+
+## Checked Nov 24 2026: does each one actually play on the TV page?
+Every ID was loaded in the embedded player from the Mac (one at a time, muted).
+
+- **Why clips "took 6 to 60 seconds to load": YouTube ads.** Uploads that are not from an official channel often open with an ad (one seen: a 15 second Freedom Mobile ad before the Spectacular Spider-Man opening). While the ad runs the player reports "not started", so the old loader waited, and gave up after 2 minutes on long ads. Each give-up cost 7 minutes with only the four reels.
+- Opened with an ad in this check (ads come and go per load): Batman TAS, ThunderCats, Superman TAS, Spectacular Spider-Man, Batman Beyond, Civil War airport, Hulk 2003, Spider-Man 3 black suit, Incredible Hulk, Todd McFarlane 1990, Pawn Stars.
+- Played straight away, no ad: all five trailers (official channels), X-Men Evolution, X-Men TAS, Spider-Man TAS, Avengers EMH, Iron Man Mark I, Spider-Man 2 train, Stan Lee speech.
+- **Cannot play at all:** The Transformers 1985 opening (`Bdz1oWtYU-0`). The uploader blocks playing on other sites (YouTube error 150). Removed from the list in next.html; needs a different upload.
+- The Avengers: Doomsday final trailer is 3:16 long. The old page cut every clip at 2:50, so its last 26 seconds never played.
+- next.html waits the ad out in the background (muted, never on screen) and only shows the clip once the clip itself has started. The cleaner long-term fix is clips from official channels or ad-free uploads; worth checking whether a YouTube Premium sign-in on the stick removes ads in the embedded player (not tested).
