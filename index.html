@@ -731,23 +731,23 @@ html,body{background:#0B0B0D}
 .upload .copy{width:700px}.upload h1{font-size:96px}
 .upload .cd{right:120px;gap:22px}.upload .cd div{width:210px}.upload .cd b{font-size:136px}
 /* v13 preloaded YouTube trailers */
-#ytpre{position:absolute;inset:0;z-index:30;background:#000;opacity:0;pointer-events:none;transition:opacity .6s ease}
-#ytpre.on{opacity:1}
-#ytpre .f,#ytpre .f iframe{position:absolute;inset:0;width:100%!important;height:100%!important;border:0}
-#ytpre .ovl{position:absolute;inset:0;z-index:2;pointer-events:none}
-#ytpre .lt{position:absolute;left:64px;top:56px;background:rgba(11,11,12,.86);border-left:8px solid var(--red);padding:22px 34px;max-width:1100px;animation:ltOut .6s ease forwards 8s}
-#ytpre .lt p{margin:0;font-weight:700;font-size:20px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
-#ytpre .lt h2{margin:6px 0 0;font-family:var(--head);font-weight:900;font-size:58px;line-height:1;text-transform:uppercase}
-#ytpre .lt .d{display:block;margin-top:10px;font-weight:700;font-size:24px;color:#fff}#ytpre .lt .d b{color:var(--red);font-family:var(--head);font-weight:900}
+.ytpre{position:absolute;inset:0;z-index:30;background:#000;opacity:0;pointer-events:none;transition:opacity .6s ease}
+.ytpre.on{opacity:1}
+.ytpre .f,.ytpre .f iframe{position:absolute;inset:0;width:100%!important;height:100%!important;border:0}
+.ytpre .ovl{position:absolute;inset:0;z-index:2;pointer-events:none}
+.ytpre .lt{position:absolute;left:64px;top:56px;background:rgba(11,11,12,.86);border-left:8px solid var(--red);padding:22px 34px;max-width:1100px;animation:ltOut .6s ease forwards 8s}
+.ytpre .lt p{margin:0;font-weight:700;font-size:20px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+.ytpre .lt h2{margin:6px 0 0;font-family:var(--head);font-weight:900;font-size:58px;line-height:1;text-transform:uppercase}
+.ytpre .lt .d{display:block;margin-top:10px;font-weight:700;font-size:24px;color:#fff}.ytpre .lt .d b{color:var(--red);font-family:var(--head);font-weight:900}
 @keyframes ltOut{to{opacity:0;transform:translateY(-12px)}}
-#ytpre .tie{position:absolute;left:56px;bottom:56px;display:flex;align-items:center;background:#0B0B0C;border-left:6px solid var(--red);max-width:820px;opacity:0;animation:fade .6s ease forwards 14s}
-#ytpre .tie:empty{display:none}
-#ytpre .tie img.tc{height:150px;width:auto;max-width:120px;object-fit:contain;margin:12px}
-#ytpre .tie div{padding:14px 18px;display:flex;flex-direction:column;gap:6px;min-width:0}
-#ytpre .tie div span{font-weight:700;font-size:18px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
-#ytpre .tie div b{font-family:var(--head);font-weight:900;font-size:32px;text-transform:uppercase;line-height:1.05}
-#ytpre .tie div em{font-style:normal;font-family:var(--head);font-weight:900;font-size:34px}
-#ytpre .tie img.tq{width:150px;height:150px;background:#fff;padding:8px;margin:12px;image-rendering:pixelated}
+.ytpre .tie{position:absolute;left:56px;bottom:56px;display:flex;align-items:center;background:#0B0B0C;border-left:6px solid var(--red);max-width:820px;opacity:0;animation:fade .6s ease forwards 14s}
+.ytpre .tie:empty{display:none}
+.ytpre .tie img.tc{height:150px;width:auto;max-width:120px;object-fit:contain;margin:12px}
+.ytpre .tie div{padding:14px 18px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.ytpre .tie div span{font-weight:700;font-size:18px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+.ytpre .tie div b{font-family:var(--head);font-weight:900;font-size:32px;text-transform:uppercase;line-height:1.05}
+.ytpre .tie div em{font-style:normal;font-family:var(--head);font-weight:900;font-size:34px}
+.ytpre .tie img.tq{width:150px;height:150px;background:#fff;padding:8px;margin:12px;image-rendering:pixelated}
 .ytp{background:#000}
 /* v14 site-style light screens: alternate with the dark ones like captcancomics.ca does */
 .scene.lite{background:#FFFFFF!important;color:#121212;--white:#121212;--panel:#F3F3F4;--panel2:#E9E9EB;--mute:#5E5E66;--line:#E1E1E4}
@@ -944,8 +944,8 @@ body.cinema #needok{bottom:40px}
 .fa .amb{display:block!important;position:absolute;inset:0;background-size:cover;background-position:center}
 /* v18 trailers load visibly UNDER the current screen (the Samsung pauses video it can't see) */
 .scene{z-index:1}
-#ytpre{opacity:1!important;z-index:0!important;transition:none!important}
-#ytpre.on{z-index:31!important}
+.ytpre{opacity:1!important;z-index:0!important;transition:none!important}
+.ytpre.on{z-index:31!important}
 #vcover{position:absolute;inset:0;z-index:0;background:#0B0B0C;pointer-events:none}
 
 
@@ -3360,7 +3360,7 @@ const keyNote=t=>{for(const [re,n,y] of KEYS)if(re.test(t))return {note:n,year:y
 
 
 CONFIG.ticker=["Every book bagged and boarded","Pre-sales close Monday 8pm","New releases every Tuesday","New back issues every Friday","Hold Box: no time limit, no storage fees","We buy and consign collections","CaptCan Cash: 10% back on pre-sales","Free account: scan any code on screen"];
-const BUILD="1124-1112a";const CLIPS=[{id:"WTOhGmgKMsU",ty:"c",t:"Batman: The Animated Series",sub:"The 1992 opening",when:"",kw:"Batman"},{id:"CjaTkPYzK00",ty:"c",t:"ThunderCats",sub:"The 1985 opening",when:"",kw:"Thundercats"},{id:"Bdz1oWtYU-0",ty:"c",t:"The Transformers",sub:"The 1985 opening",when:"",kw:"Transformers"},{id:"6faj24XtmP8",ty:"c",t:"X-Men: Evolution",sub:"The opening",when:"",kw:"X-Men"},{id:"oUcKJflBG8Q",ty:"c",t:"Superman: The Animated Series",sub:"The 1996 opening",when:"",kw:"Superman"},{id:"iJ9llfAIjDs",ty:"c",t:"The Spectacular Spider-Man",sub:"The 2008 opening",when:"",kw:"Spider-Man"},{id:"cfVY9wLKltA",ty:"s",t:"Captain America: Civil War",sub:"The airport battle",when:"",kw:"Civil War",s:8,e:150},{id:"PDSHFeQNsuc",ty:"s",t:"Iron Man",sub:"Building the Mark I, 2008",when:"",kw:"Iron Man",s:60,e:178},{id:"jolXso_OO-c",ty:"s",t:"Hulk",sub:"San Francisco, 2003",when:"",kw:"Hulk",s:25,e:160},{id:"VttrlthDJTs",ty:"c",t:"X-Men: The Animated Series",sub:"The 1992 opening",when:"",kw:"X-Men"},{id:"t69bxyiy-FQ",ty:"c",t:"Spider-Man: The Animated Series",sub:"The 1994 opening",when:"",kw:"Spider-Man"},{id:"EdwzQPGzPSo",ty:"c",t:"Batman Beyond",sub:"The 1999 opening",when:"",kw:"Batman Beyond"},{id:"uSmHdPv_PkI",ty:"c",t:"The Avengers: Earth's Mightiest Heroes",sub:"The 2010 opening",when:"",kw:"Avengers"},{id:"EcDVXeB_rY4",ty:"s",t:"Spider-Man 2",sub:"The train fight, 2004",when:"",kw:"Spider-Man",s:20,e:185},{id:"zkeiEBaOOXA",ty:"s",t:"Spider-Man 3",sub:"The black suit, 2007",when:"",kw:"Black Suit",s:10,e:128},{id:"g_WVSozgbVM",ty:"s",t:"The Incredible Hulk",sub:"Hulk vs Abomination, 2008",when:"",kw:"Hulk",s:30,e:195},{id:"ca0zwTJkUzQ",ty:"k",t:"Todd McFarlane",sub:"On comics, 1990",when:"",kw:"McFarlane"},{id:"H-9CYSgEal8",ty:"k",t:"Stan Lee",sub:"The rejected idea that became Spider-Man",when:"",kw:"Amazing Spider-Man",e:290},{id:"Dn888yzU6fM",ty:"k",t:"Pawn Stars",sub:"Stan Lee's signed Spider-Man sketches",when:"",kw:"Spider-Man",e:168}];const TRU=()=>[...((MARKET&&MARKET.trailers)||[]),...CLIPS];/* play order: mixes trailers, cartoon openings, movie scenes and talking clips so the same kind never runs back to back */const TRL=()=>{const src={T:((MARKET&&MARKET.trailers)||[]).filter(x=>x.id),C:CLIPS.filter(c=>c.ty==="c"),S:CLIPS.filter(c=>c.ty==="s"),K:CLIPS.filter(c=>c.ty==="k")},ix={T:0,C:0,S:0,K:0},pat=["T","C","S","K","C","S"],out=[];for(let i=0;i<60;i++){const p=pat[i%pat.length],a=src[p];if(a.length)out.push(a[ix[p]++%a.length]);}return out;};const REELS=[{k:"doom",n:"Doom",d:23},{k:"batman",n:"Absolute Batman",d:25.5},{k:"midnight",n:"Midnight",d:25.4},{k:"blacksuit",n:"Black Suit",d:23}];const SITE="https://www.captcancomics.ca",API="2025-10";
+const BUILD="1124-1445k";const CLIPS=[{id:"WTOhGmgKMsU",ty:"c",t:"Batman: The Animated Series",sub:"The 1992 opening",when:"",kw:"Batman"},{id:"CjaTkPYzK00",ty:"c",t:"ThunderCats",sub:"The 1985 opening",when:"",kw:"Thundercats"},{id:"6faj24XtmP8",ty:"c",t:"X-Men: Evolution",sub:"The opening",when:"",kw:"X-Men"},{id:"oUcKJflBG8Q",ty:"c",t:"Superman: The Animated Series",sub:"The 1996 opening",when:"",kw:"Superman"},{id:"iJ9llfAIjDs",ty:"c",t:"The Spectacular Spider-Man",sub:"The 2008 opening",when:"",kw:"Spider-Man"},{id:"cfVY9wLKltA",ty:"s",t:"Captain America: Civil War",sub:"The airport battle",when:"",kw:"Civil War",s:8,e:150},{id:"PDSHFeQNsuc",ty:"s",t:"Iron Man",sub:"Building the Mark I, 2008",when:"",kw:"Iron Man",s:60,e:178},{id:"jolXso_OO-c",ty:"s",t:"Hulk",sub:"San Francisco, 2003",when:"",kw:"Hulk",s:25,e:160},{id:"VttrlthDJTs",ty:"c",t:"X-Men: The Animated Series",sub:"The 1992 opening",when:"",kw:"X-Men"},{id:"t69bxyiy-FQ",ty:"c",t:"Spider-Man: The Animated Series",sub:"The 1994 opening",when:"",kw:"Spider-Man"},{id:"EdwzQPGzPSo",ty:"c",t:"Batman Beyond",sub:"The 1999 opening",when:"",kw:"Batman Beyond"},{id:"uSmHdPv_PkI",ty:"c",t:"The Avengers: Earth's Mightiest Heroes",sub:"The 2010 opening",when:"",kw:"Avengers"},{id:"EcDVXeB_rY4",ty:"s",t:"Spider-Man 2",sub:"The train fight, 2004",when:"",kw:"Spider-Man",s:20,e:185},{id:"zkeiEBaOOXA",ty:"s",t:"Spider-Man 3",sub:"The black suit, 2007",when:"",kw:"Black Suit",s:10,e:128},{id:"g_WVSozgbVM",ty:"s",t:"The Incredible Hulk",sub:"Hulk vs Abomination, 2008",when:"",kw:"Hulk",s:30,e:195},{id:"ca0zwTJkUzQ",ty:"k",t:"Todd McFarlane",sub:"On comics, 1990",when:"",kw:"McFarlane"},{id:"H-9CYSgEal8",ty:"k",t:"Stan Lee",sub:"The rejected idea that became Spider-Man",when:"",kw:"Amazing Spider-Man",e:290},{id:"Dn888yzU6fM",ty:"k",t:"Pawn Stars",sub:"Stan Lee's signed Spider-Man sketches",when:"",kw:"Spider-Man",e:168}];const TRU=()=>[...((MARKET&&MARKET.trailers)||[]),...CLIPS];/* play order: mixes trailers, cartoon openings, movie scenes and talking clips so the same kind never runs back to back */const TRL=()=>{const src={T:((MARKET&&MARKET.trailers)||[]).filter(x=>x.id),C:CLIPS.filter(c=>c.ty==="c"),S:CLIPS.filter(c=>c.ty==="s"),K:CLIPS.filter(c=>c.ty==="k")},ix={T:0,C:0,S:0,K:0},pat=["T","C","S","K","C","S"],out=[];for(let i=0;i<60;i++){const p=pat[i%pat.length],a=src[p];if(a.length)out.push(a[ix[p]++%a.length]);}return out;};const REELS=[{k:"doom",n:"Doom",d:23},{k:"batman",n:"Absolute Batman",d:25.5},{k:"midnight",n:"Midnight",d:25.4},{k:"blacksuit",n:"Black Suit",d:23}];const SITE="https://www.captcancomics.ca",API="2025-10";
 /* helpers */
 const NW="h1,h2,h3,p,b,span,figcaption,.sub,.txt,.book,.lab,.sm,.when,.after,.lead,.pts div";
 function noWidow(root){root.querySelectorAll(NW).forEach(e=>{if(e.children.length>2)return;const w=document.createTreeWalker(e,NodeFilter.SHOW_TEXT);let last=null;while(w.nextNode()){const n=w.currentNode;n.nodeValue=n.nodeValue.replace(/(\w)-(\w)/g,"$1\u2011$2");if(n.nodeValue.trim())last=n;}if(!last)return;const v=last.nodeValue,i=v.trimEnd().lastIndexOf(" ");if(i>0&&v.trim().split(/ +/).length>2&&v.slice(i+1).trim().length<=10)last.nodeValue=v.slice(0,i)+"\u00a0"+v.slice(i+1);});return root;}
@@ -3563,12 +3563,9 @@ const S={
     return {id:"event",dur:9,el:$(`<section class="scene event"><div class="photo" style="background-image:url('${img(FEED.shop,1920)}')"></div><div class="veil"></div><div class="copy"><p class="eye in">${esc(eye)}</p><h1 class="H in d1">${esc(w.join(" "))} <em>${esc(l)}</em></h1><p class="txt in d2">${esc(e.text)}</p></div></section>`)};},
   trailer(i){const live=liveT;
     const ALL=[...(UTR||[]).filter(x=>x&&x.mp4&&x.t),...TRU()].filter(live);if(!ALL.length)return null;
-    if(i==="yt")return YTP.state==="ready"?YTP.scene():null;
-    if(typeof i==="string"&&i.indexOf("yt:")===0){const id=i.slice(3);if(YTP.state==="ready"&&YTP.t&&YTP.t.id===id)return YTP.scene();YTP.kill();YTP.prep(id,true);return null;}
+    if(typeof i==="string"&&i.indexOf("yt")===0){const id=i.slice(3);if(!id)return null;const sc=YTM.sceneFor(id);if(sc)return sc;YTM.demand(id);return null;}
     if(TRON===false)return null;const MP=ALL.filter(x=>x.mp4);
-    if(i!=null){const x=ALL[i%ALL.length];if(x&&!x.mp4){if(YTP.state==="ready"&&YTP.t&&YTP.t.id===x.id)return YTP.scene();YTP.kill();YTP.prep(x.id,true);return null;}}
-    if(i==null&&Date.now()-LASTTR<TRGAP)return null;
-    if(i==null&&YTP.state==="ready"&&(!MP.length||nx("trk",2)===0))return YTP.scene();
+    if(i!=null){const x=ALL[i%ALL.length];if(x&&!x.mp4){const sc=YTM.sceneFor(x.id);if(sc)return sc;YTM.demand(x.id);return null;}}
     if(!MP.length)return null;const T=MP;const t=i!=null?ALL[i%ALL.length]:T[nx("tr",T.length)];
     const canPlay=!!t.mp4;if(!canPlay)return null;
     const ddH=(()=>{if(!t.rel)return"";const d=(()=>{const a=new Date(t.rel+"T00:00:00"),n=now(),b=new Date(n.getFullYear(),n.getMonth(),n.getDate());return Math.round((a-b)/864e5);})();return d>0?`<div class="dd"><b>${d}</b><span>${d===1?"day to go":"days to go"}</span></div>`:`<div class="dd"><b class="now">Now</b><span>in theatres</span></div>`;})();
@@ -3712,11 +3709,54 @@ function spotScene(s){const C=SPOTC[String(s.q).toLowerCase().trim()]||{},L=C.L|
 function warmSpots(){spotList().forEach(s=>loadSpot(s.q,s));}
 /* the loop, as data, so the remote's Lineup tab shows exactly what the TV runs */
 /* Nov 24: art reels and clips only. Every older screen (New this week, sign-up, the rest) is remote-only until it is rebuilt */
-const FLOW={any:["reel","clip"],wed:["reel","clip"]};
-const FLOWFN={reel:()=>S.reel(),clip:i=>S.trailer(),wall:()=>S.wall(),join:()=>S.join(),howto:()=>S.howto(),holdbox:()=>S.svc(4),presale:()=>S.presale()};
-const FLOWINFO={reel:["Art reel","The next of the four cover reels",25,"reel"],clip:["Clip or trailer","The next one in the mixed order below",120,"trailer"],wall:["New this week","This week's new books",14,"wall"],join:["Sign-up screen","Make an account",12,"join"],howto:["How the site works","For Wednesday buyers",14,"howto"],holdbox:["Hold Box","For Wednesday buyers",14,"holdbox"],presale:["Pre-sales","What can be ordered ahead",14,"presale"]};
-const flowToday=()=>FLOW[DAYNOW()===3?"wed":"any"];
-function playlist(){DAY=DAYNOW();/* every mode runs the same stripped loop for now; the old per-mode line-ups below are unused */return flowToday().map(k=>()=>FLOWFN[k]());const SPOT=()=>{const l=spotList();for(let g=0;g<l.length;g++){const sc=spotScene(l[nx("spotq",l.length)]);if(sc)return sc;}return null;};
+/* ===== the channel: programmed blocks =====
+   A block is a run of slots. Each kind of slot draws from its own shuffled bag, so nothing repeats until everything
+   else of its kind has played (the bags survive a reload). A kind with no approved screens yet is skipped, so the
+   intro, ident, product and own-reel slots are ready and simply stay empty until screens are approved into SCREENS. */
+const LEADTR="Wb8Tq_HD4E8";/* Avengers: Doomsday final trailer: takes every other trailer slot until it leaves the trailer list */
+const BLOCKS=[["intro","ident","reel","trl","c","product","reel","s","k","own"],["ident","reel","c","s","product","reel","trl","c","own"]];
+const KINDS={intro:"Main intro",ident:"CaptCan ident",reel:"Art reel",trl:"Trailer",c:"Cartoon opening",s:"Movie scene",k:"Talking clip",product:"Product screen",own:"Our own reels"};
+const KSEC={intro:20,ident:8,reel:24,trl:150,c:65,s:140,k:190,product:15,own:40};
+const ISCLIP={trl:1,c:1,s:1,k:1};
+const SCREENS={intro:[],ident:[],product:[],own:[]};/* approved screens: {id,n,fn:()=>scene} */
+const CH={n:0,trn:0,bag:{},bench:{},rb:false,st:{shown:0,fill:0,skip:0,stall:0,bad:{},waits:[],err:""},
+  load(){try{const o=JSON.parse(localStorage.getItem("cctvCh")||"null");if(o){this.n=o.n||0;this.trn=o.trn||0;this.bag=o.bag||{};}}catch(x){}},
+  save(){try{localStorage.setItem("cctvCh",JSON.stringify({n:this.n,trn:this.trn,bag:this.bag}));}catch(x){}},
+  pool(kind){const ok=x=>x&&x.id&&liveT(x)&&!(this.bench[x.id]>Date.now());
+    if(kind==="reel")return REELS.map(r=>({id:r.k,r}));
+    if(kind==="trl")return ((MARKET&&MARKET.trailers)||[]).filter(ok);
+    if(ISCLIP[kind])return CLIPS.filter(c=>c.ty===kind).filter(ok);
+    return SCREENS[kind]||[];},
+  draw(kind,pool){pool=pool||this.pool(kind);if(!pool.length)return null;const ids=pool.map(x=>x.id),b=this.bag[kind]=this.bag[kind]||{left:[],last:""};
+    b.left=(b.left||[]).filter(i=>ids.includes(i));
+    if(!b.left.length){b.left=ids.slice();for(let i=b.left.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b.left[i],b.left[j]]=[b.left[j],b.left[i]];}
+      if(b.left.length>1&&b.left[0]===b.last)b.left.push(b.left.shift());}
+    b.last=b.left.shift();return pool.find(x=>x.id===b.last);},
+  item(kind){if(kind==="trl"){const p=this.pool("trl"),lead=p.find(x=>x.id===LEADTR),rest=p.filter(x=>x.id!==LEADTR);
+      if(lead&&(this.trn++%2===0||!rest.length))return lead;return this.draw("trl",rest);}
+    return this.draw(kind);},
+  block(){const tpl=BLOCKS[this.n++%BLOCKS.length],out=[];
+    tpl.forEach(kind=>{if(TRON===false&&ISCLIP[kind])return;const it=this.item(kind);if(!it)return;const slot={kind,it,tries:0};const f=()=>CH.play(slot,f);f.slot=slot;out.push(f);});
+    this.save();return out;},
+  /* the next two clips that will play; tops the queue up early so the first clip of the next block can load ahead too */
+  plan(){const clips=()=>queue.filter(q=>q.slot&&ISCLIP[q.slot.kind]&&!(this.bench[q.slot.it.id]>Date.now())).map(q=>q.slot.it);
+    if(clips().length<2&&queue.length<4&&!paused){try{queue.push(...this.block());}catch(x){}}
+    return clips().slice(0,2);},
+  wait(sec){this.st.waits.push(sec);if(this.st.waits.length>12)this.st.waits.shift();},
+  play(slot,f){const k=slot.kind,ok=sc=>{if(sc&&!this.rb)this.st.shown++;return sc;};
+    if(k==="reel")return ok(S.reel(slot.it.id));
+    if(ISCLIP[k]){const sc=YTM.sceneFor(slot.it.id);if(sc||this.rb)return ok(sc);
+      if(this.bench[slot.it.id]>Date.now()&&!slot.sub&&!slot.tries&&TRON!==false){/* this clip is sitting out: swap in another of the same kind */const it=this.draw(k,this.pool(k).filter(x=>x.id!==slot.it.id));if(it){slot.it=it;slot.sub=true;slot.tries=0;}}
+      if(TRON===false||this.bench[slot.it.id]>Date.now()||slot.tries>=2){this.st.skip++;return null;}
+      slot.tries++;YTM.sync();
+      /* this clip has not finished loading: bring the next non-clip screen forward (or fill with one art reel), then come back to it */
+      const j=queue.findIndex(q=>q.slot&&!ISCLIP[q.slot.kind]);let alt=null;if(j>=0&&j<3)alt=queue.splice(j,1)[0];
+      queue.unshift(f);if(alt){const a=alt();if(a)return a;}
+      this.st.fill++;const r=this.draw("reel");return r?S.reel(r.id):null;}
+    let sc=null;try{sc=slot.it.fn?slot.it.fn():null;}catch(x){}return ok(sc);},
+  stats(){const s=this.st;return {sh:s.shown,fi:s.fill,sk:s.skip,stl:s.stall,nf:s.nf||0,ads:s.ads||0,adid:s.adid||{},w:s.waits.slice(-8),bad:s.bad,err:s.err,blk:this.n,q:queue.slice(0,8).map(q=>q.slot?q.slot.kind+":"+String(q.slot.it.id).slice(0,6):"?")};}};
+CH.load();
+function playlist(){DAY=DAYNOW();/* every mode runs the channel blocks; the old per-mode line-ups below are unused */return CH.block();const SPOT=()=>{const l=spotList();for(let g=0;g<l.length;g++){const sc=spotScene(l[nx("spotq",l.length)]);if(sc)return sc;}return null;};
   const day={1:[S.presale,S.soon],2:[S.board,S.presale],3:[S.hero,S.board],4:[S.story,S.soon],5:[S.keys,S.story],6:[S.keys,S.merch],0:[S.keys,S.merch]}[DAY];
   if(MODE==="event"||(MODE==="mix"&&SIGNDAY()))return [SPOT,SPOT,S.board,S.trailer,SPOT,SPOT,S.hero,S.feat,SPOT,SPOT,S.trailer,SPOT,S.wall,SPOT,S.inc,S.join,S.trailer,SPOT,SPOT,S.hero,S.trades,SPOT,S.feat,S.app,SPOT,S.trailer,SPOT,S.cotd,S.market.bind(null,0),S.news,S.fact,S.vote,S.grade,S.doom,SPOT,S.about,S.news.bind(null,1),S.fact,S.spot,S.hero,S.trailer,SPOT,SPOT,SPOT,S.run,S.inc,S.trailer,SPOT,SPOT,S.excl,S.sold,S.blow,S.keys,S.feat,S.svc,S.about,S.presale,S.join];
   if(MODE==="sell")return [SPOT,S.board,S.hero,S.wall,S.hero,S.run,S.blow,S.keys,S.inc,S.hero,day[0],S.trades,S.presale,S.soon,S.excl,S.hero,S.feat,S.wall,SPOT,SPOT,S.merch,S.app,S.join,S.story,S.blow,day[1]];
@@ -3724,12 +3764,12 @@ function playlist(){DAY=DAYNOW();/* every mode runs the same stripped loop for n
   if(MODE==="market")return [S.market.bind(null,0),S.news,S.fact,S.market.bind(null,1),S.news.bind(null,1),S.alpha,S.fact,S.vote,S.sold,S.vel,S.trailer,S.timeline.bind(null,0),S.timeline.bind(null,1),S.quizFirst,S.trailer,S.join];
   if(MODE==="trailers")return [S.trailer,S.hero,S.trailer,S.wall,S.trailer,S.join,S.trailer,S.timeline.bind(null,0)];
   /* everyday loop: product first, a fun or useful screen every 3 to 4 screens; explainers stay on the remote */
-    return flowToday().map(k=>()=>FLOWFN[k]());}
+    return CH.block();}
 /* engine: auto-plays, keeps a history so staff can step back and forward, can be paused, and can take a pushed screen from the desk */
 const host=document.getElementById("host"),cut=document.getElementById("cut");let queue=[],current=null,lastId="",timer=null,paused=false,busy=false,hist=[],hpos=-1,curMs=10000,startedAt=0,remain=0;
 const clone=o=>JSON.parse(JSON.stringify(o));
-function buildNext(){for(let g=0;g<60;g++){if(!queue.length){loop++;queue=playlist();}const f=queue.shift();const snap=clone(IX);let sc=null;try{sc=f();}catch(e){console.warn(e);}if(sc&&sc.id!==lastId)return {sc,f,snap};}return null;}
-function rebuild(h){const cur=clone(IX);IX=clone(h.snap);let sc=null;try{sc=h.f();}catch(e){}IX=cur;return sc;}
+function buildNext(){for(let g=0;g<60;g++){if(!queue.length){loop++;queue=playlist();}const f=queue.shift();const snap=clone(IX);let sc=null;try{sc=f();}catch(e){console.warn(e);}if(sc&&(sc.id!==lastId||sc.rep))return {sc,f,snap};}return null;}
+function rebuild(h){const cur=clone(IX);IX=clone(h.snap);let sc=null;CH.rb=true;try{sc=h.f();}catch(e){}CH.rb=false;IX=cur;return sc;}
 const LITE={};function ready(el){try{if(el.querySelector(":scope>header"))el.classList.add("hd");const id=[...el.classList].find(c=>LITE[c]);if(id)el.classList.add("lite");}catch(x){}const imgs=[...el.querySelectorAll("img")];return Promise.race([Promise.all(imgs.map(i=>i.decode?i.decode().catch(()=>{}):Promise.resolve())),new Promise(r=>setTimeout(r,WEAKTV?7000:3000))]);}
 const prog=()=>document.getElementById("prog");
 function progress(ms){const p=prog();if(!p)return;p.getAnimations().forEach(a=>a.cancel());if(ms==null){p.style.transform="scaleX(0)";return;}p.animate([{transform:`scaleX(${Math.max(0,1-ms/curMs)})`},{transform:"scaleX(1)"}],{duration:ms,fill:"forwards"});}
@@ -3741,7 +3781,7 @@ async function show(sc,hold){await ready(sc.el);
   if(current){current._cleanup&&current._cleanup();current.remove();}
   document.body.className=(sc.chrome||"")+(paused?" paused":"")+(WEAKTV?" weak":"");host.appendChild(sc.el);gapFix(sc.el);current=sc.el;lastId=sc.id;updTk();
   if(sc.manual)sc.onEnd=()=>go(1);sc.el._start&&sc.el._start();
-  const ms=hold?hold*1000:sc.dur*1000*SPEED;curMs=ms;schedule(ms);}
+  const ms=hold?hold*1000:sc.dur*1000*(sc.manual?1:SPEED);curMs=ms;schedule(ms);}
 async function go(dir,push){if(busy)return;busy=true;clearTimeout(timer);
   try{if(push){await show(push.sc,push.hold);}
   else if(dir<0&&hpos>0){hpos--;const sc=rebuild(hist[hpos]);if(sc)await show(sc);}
@@ -3762,37 +3802,67 @@ function clock(){document.getElementById("clk").textContent=now().toLocaleTimeSt
 function fit(){const s=Math.min(innerWidth/1920,innerHeight/1080);const st=document.getElementById("stage");st.style.zoom="";st.style.transform="translate(-50%,-50%) scale("+s+")";}
 const KEEP=[];function warm(){const all=["hot","keys","foc","merch","soon","inc","monk"].reduce((a,k)=>a.concat((FEED[k]||[]).map(p=>img(p.img,700))),[]);all.forEach(u=>{if(!u)return;const i=new Image();i.decoding="async";i.src=u;KEEP.push(i);});}
 const PERF={fps:0,jank:0,max:0,n:0,t0:0,last:0,tick(t){if(PERF.last){const d=t-PERF.last;if(d>120)PERF.jank++;if(d>PERF.max)PERF.max=d;}PERF.last=t;PERF.n++;if(!PERF.t0)PERF.t0=t;if(t-PERF.t0>=10000){PERF.fps=Math.round(PERF.n*1000/(t-PERF.t0));PERF.out={fps:PERF.fps,jank:PERF.jank,max:Math.round(PERF.max)};PERF.n=0;PERF.t0=t;PERF.jank=0;PERF.max=0;}requestAnimationFrame(PERF.tick);},vid(){try{const v=document.querySelector(".scene.reel video");if(!v)return null;const q=v.getVideoPlaybackQuality?v.getVideoPlaybackQuality():{};return {t:Math.round(v.currentTime),drop:q.droppedVideoFrames||0,tot:q.totalVideoFrames||0,rs:v.readyState,w:v.videoWidth};}catch(e){return null;}}};try{requestAnimationFrame(PERF.tick);}catch(e){}
-let YTREADY=false,LASTTR=0;const TRGAP=40000;window.onYouTubeIframeAPIReady=()=>{YTREADY=true;try{YTP.prep();}catch(x){}};
+let YTREADY=false,LASTTR=0;const TRGAP=40000;window.onYouTubeIframeAPIReady=()=>{YTREADY=true;try{YTM.sync();}catch(x){}};
 const liveT=x=>x.exp?now()<=new Date(x.exp+"T23:59:00"):(!x.rel||now()<=new Date(new Date(x.rel+"T12:00:00").getTime()+14*864e5));
-/* YouTube trailers load hidden in the background while other screens play. A trailer only comes on screen once it is buffered and ready, so there is never a loading screen. */
-const YTP={state:"idle",t:null,player:null,next:0,k:0,want:false,bufT:0,onEnd:null,n:0,w:null,f:null,o:null,to:0,
-  box(){if(this.w)return;const st=document.getElementById("stage");if(!st)return;this.w=document.createElement("div");this.w.id="ytpre";this.w.innerHTML='<div class="f"></div><div class="ovl"></div>';st.appendChild(this.w);const vc=document.createElement("div");vc.id="vcover";st.appendChild(vc);this.f=this.w.querySelector(".f");this.o=this.w.querySelector(".ovl");},
-  log(ev,x){if(this.n++>14)return;try{post(Object.assign({cmd:"ytp",ev,id:this.t&&this.t.id,w:WEAKTV},x||{}),"-ack");}catch(e){}},
-  prep(id,want){if(this.off&&!want)return;if(IS_REMOTE||!YTREADY||typeof YT==="undefined"||!YT.Player)return;if(want)this.want=true;if(this.state!=="idle")return;if(!id&&(Date.now()<this.next||Date.now()-LASTTR<5000))return;if(TRON===false&&!want)return;
-    const L=TRL().filter(x=>x.id&&liveT(x));if(!L.length)return;this.box();if(!this.w)return;
-    const t=(id&&L.find(x=>x.id===id))||L[(this.k++)%L.length];this.t=t;this.state="loading";const t0=Date.now();let pb=false;
+/* YouTube clips load hidden in the background, two at a time: the clip that plays next, and the one after it.
+   Uploads that are not from an official channel often open with a YouTube ad (5 to 30 seconds, sometimes longer).
+   That is what used to look like "clips take 6 to 60 seconds to load": the old loader counted the ad as a failed
+   start. A player now waits the ad out in the background and is only called ready once the clip itself has started
+   and is paused on its first frame, so the channel never shows a loading screen and never cuts to an ad. */
+function mkYT(n){return {n,state:"idle",t:null,player:null,bufT:0,onEnd:null,w:null,f:null,o:null,to:0,ee:0,iv:0,nv:0,want:false,hold:0,
+  box(){if(this.w)return;const st=document.getElementById("stage");if(!st)return;this.w=document.createElement("div");this.w.className="ytpre";this.w.innerHTML='<div class="f"></div><div class="ovl"></div>';
+    let vc=document.getElementById("vcover");if(!vc){vc=document.createElement("div");vc.id="vcover";st.appendChild(vc);}st.insertBefore(this.w,vc);
+    this.f=this.w.querySelector(".f");this.o=this.w.querySelector(".ovl");},
+  load(t,want){if(this.state!=="idle")this.kill();this.box();if(!this.w)return;this.t=t;this.want=!!want;this.state="loading";const self=this,t0=Date.now();let pb=false,rdy=0,lastSt="none",ad=0,lastCt=-1;
     this.f.innerHTML="";const b=document.createElement("div");this.f.appendChild(b);
     try{this.player=new YT.Player(b,{videoId:t.id,width:WEAKTV?854:1920,height:WEAKTV?480:1080,host:YTHOST,playerVars:{autoplay:1,mute:1,controls:0,rel:0,modestbranding:1,playsinline:1,iv_load_policy:3,disablekb:1,fs:0,cc_load_policy:0,start:(t.s||0)},events:{
-      onReady:e=>{try{if(WEAKTV){const fr=e.target.getIframe();[["position","absolute"],["left","0"],["top","0"],["right","auto"],["bottom","auto"],["width","854px"],["height","480px"],["transform","scale(2.2484)"],["transform-origin","0 0"]].forEach(([k,v])=>fr.style.setProperty(k,v,"important"));}e.target.mute();e.target.playVideo();}catch(x){}},
-      onStateChange:e=>{const p=e.target;
-        if(this.state==="live"){if(e.data===3&&!this.bufT)this.bufT=Date.now();if(e.data===1)this.bufT=0;if(e.data===0&&this.onEnd)this.onEnd();return;}
-        if(this.state==="loading"&&e.data===1&&!pb){pb=true;try{p.pauseVideo();}catch(x){}this.log("playing",{s:Math.round((Date.now()-t0)/1e3)});
-          const iv=setInterval(()=>{if(this.state!=="loading"){clearInterval(iv);return;}try{const d=p.getDuration()||150,f=p.getVideoLoadedFraction()||0;if(f*d>=Math.min(20,d*.2)||Date.now()-t0>60000){clearInterval(iv);try{p.seekTo((this.t&&this.t.s)||0,true);p.pauseVideo();}catch(x){}this.state="ready";clearTimeout(this.to);this.log("ready",{s:Math.round((Date.now()-t0)/1e3),f:+f.toFixed(2)});if(this.want){this.want=false;pushScreen("trailer","yt");}}}catch(x){}},1000);}},
-      onError:e=>{this.log("error",{c:e&&e.data});this.fail();}}});}catch(x){this.log("throw",{m:String(x&&x.message||x).slice(0,80)});this.fail();return;}
-    clearTimeout(this.to);this.to=setTimeout(()=>{if(this.state==="loading"){this.log("timeout");this.fail();}},120000);},
-  fail(){this.kill();this.next=Date.now()+5*60000;this.want=false;this.bad=(this.bad||0)+1;if(WEAKTV&&this.bad>=3){this.off=true;this.log("off");}},
-  kill(){try{this.player&&this.player.destroy();}catch(x){}this.player=null;if(this.f)this.f.innerHTML="";if(this.o)this.o.innerHTML="";if(this.w)this.w.classList.remove("on");this.state="idle";this.bufT=0;clearTimeout(this.to);},
-  scene(){const self=this,t=this.t;const el=$('<section class="scene trailer ytp"></section>');const sc={id:"trailer",chrome:"cinema",dur:Math.max(170,((t.e||0)-(t.s||0))+15),el,manual:true};let T2=[],done=false;
+      onReady:e=>{try{if(WEAKTV){const fr=e.target.getIframe();[["position","absolute"],["left","0"],["top","0"],["right","auto"],["bottom","auto"],["width","854px"],["height","480px"],["transform","scale(2.2484)"],["transform-origin","0 0"]].forEach(([k,v])=>fr.style.setProperty(k,v,"important"));}rdy=Date.now();e.target.mute();e.target.playVideo();}catch(x){}},
+      onStateChange:e=>{const p=e.target;lastSt=e.data;
+        if(self.state==="live"){if(e.data===3&&!self.bufT)self.bufT=Date.now();if(e.data===1)self.bufT=0;if((e.data===0||e.data===-1)&&self.onEnd){if(e.data===-1)CH.st.err="midroll "+t.id;self.onEnd();}return;}
+        if(self.state==="loading"&&self.t===t&&e.data===1&&!pb){pb=true;const t1=Date.now();try{p.pauseVideo();}catch(x){}
+          clearInterval(self.iv);self.iv=setInterval(()=>{if(self.state!=="loading"||self.t!==t){clearInterval(self.iv);return;}try{const d=p.getDuration()||150,ahead=(p.getVideoLoadedFraction()||0)*d-(t.s||0);
+            if(ahead>=8||Date.now()-t1>12000){clearInterval(self.iv);try{p.seekTo(t.s||0,true);p.pauseVideo();}catch(x){}self.state="ready";clearTimeout(self.to);delete CH.st.bad[t.id];CH.wait(Math.round((Date.now()-t0)/1e3));if(ad){CH.st.ads=(CH.st.ads||0)+1;const A=CH.st.adid=CH.st.adid||{};A[t.id.slice(0,6)]=Math.round((ad?Date.now()-ad:0)/1e3);}
+              if(self.want){self.want=false;pushScreen("trailer","yt:"+t.id);}}}catch(x){}},500);}},
+      onError:e=>{if(self.t===t)self.fail("err"+(e&&e.data));}}});}catch(x){this.fail("throw");return;}
+    /* while the player has not reached the clip: if its clock is moving, an ad is running, so wait; if nothing is moving, nudge it */
+    clearInterval(this.iv);this.iv=setInterval(()=>{if(self.state!=="loading"||self.t!==t||pb){if(!pb)clearInterval(self.iv);return;}if(!rdy)return;
+      try{const c=self.player.getCurrentTime()||0;if(c>lastCt+.5&&lastCt>=0){if(!ad)ad=Date.now();}else if(!ad||Date.now()-ad>4000){self.player.mute();self.player.playVideo();}lastCt=c;}catch(x){}},2000);
+    /* never loaded at all in 25s, or still not at the clip after 100s (a long ad): give up on this try */
+    clearTimeout(this.to);this.to=setTimeout(()=>{if(self.state==="loading"&&self.t===t&&!rdy)self.fail("notready");},25000);
+    clearTimeout(this.to2);this.to2=setTimeout(()=>{if(self.state==="loading"&&self.t===t&&!pb)self.fail(ad?"longad":"nostart st"+lastSt);},100000);},
+  /* a clip that fails twice in a row sits out for 10 minutes so it cannot hold the channel up */
+  fail(why){const id=this.t&&this.t.id;if(id){CH.st.nf=(CH.st.nf||0)+1;CH.st.bad[id]=(CH.st.bad[id]||0)+1;CH.st.err=why+" "+id+" @"+new Date().toTimeString().slice(0,5);if(CH.st.bad[id]>=2){CH.bench[id]=Date.now()+10*60000;CH.st.bad[id]=0;}}this.kill();setTimeout(()=>{try{YTM.sync();}catch(x){}},500);},
+  kill(){clearInterval(this.iv);clearInterval(this.ee);clearInterval(this.nv);clearTimeout(this.to);clearTimeout(this.to2);try{this.player&&this.player.destroy();}catch(x){}this.player=null;if(this.f)this.f.innerHTML="";if(this.o)this.o.innerHTML="";if(this.w)this.w.classList.remove("on");this.state="idle";this.t=null;this.bufT=0;this.want=false;this.onEnd=null;this.hold=0;},
+  scene(){const self=this,t=this.t;this.hold=Date.now()+6000;const el=$('<section class="scene trailer ytp"></section>');let d=0;try{d=this.player.getDuration()||0;}catch(x){}
+    /* run for the clip's real length (never cut a trailer short); a clip with no end time is capped at 5 minutes */
+    const len=Math.min(300,Math.max(0,(t.e||d||0)-(t.s||0)))||170;
+    const sc={id:"trailer",rep:true,chrome:"cinema",dur:len+10,el,manual:true};let T2=[],done=false;
     const end=()=>{if(done)return;done=true;T2.forEach(x=>{clearTimeout(x);clearInterval(x);});sc.onEnd&&sc.onEnd();};
-    el._start=()=>{if(self.state!=="ready"){end();return;}self.onEnd=end;self.show();T2.push(setTimeout(end,175000));T2.push(setInterval(()=>{if(self.bufT&&Date.now()-self.bufT>8000){self.log("stall");self.bad=(self.bad||0)+1;if(WEAKTV&&self.bad>=3)self.off=true;end();}},1000));};
-    el._cleanup=()=>{T2.forEach(x=>{clearTimeout(x);clearInterval(x);});self.hide();};return sc;},
-  show(){const t=this.t,p=this.player;this.state="live";this.bufT=0;
+    el._start=()=>{if(self.state!=="ready"||self.t!==t){end();return;}self.onEnd=end;self.show();T2.push(setTimeout(end,(len+6)*1000));T2.push(setInterval(()=>{if(self.bufT&&Date.now()-self.bufT>8000){CH.st.stall++;CH.st.err="stall "+t.id;end();}},1000));};
+    el._cleanup=()=>{T2.forEach(x=>{clearTimeout(x);clearInterval(x);});if(self.t===t)self.hide();};return sc;},
+  show(){const t=this.t,p=this.player;this.state="live";this.bufT=0;this.hold=0;
     const dd=(()=>{if(!t.rel)return"";const a=new Date(t.rel+"T00:00:00"),n=now(),b=new Date(n.getFullYear(),n.getMonth(),n.getDate()),d=Math.round((a-b)/864e5);return d>0?`<span class="d"><b>${d}</b> ${d===1?"day to go":"days to go"}</span>`:`<span class="d">In theatres now</span>`;})()||(t.when?`<span class="d">${esc(t.when)}</span>`:"");
     this.o.innerHTML=`<div class="lt"><p>${esc(t.sub||"Official trailer")}</p><h2>${esc(t.t)}</h2>${dd}</div><div class="tie"></div>`;
-    findBooks(t.kw||t.t,8).then(bs=>{bs=bs.filter(p=>p.price>=5).sort((a,b)=>b.price-a.price);if(!bs.length||this.state!=="live")return;const q=bs[0],u=qrURL(link(q,"trailer"));const tie=this.o.querySelector(".tie");if(tie)tie.innerHTML=`<img class="tc" src="${img(q.img,300)}" alt=""><div><span>In the shop now</span><b>${esc(splitT(q.title)[0])}</b><em>${money(q.price)}</em></div>${u?`<img class="tq" src="${u}" alt="">`:""}`;}).catch(()=>{});
-    LASTTR=Date.now();CURPL=p;CURV=null;Radio.duck(true);this.w.classList.add("on");this.ee=setInterval(()=>{try{const d=p.getDuration(),c=p.getCurrentTime();if(d>10&&c>(((this.t&&this.t.e)||d)-1.6)&&this.onEnd)this.onEnd();}catch(x){}},500);try{p.seekTo((this.t&&this.t.s)||0,true);p.playVideo();}catch(x){}
-    setTimeout(()=>{if(TVOL>0){try{p.unMute();p.setVolume(TVOL);}catch(x){}}},350);this.log("show");},
-  hide(){clearInterval(this.ee);Radio.duck(false);CURPL=null;this.kill();this.next=Date.now()+20000;}};
+    findBooks(t.kw||t.t,8).then(bs=>{bs=bs.filter(p=>p.price>=5).sort((a,b)=>b.price-a.price);if(!bs.length||this.state!=="live"||this.t!==t)return;const q=bs[0],u=qrURL(link(q,"trailer"));const tie=this.o.querySelector(".tie");if(tie)tie.innerHTML=`<img class="tc" src="${img(q.img,300)}" alt=""><div><span>In the shop now</span><b>${esc(splitT(q.title)[0])}</b><em>${money(q.price)}</em></div>${u?`<img class="tq" src="${u}" alt="">`:""}`;}).catch(()=>{});
+    LASTTR=Date.now();CURPL=p;CURV=null;clearTimeout(YTM.rd);Radio.duck(true);this.w.classList.add("on");clearInterval(this.ee);this.ee=setInterval(()=>{try{const d=p.getDuration(),c=p.getCurrentTime();if(d>10&&c>((t.e||d)-1.6)&&this.onEnd)this.onEnd();}catch(x){}},500);try{p.seekTo(t.s||0,true);p.playVideo();}catch(x){}
+    setTimeout(()=>{if(TVOL>0&&this.t===t){try{p.unMute();p.setVolume(TVOL);}catch(x){}}},350);setTimeout(()=>{try{YTM.sync();}catch(x){}},1200);
+    const t0=Date.now();clearInterval(this.nv);this.nv=setInterval(()=>{if(this.t!==t||this.state!=="live"){clearInterval(this.nv);return;}let st=-9;try{st=p.getPlayerState();}catch(x){}
+      if(st===1){clearInterval(this.nv);return;}try{p.playVideo();}catch(x){}if(Date.now()-t0>7000){clearInterval(this.nv);CH.st.nf=(CH.st.nf||0)+1;CH.st.err="noresume "+t.id;if(this.onEnd)this.onEnd();}},1000);},
+  /* the radio only comes back if no other clip starts straight after this one */
+  hide(){if(CURPL===this.player)CURPL=null;this.kill();clearTimeout(YTM.rd);YTM.rd=setTimeout(()=>{if(!YTS.some(y=>y.state==="live"))Radio.duck(false);},1500);setTimeout(()=>{try{YTM.sync();}catch(x){}},300);}};}
+const YTS=[mkYT(0),mkYT(1)];
+const YTM={rd:0,
+  ok(){return !IS_REMOTE&&YTREADY&&typeof YT!=="undefined"&&!!YT.Player&&!window.DEADTAB;},
+  find(id,st){return YTS.find(y=>y.t&&y.t.id===id&&(!st||y.state===st));},
+  sync(){if(!this.ok())return;const want=TRON===false?[]:CH.plan();
+    YTS.forEach(y=>{if((y.state==="loading"||y.state==="ready")&&!y.want&&!(y.hold>Date.now())&&!want.some(t=>t.id===y.t.id))y.kill();});
+    want.forEach(t=>{if(this.find(t.id))return;const y=YTS.find(y=>y.state==="idle");if(y)y.load(t);});},
+  sceneFor(id){const y=this.find(id,"ready");return y?y.scene():null;},
+  /* someone asked for one clip from the remote: load it now and put it up the moment it is ready */
+  demand(id){if(!this.ok())return;const t=[...((MARKET&&MARKET.trailers)||[]),...CLIPS].find(x=>x.id===id);if(!t)return;
+    let y=this.find(id);if(y){if(y.state==="ready")pushScreen("trailer","yt:"+id);else if(y.state==="loading")y.want=true;return;}
+    y=YTS.find(y=>y.state==="idle")||YTS.find(y=>y.state!=="live");if(!y)return;y.kill();y.load(t,true);},
+  killAll(){YTS.forEach(y=>y.kill());}};
 addEventListener("resize",fit);fit();setTimeout(()=>{try{if(!IS_REMOTE){warmSpots();setInterval(warmSpots,30*60e3);}}catch(x){}},1500);clock();setInterval(clock,1e4);
 /* at your own pace: click right = next, left = back; keyboard or Fire TV remote arrows; OK / space = pause */
 document.getElementById("stage").addEventListener("click",e=>{Radio.unlock();soundUnlock();if(!document.fullscreenElement){try{document.documentElement.requestFullscreen().catch(()=>{});}catch(x){}return;}go(e.clientX>innerWidth/2?1:-1);});
@@ -3825,25 +3895,31 @@ function handle(m){if(!m||!m.cmd||window.DEADTAB||NOTTV)return;
   else if(m.cmd==="show")pushScreen(m.screen,m.arg,m.hold);else if(m.cmd==="yttest"){FORCEYT=true;if(m.host)YTHOST=m.host;TRBAD=0;pushScreen("trailer",m.arg||0,0);setTimeout(()=>{FORCEYT=false;},180000);}else if(m.cmd==="reload"){if(!m.only||navigator.userAgent.indexOf(m.only)>=0)hardReload();}else if(m.cmd==="quit"&&m.only&&navigator.userAgent.indexOf(m.only)>=0&&!/SMART-TV|Tizen/.test(navigator.userAgent)){document.body.innerHTML='<p style="color:#888;font:20px sans-serif;padding:40px">CaptCan TV was stopped on this computer from the remote. It keeps running on the shop TV.</p>';setTimeout(()=>location.replace("about:blank"),400);}else if(m.cmd==="goto"&&/^https:\/\/(captcancomics\.ca|rdjmitch\.github\.io)\//.test(m.url||""))location.href=m.url;
   if(m.cmd==="ping")setTimeout(()=>post(ackMsg(),"-ack"),900);}
 function updTk(){const e=document.getElementById("tk");if(!e)return;const ph=sigPhase();const on=SERVE>0&&(ph==="live"||ph==="last"||ph==="break");e.style.display=on?"flex":"none";if(on)e.innerHTML="Now signing <b>#"+SERVE+"</b>";}
-function ackMsg(){const u=navigator.userAgent,m=u.match(/Chrom(?:e|ium)\/(\d+)/)||u.match(/\) (\d{2,3})\.0\.\d{4}\.\d+/);return {cmd:"ack",now:lastId,paused,mode:MODE,radio:Radio.on?Radio.name:"",locked:SOUNDWAIT(),cv:m?+m[1]:0,fg:FLEXGAP,ua:navigator.userAgent.slice(0,60),sig:sigPhase(),serve:SERVE,b:BUILD,pf:PERF.out||null,pv:PERF.vid(),mem:(performance.memory?Math.round(performance.memory.usedJSHeapSize/1048576):0),dom:document.getElementsByTagName("*").length,fs:!!(document.fullscreenElement||document.webkitFullscreenElement),vw:innerWidth+"x"+innerHeight,sw:screen.width+"x"+screen.height,ytp:YTP.state,rp:!!(Radio.a&&!Radio.a.paused),rst:Radio.st,dk:Radio.ducked,ltr:LASTTR?Math.round((Date.now()-LASTTR)/6e4):-1,mp4:(UTR||[]).filter(x=>x&&x.mp4).length};}
+function ackMsg(){const u=navigator.userAgent,m=u.match(/Chrom(?:e|ium)\/(\d+)/)||u.match(/\) (\d{2,3})\.0\.\d{4}\.\d+/);return {cmd:"ack",now:lastId,paused,mode:MODE,radio:Radio.on?Radio.name:"",locked:SOUNDWAIT(),cv:m?+m[1]:0,fg:FLEXGAP,ua:navigator.userAgent.slice(0,60),sig:sigPhase(),serve:SERVE,b:BUILD,pf:PERF.out||null,pv:PERF.vid(),mem:(performance.memory?Math.round(performance.memory.usedJSHeapSize/1048576):0),dom:document.getElementsByTagName("*").length,fs:!!(document.fullscreenElement||document.webkitFullscreenElement),vw:innerWidth+"x"+innerHeight,sw:screen.width+"x"+screen.height,ytp:YTS.map(y=>y.state.slice(0,2)+(y.t?":"+y.t.id.slice(0,6):"")).join(" "),ch:CH.stats(),app:(()=>{try{return window.CaptCanTVApp?CaptCanTVApp.info():"";}catch(x){return "";}})(),rp:!!(Radio.a&&!Radio.a.paused),rst:Radio.st,dk:Radio.ducked,ltr:LASTTR?Math.round((Date.now()-LASTTR)/6e4):-1,mp4:(UTR||[]).filter(x=>x&&x.mp4).length};}
 function listen(){try{const es=new EventSource(RELAY+"/sse");es.onmessage=e=>{try{const d=JSON.parse(e.data);if(d.event==="message")handle(JSON.parse(d.message));}catch(x){}};es.onerror=()=>{};}catch(x){}}
 async function restore(){try{const t=await fetch(RELAY+"/json?poll=1&since=48h").then(r=>r.text());let last=null;t.trim().split("\n").forEach(l=>{try{const d=JSON.parse(l);const m=JSON.parse(d.message);if(m.cmd==="state")last=m;}catch(x){}});if(last)applyState(Object.assign({},last,{sigPush:false}));}catch(x){}}
 /* ===== desk remote: phone or desk computer, PIN protected ===== */
 const NAMES={reel:"Art reel",guess:"Who's on the cover",art:"Art highlight",open:"CaptCan intro",board:"Hot this week",hero:"#1 seller",wall:"New this week",run:"Friday's big run",blow:"25% off blowout",market:"Market Hot 10",alpha:"Market spotlight",sold:"Just sold at CaptCan",vel:"Moving fastest",excl:"Our exclusives",timeline:"Movie keys",eras:"Every era",artists:"Cover artists",svc:"CaptCan services",lesson:"Collector school",school:"How CGC grades",quiz:"Collector quiz",soon:"Coming soon",join:"Make an account",howto:"How the site works",keys:"Just landed",presale:"Pre-sales",merch:"Merch",event:"Event",trailer:"Trailer",book:"A book you pushed",msg:"Your message",chain:"Monk exclusives",chainall:"Every Chainkata cover",inc:"Incentive covers",trades:"Trades and hardcovers",about:"About CaptCan",sign:"Signing status",news:"Comic news",news2:"More comic news",fact:"Did you know",cotd:"Cover of the day",flow:"Moving wall of covers",grade:"Guess the grade",doom:"Doomsday countdown",nums:"CaptCan by the numbers",vote:"Which cover would you pick",spot:"Character spotlight",upload:"Friday upload countdown",cgcss:"CGC yellow label",dwj:"Why Chainkata",monk:"Monk originals",app:"The CaptCan app",feat:"Staff picks",story:"Key issue"};
 const PV={open:()=>S.open(),board:()=>S.board(),hero:()=>S.hero(),wall:()=>S.wall(),run:()=>S.run(),blow:()=>S.blow(),market:()=>S.market(0),alpha:()=>S.alpha(),sold:()=>S.sold(),vel:()=>S.vel(),excl:()=>S.excl(),timeline:()=>S.timeline(0),eras:()=>S.eras(),artists:()=>S.artists(),svc:()=>S.svc(0),lesson:()=>S.lesson(0),school:()=>S.school(),quiz:()=>S.quizFirst(0),soon:()=>S.soon(),join:()=>S.join(),keys:()=>S.keys(),presale:()=>S.presale(),merch:()=>S.merch(),event:()=>S.event(0),chain:()=>S.chain(),chainall:()=>S.chainall(),inc:()=>S.inc(),trades:()=>S.trades(),about:()=>S.about(0),sign:()=>S.sign(),cgcss:()=>S.cgcss(),dwj:()=>S.dwj(),monk:()=>S.monk(),app:()=>S.app(),feat:()=>S.feat(),story:()=>S.story(),news:()=>S.news(0),fact:()=>S.fact(),cotd:()=>S.cotd(),vote:()=>S.vote(),spot:()=>S.spot(),upload:()=>S.upload(),flow:()=>S.flow(),grade:()=>S.grade(),doom:()=>S.doom(),nums:()=>S.nums()};
-function lineupHTML(){const F=flowToday(),cnt={};F.forEach(k=>cnt[k]=(cnt[k]||0)+1);const secs=F.reduce((a,k)=>a+FLOWINFO[k][2],0);
-  const TY={c:"Cartoon opening",s:"Movie scene",k:"Talking clip"};const seen={},order=[];TRL().forEach(x=>{if(!seen[x.id]){seen[x.id]=1;order.push(x);}});
+function lineupHTML(){const TY={trl:"Trailer",c:"Cartoon opening",s:"Movie scene",k:"Talking clip"};
+  const pools={},per={};Object.keys(KINDS).forEach(k=>pools[k]=CH.pool(k));BLOCKS.forEach(b=>b.forEach(k=>per[k]=(per[k]||0)+1/BLOCKS.length));
+  const blockSec=Object.keys(per).reduce((a,k)=>a+(pools[k].length?per[k]*KSEC[k]:0),0),blockMin=Math.round(blockSec/60);
+  const mins=m=>m<90?Math.round(m)+" min":(Math.round(m/6)/10)+" hours";
+  const every=k=>{const n=pools[k].length;if(!n||!per[k])return "";if(k==="trl"){const rest=pools.trl.filter(x=>x.id!==LEADTR).length,gap=blockSec/60/per.trl;return pools.trl.some(x=>x.id===LEADTR)?"Avengers: Doomsday final trailer about every "+mins(gap*(rest?2:1))+(rest?", the others about every "+mins(gap*2*rest):""):"Each about every "+mins(gap*n);}
+    return "Each one comes back about every "+mins(n/per[k]*blockSec/60);};
   const len=x=>x.e?Math.round(((x.e||0)-(x.s||0))/6)/10+" min":(x.ty?"plays in full":"full trailer");
-  const row=(n,t,s,r,p)=>`<div class="lu"><i>${n}</i><div><b>${t}</b><span>${s}</span></div><em>${r}</em>${p?`<button data-p="${p}">Put on TV</button>`:""}</div>`;
-  return `<h3>The loop today (${DAYNOW()===3?"Wednesday, new release day":"every day but Wednesday"})</h3>
-   <p class="lunote">One pass is about ${Math.round(secs/60)} minutes, then it starts again with the next reels and clips. Per pass: ${Object.keys(cnt).map(k=>cnt[k]+" × "+FLOWINFO[k][0].toLowerCase()).join(", ")}.</p>
-   ${F.map((k,j)=>row(j+1,FLOWINFO[k][0],FLOWINFO[k][1],k==="clip"?"1 to 5 min":"about "+FLOWINFO[k][2]+" sec",FLOWINFO[k][3])).join("")}
-   <h3>Art reels (${REELS.length}), taking turns</h3>
-   <div class="lugrid">${REELS.map(r=>`<div class="luc" data-p="reel:${r.k}" role="button" tabindex="0"><img src="v/${r.k}.jpg" alt=""><b>${r.n}</b><span>${Math.round(r.d)} sec · tap to put on TV</span></div>`).join("")}</div>
-   <h3>Clips and trailers (${order.length}), in the order they play</h3>
-   <p class="lunote">One plays each time the loop reaches a clip slot, so the whole list takes about ${Math.round(order.length/cnt.clip*secs/60)} minutes to come around.</p>
-   <div class="lugrid">${order.map((x,j)=>`<div class="luc" data-p="trailer:yt:${x.id}" role="button" tabindex="0"><img src="https://i.ytimg.com/vi/${x.id}/mqdefault.jpg" alt=""><b>${j+1}. ${esc(x.t)}</b><span>${x.ty?TY[x.ty]:"Trailer"} · ${esc(x.sub||"")} · ${len(x)}</span></div>`).join("")}</div>
-   <h3>Not in the loop</h3><p class="lunote">Every other screen (Hot this week, staff picks, games, market, services and the rest) only shows when someone puts it up from the Screens tab.</p>`;}
+  const chip=k=>`<span class="${pools[k].length?"":"off"}">${KINDS[k]}</span>`;
+  const clipGrid=k=>`<div class="lugrid">${pools[k].map(x=>`<div class="luc" data-p="trailer:yt:${x.id}" role="button" tabindex="0"><img src="https://i.ytimg.com/vi/${x.id}/mqdefault.jpg" alt=""><b>${esc(x.t)}</b><span>${esc(x.sub||"")} · ${len(x)}</span></div>`).join("")}</div>`;
+  const empty=Object.keys(SCREENS).filter(k=>!pools[k].length).map(k=>KINDS[k]);
+  return `<style>.blk{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:8px 0 12px}.blk i{font-style:normal;font-weight:800;color:#b5b5be;font-size:13px;margin-right:4px}.blk span{background:#1b1b1f;border:1px solid #34343c;border-radius:999px;padding:7px 12px;font-size:13px;font-weight:700}.blk span.off{opacity:.38;border-style:dashed;font-weight:500}</style>
+   <h3>How the channel runs</h3>
+   <p class="lunote">The TV plays in blocks of about ${blockMin} minutes and the two blocks take turns. Each kind of screen has its own shuffled pile, so nothing repeats until everything else of its kind has played. The next two clips load in the background while the TV plays, so there is no waiting screen.</p>
+   ${BLOCKS.map((b,j)=>`<div class="blk"><i>Block ${j+1}</i>${b.map(chip).join("")}</div>`).join("")}
+   ${empty.length?`<p class="lunote">Faded slots (${empty.join(", ")}) are built into the channel and skipped until those screens are approved.</p>`:""}
+   <h3>Art reels (${REELS.length})</h3><p class="lunote">Each one comes back about every ${mins(pools.reel.length/per.reel*blockSec/60)}. Tap one to put it on the TV now.</p>
+   <div class="lugrid">${REELS.map(r=>`<div class="luc" data-p="reel:${r.k}" role="button" tabindex="0"><img src="v/${r.k}.jpg" alt=""><b>${r.n}</b><span>${Math.round(r.d)} sec</span></div>`).join("")}</div>
+   ${["trl","c","s","k"].map(k=>`<h3>${TY[k]}s (${pools[k].length})</h3><p class="lunote">${every(k)}.</p>${clipGrid(k)}`).join("")}
+   <h3>Not in the channel</h3><p class="lunote">Every other screen (Hot this week, staff picks, games, market, services and the rest) only shows when someone puts it up from the Screens tab.</p>`;}
 function remoteUI(){
   document.getElementById("stage").style.display="none";
   const css=`html,body{height:auto!important;overflow:auto!important}body{display:block!important;cursor:auto!important;background:#0B0B0D!important;color:#fff;font-family:var(--body);-webkit-text-size-adjust:100%}
@@ -4076,9 +4152,13 @@ if(NOTTV){const pv=document.createElement("div");pv.style.cssText="position:fixe
 if(!IS_REMOTE&&!NOTTV){const hb=document.createElement("div");hb.id="needok";hb.innerHTML="<b>OK</b><span>Press the middle button on the TV remote to turn on sound and full screen</span>";(document.getElementById("stage")||document.body).appendChild(hb);setInterval(()=>{if(window.__keep)return;let need=false;try{need=SOUNDWAIT()||(WEAKTV&&!(document.fullscreenElement||document.webkitFullscreenElement)&&innerHeight<screen.height-20);}catch(x){}hb.classList.toggle("on",need);},2000);}
 if(!IS_REMOTE){(()=>{/* only one copy may run per browser: a newer tab wins, older tabs go quiet (two copies = two radios out of sync) */
   const me=Date.now()+":"+Math.random().toString(36).slice(2,7),t0=Date.now();let dead=false;
-  const beat=()=>{if(dead)return;try{const o=JSON.parse(localStorage.getItem("cctvLive")||"null");if(o&&o.id!==me&&o.t0>t0&&Date.now()-o.at<12000){dead=true;window.DEADTAB=true;try{Radio.on=false;Radio.el().pause();YTP.kill();}catch(x){}clearTimeout(timer);busy=true;document.body.innerHTML='<p style="color:#888;font:24px sans-serif;padding:60px">CaptCan TV is open in another tab. This copy stopped so the music doesn\'t play twice.</p>';return;}localStorage.setItem("cctvLive",JSON.stringify({id:me,t0,at:Date.now()}));}catch(x){}};
+  const beat=()=>{if(dead)return;try{const o=JSON.parse(localStorage.getItem("cctvLive")||"null");if(o&&o.id!==me&&o.t0>t0&&Date.now()-o.at<12000){dead=true;window.DEADTAB=true;try{Radio.on=false;Radio.el().pause();YTM.killAll();}catch(x){}clearTimeout(timer);busy=true;document.body.innerHTML='<p style="color:#888;font:24px sans-serif;padding:60px">CaptCan TV is open in another tab. This copy stopped so the music doesn\'t play twice.</p>';return;}localStorage.setItem("cctvLive",JSON.stringify({id:me,t0,at:Date.now()}));}catch(x){}};
   beat();setInterval(beat,3000);})();
-  setInterval(()=>{try{YTP.prep();}catch(x){}},20000);["pointerdown","mousedown","touchstart"].forEach(ev=>document.addEventListener(ev,()=>{goFull();try{Radio.unlock();soundUnlock();}catch(x){}},{passive:true}));let fsN=0;const fsc=()=>{const on=!!(document.fullscreenElement||document.webkitFullscreenElement);if(!on&&fsN<6){fsN++;post({cmd:"fslog",now:lastId,up:Math.round((Date.now()-BOOT)/1000),w:WEAKTV,vis:document.visibilityState},"-ack");}};document.addEventListener("fullscreenchange",fsc);document.addEventListener("webkitfullscreenchange",fsc);document.documentElement.classList.add("tvmode");try{const o=JSON.parse(localStorage.getItem("cctvTV")||"null");if(o)applyState(o);}catch(x){}}
+  setInterval(()=>{try{YTM.sync();}catch(x){}},3000);
+  /* inside the CaptCan TV app: sound and full screen need no button press, and the app reloads the page if these beats stop */
+  if(window.CaptCanTVApp){GEST=true;setInterval(()=>{try{if(paused||Date.now()-startedAt<curMs+60000)CaptCanTVApp.beat();}catch(x){}},20000);}
+  /* back from sleep: drop any half-loaded clip, bring the radio back and move straight to the next screen */
+  let HIDAT=0;document.addEventListener("visibilitychange",()=>{if(document.hidden){HIDAT=Date.now();return;}if(HIDAT&&Date.now()-HIDAT>60000){try{YTM.killAll();Radio.ducked=false;Radio.play();go(1);}catch(x){}}HIDAT=0;});["pointerdown","mousedown","touchstart"].forEach(ev=>document.addEventListener(ev,()=>{goFull();try{Radio.unlock();soundUnlock();}catch(x){}},{passive:true}));let fsN=0;const fsc=()=>{const on=!!(document.fullscreenElement||document.webkitFullscreenElement);if(!on&&fsN<6){fsN++;post({cmd:"fslog",now:lastId,up:Math.round((Date.now()-BOOT)/1000),w:WEAKTV,vis:document.visibilityState},"-ack");}};document.addEventListener("fullscreenchange",fsc);document.addEventListener("webkitfullscreenchange",fsc);document.documentElement.classList.add("tvmode");try{const o=JSON.parse(localStorage.getItem("cctvTV")||"null");if(o)applyState(o);}catch(x){}}
 
 </script>
 </body></html>
