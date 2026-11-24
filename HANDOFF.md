@@ -41,3 +41,12 @@ Read this first in any new chat about the store TV or the intro.
 - Cause of "still shows screens I hate": the Fire Stick was in saved mode "sell", which ran the old per-mode playlists.
 - Fire Stick (Silk, AFTKRT) confirmed on this build via relay ack, sound unlocked, Doomsday trailer playing.
 - To add a screen back: add its key to FLOW.any / FLOW.wed.
+
+## Fire Stick findings, Nov 24 ~11:15am (BUILD 1124-1112a)
+- Device: Fire TV Stick 4K Max (AFTKRT, Fire OS 8, Silk 152). Reilly will not buy other hardware.
+- Fire OS 8 removed app auto-start on boot. Nothing can launch the channel by itself after a full power cut. The stick sleeps rather than powering off, so Silk should return to the page on wake (untested overnight).
+- Measured over the relay (ack fields pf/pv): 57-60 fps, 6 dropped frames of 400 on a reel. Hardware is fine.
+- The page was NOT full screen (viewport 1546x773 in Silk with browser bar). Full screen and sound both need one OK press after every load. Every relay "reload" drops both, so do not reload during store hours.
+- YouTube clips took 6 to 60s to reach ready; while waiting the loop plays another art reel (only 4 exist, so it repeats).
+- Parental-controls PIN unknown to Reilly; blocks Settings changes on the stick. Reset is at amazon.com/pin signed into the account the stick is registered to.
+- Reilly's verdict: loop "not approved", still not the best loop or setup. Only 4 art reels + 19 clips exist; no products, no own reels, no Tue/Wed programming.
