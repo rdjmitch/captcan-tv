@@ -3357,7 +3357,7 @@ const keyNote=t=>{for(const [re,n,y] of KEYS)if(re.test(t))return {note:n,year:y
 
 
 CONFIG.ticker=["Every book bagged and boarded","Pre-sales close Monday 8pm","New releases every Tuesday","New back issues every Friday","Hold Box: no time limit, no storage fees","We buy and consign collections","CaptCan Cash: 10% back on pre-sales","Free account: scan any code on screen"];
-const BUILD="1123-2250a";const CLIPS=[{id:"WTOhGmgKMsU",t:"Batman: The Animated Series",sub:"The 1992 opening",when:"",kw:"Batman"},{id:"CjaTkPYzK00",t:"ThunderCats",sub:"The 1985 opening",when:"",kw:"Thundercats"},{id:"Bdz1oWtYU-0",t:"The Transformers",sub:"The 1985 opening",when:"",kw:"Transformers"},{id:"6faj24XtmP8",t:"X-Men: Evolution",sub:"The opening",when:"",kw:"X-Men"},{id:"oUcKJflBG8Q",t:"Superman: The Animated Series",sub:"The 1996 opening",when:"",kw:"Superman"},{id:"2S19w2xXU54",t:"The Spectacular Spider-Man",sub:"The 2008 opening",when:"",kw:"Spider-Man"},{id:"cfVY9wLKltA",t:"Captain America: Civil War",sub:"The airport battle",when:"",kw:"Civil War",s:8,e:150},{id:"PDSHFeQNsuc",t:"Iron Man",sub:"Building the Mark I, 2008",when:"",kw:"Iron Man",s:60,e:178},{id:"jolXso_OO-c",t:"Hulk",sub:"San Francisco, 2003",when:"",kw:"Hulk",s:25,e:160}];const TRL=()=>[...((MARKET&&MARKET.trailers)||[]),...CLIPS];const REELS=[{k:"doom",n:"Doom",d:23},{k:"batman",n:"Absolute Batman",d:25.5},{k:"midnight",n:"Midnight",d:25.4},{k:"blacksuit",n:"Black Suit",d:23}];const SITE="https://www.captcancomics.ca",API="2025-10";
+const BUILD="1123-2300a";const CLIPS=[{id:"WTOhGmgKMsU",t:"Batman: The Animated Series",sub:"The 1992 opening",when:"",kw:"Batman"},{id:"CjaTkPYzK00",t:"ThunderCats",sub:"The 1985 opening",when:"",kw:"Thundercats"},{id:"Bdz1oWtYU-0",t:"The Transformers",sub:"The 1985 opening",when:"",kw:"Transformers"},{id:"6faj24XtmP8",t:"X-Men: Evolution",sub:"The opening",when:"",kw:"X-Men"},{id:"oUcKJflBG8Q",t:"Superman: The Animated Series",sub:"The 1996 opening",when:"",kw:"Superman"},{id:"2S19w2xXU54",t:"The Spectacular Spider-Man",sub:"The 2008 opening",when:"",kw:"Spider-Man"},{id:"cfVY9wLKltA",t:"Captain America: Civil War",sub:"The airport battle",when:"",kw:"Civil War",s:8,e:150},{id:"PDSHFeQNsuc",t:"Iron Man",sub:"Building the Mark I, 2008",when:"",kw:"Iron Man",s:60,e:178},{id:"jolXso_OO-c",t:"Hulk",sub:"San Francisco, 2003",when:"",kw:"Hulk",s:25,e:160}];const TRL=()=>[...((MARKET&&MARKET.trailers)||[]),...CLIPS];const REELS=[{k:"doom",n:"Doom",d:23},{k:"batman",n:"Absolute Batman",d:25.5},{k:"midnight",n:"Midnight",d:25.4},{k:"blacksuit",n:"Black Suit",d:23}];const SITE="https://www.captcancomics.ca",API="2025-10";
 /* helpers */
 const NW="h1,h2,h3,p,b,span,figcaption,.sub,.txt,.book,.lab,.sm,.when,.after,.lead,.pts div";
 function noWidow(root){root.querySelectorAll(NW).forEach(e=>{if(e.children.length>2)return;const w=document.createTreeWalker(e,NodeFilter.SHOW_TEXT);let last=null;while(w.nextNode()){const n=w.currentNode;n.nodeValue=n.nodeValue.replace(/(\w)-(\w)/g,"$1\u2011$2");if(n.nodeValue.trim())last=n;}if(!last)return;const v=last.nodeValue,i=v.trimEnd().lastIndexOf(" ");if(i>0&&v.trim().split(/ +/).length>2&&v.slice(i+1).trim().length<=10)last.nodeValue=v.slice(0,i)+"\u00a0"+v.slice(i+1);});return root;}
@@ -3716,11 +3716,9 @@ function playlist(){DAY=DAYNOW();const SPOT=()=>{const l=spotList();for(let g=0;
   if(MODE==="trailers")return [S.trailer,S.hero,S.trailer,S.wall,S.trailer,S.join,S.trailer,S.timeline.bind(null,0)];
   /* everyday loop: product first, a fun or useful screen every 3 to 4 screens; explainers stay on the remote */
     const R=()=>S.reel(),HB=()=>S.svc(4);
-    /* Tuesday: upload day, new books first */
-    if(DAY===2)return [R,S.wall,S.keys,S.soon,S.trailer,R,S.guess,S.wall,S.board,S.presale,S.hero,S.join,R,S.keys,S.soon,S.trailer];
-    /* Wednesday: new release day, the new books plus how to get them */
-    if(DAY===3)return [S.wall,R,S.wall,S.hero,S.howto,S.wall,HB,S.trailer,S.wall,S.presale,S.join,R,S.wall,S.board,S.app];
-    return [...(loop%4===0?[S.open]:[]),R,S.board,S.hero,S.trailer,S.wall,R,S.keys,S.guess,SPOT,S.feat,S.join,R,S.run,S.guess,S.presale,S.trailer,S.soon,S.excl,S.cash];}
+    /* stripped back Nov 23: art reels, clips and trailers, the new books, sign-up. Everything else is on the remote only */
+    if(DAY===3)return [S.wall,R,S.trailer,S.wall,R,S.howto,S.wall,HB,S.trailer,R,S.presale,S.join];
+    return [R,S.trailer,S.wall,R,S.trailer,R,S.wall,S.join,R,S.trailer];}
 /* engine: auto-plays, keeps a history so staff can step back and forward, can be paused, and can take a pushed screen from the desk */
 const host=document.getElementById("host"),cut=document.getElementById("cut");let queue=[],current=null,lastId="",timer=null,paused=false,busy=false,hist=[],hpos=-1,curMs=10000,startedAt=0,remain=0;
 const clone=o=>JSON.parse(JSON.stringify(o));
@@ -3757,13 +3755,13 @@ function buildTicker(){const lead={1:"Pre-sales close tonight at 8pm",2:"This we
 function clock(){document.getElementById("clk").textContent=now().toLocaleTimeString("en-CA",{hour:"numeric",minute:"2-digit"}).replace(/\s?[ap]\.?m\.?/i,"");}
 function fit(){const s=Math.min(innerWidth/1920,innerHeight/1080);const st=document.getElementById("stage");st.style.zoom="";st.style.transform="translate(-50%,-50%) scale("+s+")";}
 const KEEP=[];function warm(){const all=["hot","keys","foc","merch","soon","inc","monk"].reduce((a,k)=>a.concat((FEED[k]||[]).map(p=>img(p.img,700))),[]);all.forEach(u=>{if(!u)return;const i=new Image();i.decoding="async";i.src=u;KEEP.push(i);});}
-let YTREADY=false,LASTTR=0;const TRGAP=6*60000;window.onYouTubeIframeAPIReady=()=>{YTREADY=true;try{YTP.prep();}catch(x){}};
+let YTREADY=false,LASTTR=0;const TRGAP=150000;window.onYouTubeIframeAPIReady=()=>{YTREADY=true;try{YTP.prep();}catch(x){}};
 const liveT=x=>x.exp?now()<=new Date(x.exp+"T23:59:00"):(!x.rel||now()<=new Date(new Date(x.rel+"T12:00:00").getTime()+14*864e5));
 /* YouTube trailers load hidden in the background while other screens play. A trailer only comes on screen once it is buffered and ready, so there is never a loading screen. */
 const YTP={state:"idle",t:null,player:null,next:0,k:0,want:false,bufT:0,onEnd:null,n:0,w:null,f:null,o:null,to:0,
   box(){if(this.w)return;const st=document.getElementById("stage");if(!st)return;this.w=document.createElement("div");this.w.id="ytpre";this.w.innerHTML='<div class="f"></div><div class="ovl"></div>';st.appendChild(this.w);const vc=document.createElement("div");vc.id="vcover";st.appendChild(vc);this.f=this.w.querySelector(".f");this.o=this.w.querySelector(".ovl");},
   log(ev,x){if(this.n++>14)return;try{post(Object.assign({cmd:"ytp",ev,id:this.t&&this.t.id,w:WEAKTV},x||{}),"-ack");}catch(e){}},
-  prep(id,want){if(this.off&&!want)return;if(IS_REMOTE||NOTTV||!YTREADY||typeof YT==="undefined"||!YT.Player)return;if(want)this.want=true;if(this.state!=="idle")return;if(!id&&(Date.now()<this.next||Date.now()-LASTTR<TRGAP-150000))return;if(TRON===false&&!want)return;
+  prep(id,want){if(this.off&&!want)return;if(IS_REMOTE||NOTTV||!YTREADY||typeof YT==="undefined"||!YT.Player)return;if(want)this.want=true;if(this.state!=="idle")return;if(!id&&(Date.now()<this.next||Date.now()-LASTTR<TRGAP-120000))return;if(TRON===false&&!want)return;
     const L=TRL().filter(x=>x.id&&liveT(x));if(!L.length)return;this.box();if(!this.w)return;
     const t=(id&&L.find(x=>x.id===id))||L[(this.k++)%L.length];this.t=t;this.state="loading";const t0=Date.now();let pb=false;
     this.f.innerHTML="";const b=document.createElement("div");this.f.appendChild(b);
