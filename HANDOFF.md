@@ -50,3 +50,38 @@ Read this first in any new chat about the store TV or the intro.
 - YouTube clips took 6 to 60s to reach ready; while waiting the loop plays another art reel (only 4 exist, so it repeats).
 - Parental-controls PIN unknown to Reilly; blocks Settings changes on the stick. Reset is at amazon.com/pin signed into the account the stick is registered to.
 - Reilly's verdict: loop "not approved", still not the best loop or setup. Only 4 art reels + 19 clips exist; no products, no own reels, no Tue/Wed programming.
+
+
+## Takeover, Nov 24 afternoon (new chat in CaptCan 4). Read this section first; it supersedes the notes above where they differ.
+
+### What is live on the TV
+- Still `index.html` BUILD 1124-1112a. Nothing changed on the TV today. The stick was full screen with sound at 11:28am.
+
+### Built today, waiting on Reilly's yes
+- `next.html` (BUILD 1124-1300c): the same page with the new channel engine. Preview: https://rdjmitch.github.io/captcan-tv/next.html (a phone or laptop shows it as a preview). To make it live: `cp next.html index.html`, bump nothing else, push; the TV picks it up at the 7 to 9:30am self-update or on a reload (a reload in Silk needs one OK press after).
+  - `CH` = the programmer. `BLOCKS` holds two block templates that take turns: intro, ident, reel, trailer, cartoon, product, reel, scene, talk, own / ident, reel, cartoon, scene, product, reel, trailer, cartoon, own. Kinds with no approved screens (`SCREENS.intro/ident/product/own`) are skipped, so the slots for the Marvel-style intro, idents, product screens and CaptCan's own reels already exist: add `{id,n,fn:()=>scene}` to `SCREENS.<kind>` once Reilly approves a screen.
+  - Shuffle bags per kind (saved in localStorage `cctvCh`): nothing repeats until everything else of its kind has played. `LEADTR` (Doomsday final trailer) takes every other trailer slot.
+  - `YTS`/`YTM` = two hidden YouTube players. The next two clips load while the TV plays, so clips can run back to back with no wait. A clip not ready pulls the next non-clip screen forward or fills with one reel (max twice), then is skipped. A clip that fails twice is benched 30 min and another of its kind is swapped in.
+  - Fixed: clips with an end time past 175s were cut off (Stan Lee clip); radio no longer blips up between two back-to-back clips.
+  - After a sleep of 60s or more the page drops stale players, restarts the radio and moves on.
+  - Ack over the relay now carries `ch` (shown, fillers, skips, stalls, load waits, failed ids, next 8 slots), `ytp` (both players) and `app`.
+  - Remote Lineup tab rewritten: the blocks, which slots are empty, every reel and clip by kind, and how often each comes back.
+  - `tools/channel/patch.py <BUILD> <out>` rebuilds next.html from index.html. Once next.html is promoted, edit index.html directly and delete the patch.
+- Tested: headless Chromium with a stand-in YouTube player (order, no repeats, error clip, slow clips) and the Mac's browser against real YouTube. NOT yet run on the stick.
+
+### Fire TV app (tools/firetv-app, built to app/captcan-tv.apk by GitHub Actions)
+- Finding that replaces "nothing can auto-start on Fire OS 8": an app CAN start at power-on once `adb shell cmd appops set <package> SYSTEM_ALERT_WINDOW allow` is run (ScreenCloud documents this for Fire OS 8 sticks). So the answer for the stick is the small CaptCan TV app, installed over ADB from the Mac mini. See tools/firetv-app/README.md for what it does and the exact steps.
+- Blocked on Reilly: ADB debugging must be turned on in the stick's settings (behind the parental PIN he does not know; reset at amazon.com/pin).
+- Never run on the device yet.
+
+### The relay from a cloud chat
+- ntfy.sh is not reachable from the cloud container. Read and send through the Mac's browser pane: open any ntfy.sh page, then `fetch("https://ntfy.sh/<topic>-ack/json?poll=1&since=30m")`. ntfy free tier is about 250 messages a day per IP, so do not add chatty logging.
+- A Mac is also answering pings as a TV (a tab open with ?tv). Tell acks apart by `ua` (AFTKRT = the stick).
+
+### Still open, in Reilly's order
+1. Stick: install the app (needs his settings step), then prove clips, sound and power-on start on the device.
+2. Loop: his yes on next.html, then promote. Then ident and product screens to the reel standard (show stills first).
+3. More and better themed reels from live Shopify stock; needs the location of Andrew Thomas's files and cutouts.
+4. Tuesday upload and Wednesday new-release programming.
+5. Remote: simple everyday remote plus the drag-and-drop builder and the one view of everything (Lineup tab is the start).
+- The Marvel-style intro belongs to CaptCan 6; its slot is `SCREENS.intro`.
