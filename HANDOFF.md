@@ -114,3 +114,9 @@ Read this first in any new chat about the store TV or the intro.
   - `tools/local-server/index.html` is a loader for the Mac folder: it pulls the live page from GitHub and writes it into the Mac's address, so the Mac folder never needs editing again. Reels then load from GitHub (`VB`).
   - The remote `goto` command now accepts `http://<private LAN ip>:8788/`.
   - BLOCKED: this chat could not get the Mac folder (folder access was refused) and nothing answers on the Mac's port 8788, so the server has not been started. Needs Reilly: add the folder `Movies/TV/CaptCanTV` to the chat, and double-click `Start CaptCan TV.command` in it. Then: put the loader `index.html` in the folder, read `address.txt`, send `{cmd:"goto",url:"http://<address>:8788/?tv"}`, check the ack shows `loc:true` and `files:19`, `fc` counting up.
+
+### Update Nov 24, 1:30pm: clips now play from the Mac mini files (BUILD 1124-1545p)
+- Reilly added the folder and started the server. Mac mini wired address 192.168.50.253, port 8788 (`~/Movies/TV/CaptCanTV/address.txt`). The loader `index.html` is in that folder (old page kept as `index-old-1124-0010f.html`).
+- The stick was sent to `http://192.168.50.253:8788/?tv` with the relay `goto`. Ack: `loc:true, files:19, fc:1`, so clips come from the files; trailers still come from YouTube. The Transformers opening is back (file only).
+- If the Mac mini's address changes, the TV shows "CaptCan TV is starting" or an error: read address.txt and send a new goto. A fixed address for the Mac mini on the router would prevent that.
+- The relay cap cleared by 1:25pm. An old copy of the channel is still open on a Mac (build 1124-1500m, 89 failed loads); it answers pings and wastes relay messages.
