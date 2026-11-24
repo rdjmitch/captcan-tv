@@ -56,7 +56,7 @@ const CH={n:0,trn:0,bag:{},bench:{},rb:false,st:{shown:0,fill:0,skip:0,stall:0,b
   play(slot,f){const k=slot.kind,ok=sc=>{if(sc&&!this.rb)this.st.shown++;return sc;};
     if(k==="reel")return ok(S.reel(slot.it.id));
     if(ISCLIP[k]){const sc=YTM.sceneFor(slot.it.id);if(sc||this.rb)return ok(sc);
-      if(this.bench[slot.it.id]>Date.now()&&!slot.sub&&TRON!==false){/* this clip is sitting out: swap in another of the same kind */const it=this.draw(k,this.pool(k).filter(x=>x.id!==slot.it.id));if(it){slot.it=it;slot.sub=true;slot.tries=0;}}
+      if(this.bench[slot.it.id]>Date.now()&&!slot.sub&&!slot.tries&&TRON!==false){/* this clip is sitting out: swap in another of the same kind */const it=this.draw(k,this.pool(k).filter(x=>x.id!==slot.it.id));if(it){slot.it=it;slot.sub=true;slot.tries=0;}}
       if(TRON===false||this.bench[slot.it.id]>Date.now()||slot.tries>=2){this.st.skip++;return null;}
       slot.tries++;YTM.sync();
       /* this clip has not finished loading: bring the next non-clip screen forward (or fill with one art reel), then come back to it */
