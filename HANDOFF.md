@@ -120,3 +120,9 @@ Read this first in any new chat about the store TV or the intro.
 - The stick was sent to `http://192.168.50.253:8788/?tv` with the relay `goto`. Ack: `loc:true, files:19, fc:1`, so clips come from the files; trailers still come from YouTube. The Transformers opening is back (file only).
 - If the Mac mini's address changes, the TV shows "CaptCan TV is starting" or an error: read address.txt and send a new goto. A fixed address for the Mac mini on the router would prevent that.
 - The relay cap cleared by 1:25pm. An old copy of the channel is still open on a Mac (build 1124-1500m, 89 failed loads); it answers pings and wastes relay messages.
+
+### Update Nov 24, 4:30pm (BUILD 1124-1630q pushed, NOT reloaded onto the TV; it lands at the 7 to 9:30am self-update)
+- What staff saw: between about 12:45 and 1:17pm (clips still from YouTube) most fan-upload clips failed to start after their ad, so blocks collapsed to reels plus the trailers, and the Doomsday trailer came round every few minutes. Staff tried modes and screens from the remote (1:07 to 1:17pm), then paused it at 1:17pm. It sat paused until 4:01pm. Correction to the note above: the switch to the Mac mini files went through at 4:01pm, not 1:30pm.
+- Since 4:01pm the stick plays from the Mac mini files (ack 4:06pm: loc true, 19 files, 3 file clips played, no failures). Trailers were NOT loading there: the YouTube player script finished before the page was ready for it (loader page), so `YTREADY` stayed false. Fixed in 1630q (the 3s tick picks it up).
+- 1630q also adds hard replay guards: no clip or trailer inside 20 minutes of its last play (`CH.GAP`), Doomsday final trailer at most once every 30 minutes (`CH.LEADGAP`), both remembered across reloads (`seen`).
+- Lesson: check what staff are doing on the relay (mode changes, pause) before calling the channel fine; a ping that says "playing" says nothing about how it feels in the room.
