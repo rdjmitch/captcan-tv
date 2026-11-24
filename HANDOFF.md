@@ -43,3 +43,11 @@ Read this first in any new chat about the store TV or the intro.
 - Tested in headless Chrome with a real file: reel, clip (full length, unmuted, radio ducked), New this week, reel, clip. Not tested on the Samsung or a Fire Stick.
 - `clips/` is git-ignored on purpose: studio video must not go in this public repo. Hosting is the open decision (unlisted Cloudflare R2 bucket recommended; or files on the Fire Stick / served from the Mac mini on the shop network).
 - Still to do: after a clip, cut to the matching art reel and books; trailers (Doomsday etc.) still come from YouTube; held-back talking clips need cut points; Superman opening is 240p.
+
+## Where the channel runs from (Nov 24 2026, 8:30am) — decided: the Mac mini, no cloud
+- Cloudflare storage was dropped (R2 not enabled, needs a payment method). Free web hosts are out: looping video would use roughly 190 GB a month, and studio clips must not sit in a public repo or on the store's Shopify account.
+- The whole channel lives in one folder on the Mac mini: `~/Movies/TV/CaptCanTV` (index.html build 1124-0010f, `v/` reels, `clips/` 19 trimmed clips + manifest.json, 762 MB). NOT in Downloads: Downloads backs up to Google Drive.
+- `tools/local-server/serve.py` (port 8788, supports video Range requests, no-cache on html/json) and `Start CaptCan TV.command` (installs LaunchAgent `ca.captcancomics.tv`, writes `address.txt` with the Mac's addresses). Reilly must double-click the .command once; Claude cannot run commands on the Mac itself (its shell is a sandbox, and typing into Terminal is blocked).
+- The TV (Samsung now, Fire Stick 4K Max + kiosk browser later) opens `http://<mac-mini-address>:8788/?tv`. The stick is only the screen, so everything stays editable remotely: Claude edits the folder on the Mac mini from any chat, the page reloads itself within 10 minutes when BUILD changes, and the phone remote still works over ntfy.
+- To change the channel: edit files in that folder and bump `BUILD` in index.html. Keep the GitHub branch `clips-from-files` in step with the folder.
+- Unverified: playback on the real TV from the Mac; whether the TV and the wired Mac mini are on the same network; Shopify/YouTube calls from an http address; the Mac firewall prompt.
