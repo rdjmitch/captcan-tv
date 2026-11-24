@@ -35,3 +35,9 @@ Read this first in any new chat about the store TV or the intro.
 - Do not add screens to the loop that were not asked for. Cut before adding.
 - Find things first (files, links, what is installed) before asking Reilly.
 - No downloading video or music; clips play from YouTube. Reilly supplies audio and any poster with actors.
+
+## Remote rebuild (Nov 23 2026, 11:30pm) — branch `remote-rebuild`
+- Clickable mock of the new remote and the builder: `mock/remote-mock.html` (source `mock/tpl.html`, data pulled from index.html by `mock/build_data.py`). Also published privately as the Claude artifact "CaptCan TV Remote". NOT wired to the TV. Waiting on Reilly's yes or changes before any wiring.
+- Mock model: a line-up = ordered slots. A slot is a fixed item (clip, reel, screen, themed block) or a rotation slot (next clip / next reel from the pool). "How often" = Off / Rarely / Normal / Often weight per clip and reel. Themed block = title + reel + clips + books, with a warning when a picked book does not contain the title. Line-ups: Everyday (= FLOW.any), Wednesday (= FLOW.wed), Tuesday upload (draft), themed week (example). Each line-up has run-days and an intro.
+- Wiring notes for later: line-ups must be stored somewhere durable (ntfy.sh only relays; it will not keep saved line-ups). Reilly has Cloudflare (KV/R2). TV reads the active line-up and listens for changes.
+- Reilly, Nov 23 11:28pm: trailers do NOT play on the TV, and he already downloaded and sent the full clip files in an earlier chat. Those files are not in this repo (only the four reels in `v/`). index.html already plays a trailer from a file when its entry has `mp4` (see `UTR`, `MP`). Next: get the files (his Mac, likely Downloads), host them privately (not in this public repo), and point each clip at its file. YouTube becomes the fallback only.

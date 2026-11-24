@@ -1,0 +1,393 @@
+<title>CaptCan TV Remote</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: a broadcast control desk. One dark matte world (CaptCan Vault), two views: a one-thumb remote and an edit-suite builder with a timeline along the bottom. */
+:root{
+  color-scheme:dark;
+  --bg:#141312; --panel:#1d1c1a; --panel2:#262421; --line:#38352f; --fg:#f1eee8; --mute:#a9a398;
+  --red:#e0252d; --red-ink:#fff; --gold:#d2ab57; --ok:#58c08a; --warn:#f0b54a;
+  --k-t:#c8414a; --k-c:#4c84d6; --k-s:#c98f2f; --k-k:#2fa59a; --k-reel:#8b68d6; --k-screen:#6f7a86; --k-block:#d2ab57; --k-intro:#e0252d;
+  --disp:"Barlow Condensed","Arial Narrow",Impact,sans-serif; --body:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --r:10px;
+}
+html,body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.4}
+*{box-sizing:border-box}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none;padding:0}
+button:focus-visible,input:focus-visible,select:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.wrap{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:12px 28px;max-width:1500px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+.top{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{font-family:var(--disp);font-weight:700;font-size:26px;line-height:1}
+.brand b{color:var(--red)}
+.seg{display:inline-flex;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:3px}
+.seg button{padding:8px 16px;border-radius:999px;font-weight:600;color:var(--mute);min-height:40px}
+.seg button[aria-pressed="true"]{background:var(--fg);color:#141312}
+.mock{margin-left:auto;color:var(--mute);font-size:12.5px;max-width:34ch;text-align:right}
+h2,h3{font-family:var(--disp);font-weight:700;margin:0;line-height:1.05;text-wrap:balance}
+.mut{color:var(--mute)} .sm{font-size:12.5px}
+.pill{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:600;background:var(--panel2);border:1px solid var(--line);white-space:nowrap}
+.pill.live{border-color:var(--ok);color:var(--ok)} .pill.live::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--ok)}
+.pill.warn{border-color:var(--warn);color:var(--warn)}
+.dot{width:10px;height:10px;border-radius:3px;flex:none;background:var(--kc,var(--mute))}
+.tile{position:relative;background:linear-gradient(160deg,color-mix(in srgb,var(--kc) 55%,#141312),#191817 80%);overflow:hidden;display:flex;align-items:flex-end;padding:8px;border-radius:8px;color:#fff}
+.tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.tile .tt{position:relative;font-family:var(--disp);font-weight:700;line-height:1;text-shadow:0 1px 6px #000c}
+.tile.cov{background:#0e0d0c} .tile.cov img{object-fit:contain}
+.tile.shade::after{content:"";position:absolute;inset:40% 0 0;background:linear-gradient(transparent,#000c)}
+
+/* ---------- remote ---------- */
+.remote{width:100%;max-width:430px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
+.np{background:var(--panel);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.np .tile{aspect-ratio:16/9;border-radius:0;padding:14px}
+.np .tile .tt{font-size:34px}
+.np .meta{padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.bar{height:6px;border-radius:3px;background:var(--panel2);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--red);width:0}
+.row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.next{display:flex;gap:8px;overflow-x:auto}
+.next .n{flex:1 1 0;min-width:0;background:var(--panel2);border-radius:8px;padding:7px 9px;font-size:12.5px;display:flex;gap:7px;align-items:center}
+.next .n span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tr{display:grid;grid-template-columns:1fr 1.3fr 1fr;gap:10px}
+.big{min-height:76px;border-radius:16px;background:var(--panel);border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-weight:700;font-size:15px}
+.big svg{width:28px;height:28px}
+.big:active{transform:scale(.98)}
+.big.pri{background:var(--red);border-color:var(--red);color:var(--red-ink)}
+.acts{display:grid;gap:10px}
+.act{min-height:66px;border-radius:16px;background:var(--panel);border:1px solid var(--line);display:flex;align-items:center;gap:14px;padding:0 18px;font-weight:700;font-size:17px;text-align:left}
+.act svg{width:26px;height:26px;flex:none;color:var(--gold)}
+.act small{display:block;font-weight:400;color:var(--mute);font-size:12.5px}
+.lu{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:10px 14px;min-height:52px;width:100%;text-align:left}
+.sheetbg{position:fixed;inset:0;background:#000a;z-index:40;display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:var(--panel);border:1px solid var(--line);border-radius:18px 18px 0 0;width:100%;max-width:520px;max-height:86%;display:flex;flex-direction:column;padding:14px max(16px,env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));gap:10px}
+.sheet .hd{display:flex;align-items:center;justify-content:space-between}
+.sheet h3{font-size:26px}
+.x{width:44px;height:44px;border-radius:50%;background:var(--panel2);font-size:20px}
+.scroll{overflow:auto;display:flex;flex-direction:column;gap:8px;min-height:0}
+.tabs{display:flex;gap:6px;overflow-x:auto;flex:none}
+.tabs button{padding:8px 13px;border-radius:999px;background:var(--panel2);font-weight:600;white-space:nowrap;min-height:40px;color:var(--mute)}
+.tabs button[aria-pressed="true"]{background:var(--fg);color:#141312}
+.li{display:flex;align-items:center;gap:10px;background:var(--panel2);border-radius:12px;padding:8px 10px;min-height:56px;width:100%;text-align:left}
+.li .tile{width:70px;height:40px;flex:none;padding:0;border-radius:6px}
+.li .tx{min-width:0;flex:1} .li .tx b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.li .tx span{font-size:12.5px;color:var(--mute);display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.li[disabled]{opacity:.5;cursor:default}
+.field{display:flex;flex-direction:column;gap:5px;font-weight:600;font-size:13px}
+.field input,.inp,select.inp{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px;min-height:46px;font-weight:400;font-size:16px;width:100%}
+.go{background:var(--red);color:var(--red-ink);border-radius:12px;min-height:52px;font-weight:700;font-size:17px;padding:0 18px}
+.covers{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:10px}
+.cv{display:flex;flex-direction:column;gap:4px;text-align:left;font-size:12px;position:relative}
+.cv .tile{aspect-ratio:2/3;padding:0}
+.cv span{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cv[aria-pressed="true"] .tile{outline:3px solid var(--gold)}
+.toast{position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--fg);color:#141312;font-weight:600;padding:11px 16px;border-radius:12px;z-index:60;max-width:min(92vw,460px);text-align:center;box-shadow:0 8px 30px #0009}
+
+/* ---------- builder ---------- */
+.bbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:10px 12px}
+.bbar select{max-width:100%}
+.bbar select,.btn{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:8px 12px;min-height:40px;font-weight:600}
+.bbar .grow{flex:1}
+.btn.red{background:var(--red);border-color:var(--red);color:var(--red-ink)}
+.btn[disabled]{opacity:.45;cursor:default}
+.days{display:inline-flex;gap:3px}
+.days button{width:34px;height:34px;border-radius:7px;background:var(--panel2);border:1px solid var(--line);font-size:12px;font-weight:600;color:var(--mute)}
+.days button[aria-pressed="true"]{background:var(--gold);color:#141312;border-color:var(--gold)}
+.grid{display:grid;grid-template-columns:300px minmax(0,1fr) 340px;gap:12px;align-items:start}
+.pane{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);display:flex;flex-direction:column;min-width:0}
+.pane>.ph{padding:10px 12px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:8px}
+.pane>.ph h3{font-size:20px}
+.pane>.pb{padding:10px 12px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.lib .pb{max-height:520px;overflow:auto}
+.lrow{display:flex;align-items:center;gap:8px;background:var(--panel2);border-radius:8px;padding:6px 6px 6px 4px;border:1px solid transparent}
+.lrow.sel{border-color:var(--gold)}
+.grip{width:26px;height:40px;flex:none;display:flex;align-items:center;justify-content:center;color:var(--mute);cursor:grab;touch-action:none}
+.lrow .tx{flex:1;min-width:0;text-align:left;min-height:40px}
+.lrow .tx b{display:block;font-size:13.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lrow .tx span{font-size:11.5px;color:var(--mute);display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.add{width:36px;height:36px;border-radius:8px;background:var(--bg);border:1px solid var(--line);font-size:20px;font-weight:700;flex:none}
+.sec{font-weight:700;font-size:12.5px;color:var(--mute);margin-top:6px}
+.mon .tile{aspect-ratio:16/9;padding:18px;border-radius:0}
+.mon .tile .tt{font-size:clamp(26px,4vw,54px)}
+.mon .strip{position:absolute;inset:auto 0 0 0;display:flex;gap:6px;justify-content:flex-end;padding:10px;height:62%}
+.mon .strip img{position:static;width:auto;height:100%;border-radius:4px;box-shadow:0 4px 18px #000a}
+.tlp{grid-column:1/-1}
+.track{position:relative;display:flex;gap:4px;overflow-x:auto;padding:12px 12px 14px;align-items:stretch;scrollbar-width:thin}
+.blk{position:relative;flex:none;height:104px;border-radius:8px;background:var(--panel2);border:2px solid transparent;overflow:hidden;display:flex;flex-direction:column;text-align:left}
+.blk .cap{height:22px;background:var(--kc);display:flex;align-items:center;justify-content:space-between;padding:0 4px 0 0;font-size:11px;font-weight:700;color:#fff;touch-action:none;cursor:grab}
+.blk .cap .g{width:24px;height:22px;display:flex;align-items:center;justify-content:center}
+.blk .bd{flex:1;padding:6px 8px;display:flex;gap:7px;align-items:center;min-width:0;width:100%}
+.blk .bd img{height:58px;width:auto;border-radius:3px;flex:none}
+.blk .bd b{font-size:13px;line-height:1.15;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.blk .bd span{font-size:11px;color:var(--mute);display:block}
+.blk.sel{border-color:var(--gold)}
+.blk.air::after{content:"ON TV";position:absolute;right:5px;bottom:5px;background:var(--ok);color:#06140c;font-size:10px;font-weight:700;border-radius:4px;padding:1px 5px}
+.blk.nb{opacity:.6;border-style:dashed;border-color:var(--line)}
+.mark{position:absolute;top:8px;bottom:10px;width:4px;border-radius:2px;background:var(--gold);pointer-events:none}
+.ghost{position:fixed;left:0;top:0;z-index:80;background:var(--gold);color:#141312;font-weight:700;padding:8px 12px;border-radius:8px;pointer-events:none;max-width:220px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;box-shadow:0 8px 24px #000a}
+.freq{display:inline-flex;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:2px;flex:none}
+.freq button{padding:6px 9px;border-radius:6px;font-size:12px;font-weight:600;color:var(--mute);min-height:32px}
+.freq button[aria-pressed="true"]{background:var(--gold);color:#141312}
+.kv{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}
+.trim{position:relative;height:30px;background:var(--bg);border-radius:6px;border:1px solid var(--line);overflow:hidden}
+.trim i{position:absolute;top:0;bottom:0;background:color-mix(in srgb,var(--gold) 45%,transparent);border-inline:3px solid var(--gold)}
+input[type=range]{width:100%;accent-color:var(--gold);min-height:32px}
+.tog{display:flex;align-items:center;gap:10px;min-height:40px;font-weight:600}
+.tog input{width:20px;height:20px;accent-color:var(--gold)}
+.note{background:color-mix(in srgb,var(--warn) 14%,var(--panel2));border:1px solid color-mix(in srgb,var(--warn) 50%,transparent);border-radius:8px;padding:8px 10px;font-size:12.5px}
+.okn{background:color-mix(in srgb,var(--ok) 12%,var(--panel2));border:1px solid color-mix(in srgb,var(--ok) 45%,transparent);border-radius:8px;padding:8px 10px;font-size:12.5px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{background:var(--panel2);border:1px solid var(--line);border-radius:999px;padding:6px 11px;font-size:12.5px;font-weight:600;min-height:34px}
+.chip[aria-pressed="true"]{background:var(--gold);color:#141312;border-color:var(--gold)}
+.mini{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:8px;max-height:300px;overflow:auto}
+@media (max-width:1000px){
+  .grid{grid-template-columns:minmax(0,1fr)}
+  .mon{order:1}.tlp{order:2}.insp{order:3}.lib{order:4}
+  .lib .pb{max-height:none}
+  .mock{margin-left:0;text-align:left;max-width:none;flex-basis:100%}
+}
+.tlp{order:-1}
+.insp .pb,.lib .pb{max-height:560px;overflow:auto}
+.lib .tabs{flex-wrap:wrap;overflow:visible}
+.blk .bd{text-align:left}
+.mon .tile .tt{z-index:2}
+.mon .strip{height:56%}
+@media (max-width:1000px){.tlp{order:2}.insp .pb,.lib .pb{max-height:none}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <div class="top">
+    <div class="brand">CaptCan <b>TV</b></div>
+    <div class="seg" role="group" aria-label="View">
+      <button id="vRemote" data-a="view" data-v="remote">Staff remote</button>
+      <button id="vBuilder" data-a="view" data-v="builder">Builder</button>
+    </div>
+    <div class="mock">Clickable mock. Nothing here touches the real TV. Clips, reels and books are the real ones from the channel.</div>
+  </div>
+  <div id="view"></div>
+</div>
+<div id="sheet"></div>
+<div id="toast" class="toast" hidden></div>
+
+<script id="d" type="application/json">/*DATA*/</script>
+<script>
+const D=JSON.parse(document.getElementById('d').textContent);
+const $=(s,r=document)=>r.querySelector(s), esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt=s=>{s=Math.max(0,Math.round(s));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')};
+const KIND={t:['Trailer','--k-t'],c:['Cartoon opening','--k-c'],s:['Movie scene','--k-s'],k:['Talking clip','--k-k'],reel:['Art reel','--k-reel'],screen:['Screen','--k-screen'],block:['Themed block','--k-block'],intro:['Intro','--k-intro'],book:['Book','--k-screen']};
+const EST={t:150,c:60,k:180,s:120};
+const SCREENS=[{k:'wall',n:'New this week',sub:'New releases, '+D.newLabel,d:14,on:1},{k:'join',n:'Sign-up screen',sub:'Make an account',d:12,on:1},{k:'howto',n:'How the site works',sub:'For Wednesday buyers',d:14,on:1},{k:'holdbox',n:'Hold Box',sub:'For Wednesday buyers',d:14,on:1},{k:'presale',n:'Pre-sales',sub:'What can be ordered ahead',d:14,on:1},
+ {k:'upload',n:'Tuesday upload',sub:'Not built yet. Needs the upload list',d:14,nb:1},{k:'own',n:'Our reels + follow on Instagram',sub:'Not built yet. Waiting on your files and handle',d:30,nb:1},{k:'doomtr',n:'Doom trailer screen',sub:'Not built yet. Waiting on the Doomsday poster',d:150,nb:1}];
+const INTROS=[{k:'none',n:'No intro'},{k:'open',n:'CaptCan opening (the current one)',d:8},{k:'marvel',n:'Marvel-style master intro',nb:1},{k:'btas',n:'Batman animated style',nb:1},{k:'spec',n:'Spectacular Spider-Man newspaper style',nb:1},{k:'flip',n:'2002 page-flip',nb:1},{k:'dc',n:'DC style',nb:1}];
+let uid=1; const U=k=>({u:uid++,k});
+const seq=a=>a.map(x=>U({reel:'rot:reel',clip:'rot:clip'}[x]||'screen:'+x));
+const bk=re=>D.books.map((b,i)=>re.test(b.t)?i:-1).filter(i=>i>=0);
+const S={view:'remote',
+  blocks:[{id:'b1',title:'Absolute Batman',reel:'batman',clips:['WTOhGmgKMsU'],books:bk(/Absolute Batman/).slice(0,6)},{id:'b2',title:'Midnight',reel:'midnight',clips:[],books:bk(/^Midnight/).slice(0,6)}],
+  w:{},trim:{},clean:{},pair:{},sdur:{},
+  lineups:[
+    {id:'any',name:'Everyday',days:[1,4,5,6,0],intro:'open',seq:seq(["reel","clip","wall","reel","clip","reel","wall","join","reel","clip"]),note:'This is the loop the TV runs today.'},
+    {id:'tue',name:'Tuesday upload',days:[2],intro:'open',draft:1,seq:[U('screen:upload'),U('rot:reel'),U('rot:clip'),U('screen:wall'),U('screen:upload'),U('rot:reel'),U('screen:join'),U('rot:clip')],note:'Draft. The Tuesday upload screen is not built yet.'},
+    {id:'wed',name:'Wednesday new releases',days:[3],intro:'open',seq:seq(["wall","reel","clip","wall","reel","howto","wall","holdbox","clip","reel","presale","join"]),note:'This is the Wednesday loop the TV runs today.'},
+    {id:'theme',name:'Themed week: Absolute Batman',days:[],intro:'open',draft:1,seq:[U('block:b1'),U('screen:wall'),U('rot:clip'),U('block:b1'),U('rot:reel'),U('screen:join')],note:'Example of a themed week. Not real until you save your own.'}],
+  cur:'any',onAir:'any',sel:null,libTab:'clips',
+  sim:{i:0,t:0,paused:false,over:null,rc:0,rr:0}};
+D.clips.forEach(c=>{S.clean[c.id]=true});
+const L=id=>S.lineups.find(l=>l.id===(id||S.cur)), clip=id=>D.clips.find(c=>c.id===id), W=k=>S.w[k]==null?2:S.w[k];
+const cdur=c=>{const t=S.trim[c.id]||{};const s=t.s!=null?t.s:(c.s||0),e=t.e!=null?t.e:c.e;return e?Math.max(5,e-s):EST[c.ty]};
+const clen=c=>c.e?Math.round((c.e+45)/15)*15:EST[c.ty]+30;
+function pool(kind){return kind==='clip'?D.clips.filter(c=>W('clip:'+c.id)>0):D.reels.filter(r=>W('reel:'+r.k)>0)}
+function avg(kind){const p=pool(kind);if(!p.length)return 0;let n=0,d=0;p.forEach(x=>{const w=W((kind==='clip'?'clip:'+x.id:'reel:'+x.k));n+=w;d+=w*(kind==='clip'?cdur(x):x.d)});return d/n}
+function info(k){const [a,b]=k.split(':');
+  if(k==='rot:clip')return{kind:'t',lab:'Clip rotation',title:'Next clip',sub:pool('clip').length+' in the pool, mixed so the same kind never runs twice',dur:avg('clip'),est:1,rot:1};
+  if(k==='rot:reel')return{kind:'reel',lab:'Reel rotation',title:'Next art reel',sub:pool('reel').length+' reels take turns',dur:avg('reel'),rot:1};
+  if(a==='clip'){const c=clip(b);return{kind:c.ty,lab:KIND[c.ty][0],title:c.t,sub:c.sub,dur:cdur(c),est:!c.e&&!(S.trim[c.id]||{}).e}}
+  if(a==='reel'){const r=D.reels.find(r=>r.k===b);return{kind:'reel',lab:'Art reel',title:r.n,sub:'Cover reel',dur:r.d,img:r.img}}
+  if(a==='screen'){const s=SCREENS.find(s=>s.k===b);return{kind:'screen',lab:'Screen',title:s.n,sub:s.sub,dur:S.sdur[b]||s.d,nb:s.nb}}
+  if(a==='block'){const x=S.blocks.find(x=>x.id===b);if(!x)return{kind:'block',lab:'Themed block',title:'(deleted)',sub:'',dur:0};const r=D.reels.find(r=>r.k===x.reel);
+    return{kind:'block',lab:'Themed block',title:x.title||'Untitled theme',sub:[x.clips.length+' clip'+(x.clips.length===1?'':'s'),r?r.n+' reel':'no reel',x.books.length+' books'].join(', '),dur:(r?r.d:0)+x.clips.reduce((n,i)=>n+cdur(clip(i)),0)+(x.books.length?14:0),img:r&&r.img,blk:x}}
+  if(a==='book'){const x=D.books[+b];return{kind:'book',lab:'Book',title:x.t,sub:x.p!=null?'$'+Number(x.p).toFixed(2):'',dur:30,img:x.img,cov:1}}
+  if(a==='intro'){const x=INTROS.find(x=>x.k===b);return{kind:'intro',lab:'Intro',title:x.n,sub:'',dur:x.d||0}}
+}
+const kc=i=>`style="--kc:var(${KIND[i.kind][1]})"`;
+function tile(i,cls=''){return `<div class="tile ${i.cov?'cov':''} ${i.img&&!i.cov?'shade':''} ${cls}" ${kc(i)}>${i.img?`<img src="${i.img}" alt="">`:''}${i.cov?'':`<div class="tt">${esc(i.title)}</div>`}</div>`}
+function loopLen(l){return l.seq.reduce((n,x)=>n+info(x.k).dur,0)+((INTROS.find(i=>i.k===l.intro)||{}).d||0)}
+function perHour(key,l){l=l||L();const len=loopLen(l);if(!len)return 0;const loops=3600/len;let n=l.seq.filter(x=>x.k===key).length;const [a,b]=key.split(':');
+  if(a==='clip'||a==='reel'){const p=pool(a),tot=p.reduce((s,x)=>s+W(a+':'+(a==='clip'?x.id:x.k)),0);if(tot&&W(key)>0)n+=l.seq.filter(x=>x.k==='rot:'+a).length*W(key)/tot;
+    l.seq.forEach(x=>{if(x.k.startsWith('block:')){const bl=S.blocks.find(q=>'block:'+q.id===x.k);if(bl&&(a==='clip'?bl.clips.includes(b):bl.reel===b))n++}})}
+  return n*loops}
+const ph=v=>v<=0?'not playing':(v>=10?Math.round(v):v.toFixed(1))+'× an hour';
+
+/* ---- on-air simulation (the mock TV) ---- */
+function rotOrder(kind){if(kind==='reel')return pool('reel').flatMap(r=>[r.k]);const pat=['t','c','s','k','c','s'],q={},ix={},out=[];
+  'tcsk'.split('').forEach(t=>{q[t]=[];D.clips.filter(c=>c.ty===t).forEach(c=>{for(let n=0;n<W('clip:'+c.id);n++)q[t].push(c.id)});ix[t]=0});
+  for(let i=0;i<48;i++){const t=pat[i%6];if(q[t].length)out.push(q[t][ix[t]++%q[t].length])}return out}
+function resolve(k){const s=S.sim;if(k==='rot:clip'){const o=rotOrder('clip');return o.length?'clip:'+o[s.rc%o.length]:null}if(k==='rot:reel'){const o=rotOrder('reel');return o.length?'reel:'+o[s.rr%o.length]:null}return k}
+function nowKey(){const s=S.sim;if(s.over)return s.over;const l=L(S.onAir);if(!l.seq.length)return null;return resolve(l.seq[s.i%l.seq.length].k)}
+function step(dir){const s=S.sim,l=L(S.onAir);if(s.over){s.over=null;s.t=0;if(dir<0)return;}
+  if(!l.seq.length)return;const cur=l.seq[s.i%l.seq.length].k;
+  if(dir>0){if(cur==='rot:clip')s.rc++;if(cur==='rot:reel')s.rr++;s.i=(s.i+1)%l.seq.length}
+  else{s.i=(s.i-1+l.seq.length)%l.seq.length;const p=l.seq[s.i].k;if(p==='rot:clip')s.rc=Math.max(0,s.rc-1);if(p==='rot:reel')s.rr=Math.max(0,s.rr-1)}
+  s.t=0}
+function upNext(n){const s=S.sim,l=L(S.onAir),out=[];if(!l.seq.length)return out;let rc=s.rc,rr=s.rr,i=s.i;const co=rotOrder('clip'),ro=rotOrder('reel');
+  if(!s.over){const c=l.seq[i%l.seq.length].k;if(c==='rot:clip')rc++;if(c==='rot:reel')rr++;i++}
+  for(let j=0;j<n;j++){const k=l.seq[(i+j)%l.seq.length].k;if(k==='rot:clip'){if(co.length)out.push('clip:'+co[rc++%co.length])}else if(k==='rot:reel'){if(ro.length)out.push('reel:'+ro[rr++%ro.length])}else out.push(k)}return out}
+function putOn(k,msg){S.sim.over=k;S.sim.t=0;S.sim.paused=false;closeSheet();render();toast(msg||'On the TV now: '+info(k).title)}
+setInterval(()=>{const s=S.sim,k=nowKey();if(!k)return;if(!s.paused)s.t+=0.5;const d=Math.max(4,info(k).dur);if(s.t>=d){step(1);render(true);return}
+  const b=$('#npbar');if(b){b.style.width=Math.min(100,s.t/d*100)+'%';$('#nptime').textContent=fmt(s.t)+' / '+fmt(d)}},500);
+
+const IC={back:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg>',skip:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16 5h2v14h-2zM4 5l11 7L4 19z"/></svg>',pause:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>',play:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4l13 8-13 8z"/></svg>',
+ tv:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="12" rx="2"/><path d="M8 21h8"/></svg>',user:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="10" cy="8" r="4"/><path d="M2 21c0-4 4-6 8-6s8 2 8 6M19 7v6M16 10h6"/></svg>',book:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="1.5"/><path d="M9 8h6M9 12h6"/></svg>',grip:'<svg width="12" height="16" viewBox="0 0 12 16" fill="currentColor" aria-hidden="true"><circle cx="3" cy="3" r="1.5"/><circle cx="9" cy="3" r="1.5"/><circle cx="3" cy="8" r="1.5"/><circle cx="9" cy="8" r="1.5"/><circle cx="3" cy="13" r="1.5"/><circle cx="9" cy="13" r="1.5"/></svg>'};
+
+/* ---------------- remote ---------------- */
+function remoteHTML(){const k=nowKey(),i=k?info(k):null,s=S.sim,l=L(S.onAir);
+  return `<div class="remote">
+  <div class="np">${i?tile(i):'<div class="tile" style="--kc:var(--k-screen)"><div class="tt">Nothing in this line-up</div></div>'}
+    <div class="meta"><div class="row"><span class="pill live">On the TV now</span>${i?`<span class="pill"><span class="dot" ${kc(i)}></span>${esc(i.lab)}</span>`:''}${s.over?'<span class="pill warn">Put on by staff</span>':''}${s.paused?'<span class="pill warn">Paused</span>':''}</div>
+    <div><b style="font-size:18px">${i?esc(i.title):''}</b><div class="mut sm">${i?esc(i.sub||''):''}</div></div>
+    <div class="bar"><i id="npbar"></i></div><div class="row sm mut" style="justify-content:space-between"><span id="nptime"></span><span>${s.over?'Then back to the loop':''}</span></div>
+    <div class="sm mut">Up next</div><div class="next">${upNext(3).map(n=>{const x=info(n);return `<div class="n"><span class="dot" ${kc(x)}></span><span>${esc(x.title)}</span></div>`}).join('')}</div></div></div>
+  <div class="tr"><button class="big" data-a="back" aria-label="Back">${IC.back}Back</button><button class="big pri" data-a="pause">${s.paused?IC.play+'Play':IC.pause+'Pause'}</button><button class="big" data-a="skip" aria-label="Skip">${IC.skip}Skip</button></div>
+  <div class="acts">
+    <button class="act" data-a="sheet" data-v="put">${IC.tv}<span>Put this on now<small>A clip, a reel, a theme or an intro</small></span></button>
+    <button class="act" data-a="sheet" data-v="book">${IC.book}<span>Show a book<small>Put any book on the TV for a customer</small></span></button>
+    <button class="act" data-a="sheet" data-v="join">${IC.user}<span>Sign up a customer<small>Name and email, takes ten seconds</small></span></button>
+  </div>
+  <button class="lu" data-a="sheet" data-v="lineup"><span><span class="mut sm">Line-up</span><br><b>${esc(l.name)}</b></span><span class="pill">Change</span></button>
+  </div>`}
+let SH={name:null,tab:'clips',q:''};
+function openSheet(n){SH={name:n,tab:'clips',q:''};renderSheet()}
+function closeSheet(){SH.name=null;$('#sheet').innerHTML=''}
+function li(k,extra=''){const i=info(k);return `<button class="li" data-a="puton" data-v="${k}" ${i.nb?'disabled':''}>${tile(Object.assign({},i,{title:''}))}<span class="tx"><b>${esc(i.title)}</b><span>${esc(i.sub||i.lab)}${extra}</span></span><span class="pill">${i.dur?fmt(i.dur):''}</span></button>`}
+function bookGrid(q,act){const qq=q.trim().toLowerCase();const r=D.books.map((b,i)=>[b,i]).filter(([b])=>!qq||b.t.toLowerCase().includes(qq));
+  return r.length?r.map(([b,i])=>`<button class="cv" data-a="${act}" data-v="${i}"><div class="tile cov"><img src="${b.img}" alt=""></div><span>${esc(b.t)}</span></button>`).join(''):'<div class="mut">No book in this mock matches. The real one searches the whole store.</div>'}
+function renderSheet(){const el=$('#sheet');if(!SH.name){el.innerHTML='';return}let h='';
+  if(SH.name==='put'){const T=[['clips','Clips'],['reels','Art reels'],['themes','Themes'],['screens','Screens'],['intros','Intros']];let body='';
+    if(SH.tab==='clips')body=['t','c','s','k'].map(t=>`<div class="sec">${KIND[t][0]}s</div>`+D.clips.filter(c=>c.ty===t).map(c=>li('clip:'+c.id)).join('')).join('');
+    if(SH.tab==='reels')body=D.reels.map(r=>li('reel:'+r.k)).join('');
+    if(SH.tab==='themes')body=S.blocks.map(b=>li('block:'+b.id)).join('')+'<div class="mut sm">Themes are built in the Builder.</div>';
+    if(SH.tab==='screens')body=SCREENS.map(s=>li('screen:'+s.k)).join('')+`<div class="sec">Older screens, off the loop (${Object.keys(D.older).length})</div><div class="mut sm">${Object.values(D.older).map(esc).join(' · ')}</div>`;
+    if(SH.tab==='intros')body=INTROS.filter(x=>x.k!=='none').map(x=>`<button class="li" data-a="puton" data-v="intro:${x.k}" ${x.nb?'disabled':''}><span class="tx"><b>${esc(x.n)}</b><span>${x.nb?'Not built yet':'Plays once, then back to the loop'}</span></span></button>`).join('');
+    h=`<div class="hd"><h3>Put this on now</h3><button class="x" data-a="close" aria-label="Close">×</button></div><div class="tabs">${T.map(t=>`<button data-a="stab" data-v="${t[0]}" aria-pressed="${SH.tab===t[0]}">${t[1]}</button>`).join('')}</div><div class="scroll">${body}</div>`}
+  if(SH.name==='book')h=`<div class="hd"><h3>Show a book</h3><button class="x" data-a="close" aria-label="Close">×</button></div><label class="field">Search<input id="bq" placeholder="Title, issue or character" value="${esc(SH.q)}" autocomplete="off"></label><div class="scroll"><div class="covers" id="bres">${bookGrid(SH.q,'showbook')}</div></div>`;
+  if(SH.name==='join')h=`<div class="hd"><h3>Sign up a customer</h3><button class="x" data-a="close" aria-label="Close">×</button></div><form id="jf" class="scroll" style="gap:12px"><label class="field">First name<input id="jn" autocomplete="off" required></label><label class="field">Email<input id="je" type="email" inputmode="email" autocomplete="off" required></label><button class="go" type="submit">Add to the email list</button><div class="mut sm">Goes to the In-store sign-ups list in Klaviyo. Perks only, no discount.</div></form>`;
+  if(SH.name==='lineup')h=`<div class="hd"><h3>Line-up</h3><button class="x" data-a="close" aria-label="Close">×</button></div><div class="scroll">${S.lineups.map(l=>`<button class="li" data-a="air" data-v="${l.id}"><span class="tx"><b>${esc(l.name)}</b><span>${l.seq.length} slots, ${fmt(loopLen(l))} a loop${l.draft?' · draft':''}</span></span>${S.onAir===l.id?'<span class="pill live">On TV</span>':''}</button>`).join('')}</div>`;
+  el.innerHTML=`<div class="sheetbg" data-a="bg"><div class="sheet" role="dialog" aria-modal="true">${h}</div></div>`}
+
+/* ---------------- builder ---------------- */
+function libRow(k,extra){const i=info(k),sel=S.sel&&S.sel.k===k&&!S.sel.u;return `<div class="lrow ${sel?'sel':''}"><span class="grip" data-drag="${k}" aria-hidden="true">${IC.grip}</span><span class="dot" ${kc(i)}></span><button class="tx" data-a="sellib" data-v="${k}"><b>${esc(i.title)}</b><span>${esc(extra!=null?extra:(i.nb?i.sub:fmt(i.dur)+' · '+ph(perHour(k))))}</span></button><button class="add" data-a="add" data-v="${k}" aria-label="Add ${esc(i.title)} to the timeline" ${i.nb&&false?'disabled':''}>+</button></div>`}
+function libHTML(){const T=[['clips','Clips'],['reels','Reels'],['screens','Screens'],['themes','Themes']];let b='';
+  if(S.libTab==='clips')b=libRow('rot:clip','Rotates through the pool below')+['t','c','s','k'].map(t=>`<div class="sec">${KIND[t][0]}s</div>`+D.clips.filter(c=>c.ty===t).map(c=>libRow('clip:'+c.id)).join('')).join('')+'<div class="sec">Our own reels</div><div class="mut sm">Empty. Waiting on your reel files and the Instagram handle.</div>';
+  if(S.libTab==='reels')b=libRow('rot:reel','Takes turns through the reels below')+D.reels.map(r=>libRow('reel:'+r.k)).join('');
+  if(S.libTab==='screens')b=SCREENS.map(s=>libRow('screen:'+s.k)).join('')+`<div class="sec">Older screens, off the loop (${Object.keys(D.older).length})</div><div class="mut sm">${Object.values(D.older).map(esc).join(' · ')}</div>`;
+  if(S.libTab==='themes')b=S.blocks.map(x=>libRow('block:'+x.id)).join('')+'<button class="btn" data-a="newblock">New themed block</button>';
+  return `<div class="pane lib"><div class="ph"><h3>Library</h3><span class="mut sm">Drag the dots, or press +</span></div><div class="pb"><div class="tabs">${T.map(t=>`<button data-a="ltab" data-v="${t[0]}" aria-pressed="${S.libTab===t[0]}">${t[1]}</button>`).join('')}</div>${b}</div></div>`}
+function monHTML(){const k=S.sel?S.sel.k:nowKey(),i=k?info(k):null;let strip='';if(i&&i.blk)strip=`<div class="strip">${i.blk.books.slice(0,5).map(n=>`<img src="${D.books[n].img}" alt="">`).join('')}</div>`;
+  return `<div class="pane mon"><div class="ph"><h3>${S.sel?'Selected':'On the TV now'}</h3>${i?`<span class="pill"><span class="dot" ${kc(i)}></span>${esc(i.lab)} · ${fmt(i.dur)}${i.est?' est.':''}</span>`:''}</div>${i?`<div class="tile ${i.img&&!i.cov?'shade':''} ${i.cov?'cov':''}" ${kc(i)} style="--kc:var(${KIND[i.kind][1]});position:relative">${i.img?`<img src="${i.img}" alt="">`:''}<div class="tt">${esc(i.title)}</div>${strip}</div>`:''}</div>`}
+function freqHTML(k){const w=W(k);return `<div class="freq" role="group" aria-label="How often">${[[0,'Off'],[1,'Rarely'],[2,'Normal'],[3,'Often']].map(o=>`<button data-a="w" data-k="${k}" data-v="${o[0]}" aria-pressed="${w===o[0]}">${o[1]}</button>`).join('')}</div>`}
+function inspHTML(){const s=S.sel;if(!s)return `<div class="pane insp"><div class="ph"><h3>Details</h3></div><div class="pb mut">Pick anything in the timeline or the library to trim it, set how often it plays, or change what it cuts to.</div></div>`;
+  const k=s.k,i=info(k),[a,b]=k.split(':'),l=L();let h='';
+  if(s.u){const ix=l.seq.findIndex(x=>x.u===s.u);h+=`<div class="row"><button class="btn" data-a="mv" data-v="-1" ${ix<=0?'disabled':''}>Earlier</button><button class="btn" data-a="mv" data-v="1" ${ix>=l.seq.length-1?'disabled':''}>Later</button><button class="btn" data-a="dup">Duplicate</button><button class="btn" data-a="rm">Remove</button></div>`}
+  if(i.rot){h+=`<div class="mut sm">${a==='rot'&&b==='clip'?'Each time the loop reaches this slot it plays the next clip from the pool. Set how often each one comes up.':'Each time the loop reaches this slot it plays the next reel.'}</div>`+(b==='clip'?D.clips:D.reels).map(x=>{const kk=b==='clip'?'clip:'+x.id:'reel:'+x.k;return `<div class="kv"><span style="min-width:0;flex:1"><b class="sm">${esc(x.t||x.n)}</b><br><span class="mut sm">${ph(perHour(kk))}</span></span>${freqHTML(kk)}</div>`}).join('')}
+  if(a==='clip'){const c=clip(b),t=S.trim[b]||{},st=t.s!=null?t.s:(c.s||0),len=clen(c),en=t.e!=null?t.e:(c.e||len);
+    h+=`<div class="kv"><b>How often</b>${freqHTML(k)}</div><div class="mut sm">${ph(perHour(k))} in ${esc(l.name)}</div>
+    <b>Trim</b><div class="trim"><i id="trimbar" style="left:${st/len*100}%;right:${100-en/len*100}%"></i></div>
+    <label class="field">Start <span id="tsv" class="mut">${fmt(st)}</span><input id="ts" type="range" min="0" max="${len}" value="${st}"></label>
+    <label class="field">End <span id="tev" class="mut">${fmt(en)}</span><input id="te" type="range" min="0" max="${len}" value="${en}"></label>
+    <div class="mut sm">Plays ${fmt(en-st)}. The full length loads from YouTube once this is wired.</div>
+    <label class="tog"><input id="clean" type="checkbox" ${S.clean[b]?'checked':''}>Play clean and full screen</label>
+    <label class="field">When it ends, cut to<select id="pair" class="inp"><option value="">Back to the loop</option>${D.reels.map(r=>`<option value="reel:${r.k}" ${S.pair[b]==='reel:'+r.k?'selected':''}>${esc(r.n)} reel</option>`).join('')}${S.blocks.map(x=>`<option value="block:${x.id}" ${S.pair[b]==='block:'+x.id?'selected':''}>${esc(x.title)} theme (reel and books)</option>`).join('')}</select></label>`}
+  if(a==='reel')h+=`<div class="kv"><b>How often</b>${freqHTML(k)}</div><div class="mut sm">${ph(perHour(k))} in ${esc(l.name)} · ${fmt(i.dur)} long</div>`;
+  if(a==='screen'){h+=i.nb?`<div class="note">${esc(i.sub)}. You can place it now and it starts showing once it exists.</div>`:`<label class="field">Seconds on screen <span id="sdv" class="mut">${i.dur}s</span><input id="sd" type="range" min="6" max="60" value="${i.dur}"></label><div class="mut sm">${ph(perHour(k))} in ${esc(l.name)}</div>`}
+  if(a==='block'&&i.blk){const x=i.blk,word=(x.title||'').trim().toLowerCase(),bad=word?x.books.filter(n=>!D.books[n].t.toLowerCase().includes(word)):[];
+    h+=`<label class="field">Title on screen<input id="bt" value="${esc(x.title)}" autocomplete="off"></label>
+    ${bad.length?`<div class="note"><b>${bad.length} book${bad.length>1?'s':''} don't say “${esc(x.title)}”:</b> ${bad.map(n=>esc(D.books[n].t)).join(', ')}. Change the title or untick them.</div>`:(x.books.length?`<div class="okn">All ${x.books.length} books match the title.</div>`:'')}
+    <b>Art reel</b><div class="chips"><button class="chip" data-a="breel" data-v="" aria-pressed="${!x.reel}">None</button>${D.reels.map(r=>`<button class="chip" data-a="breel" data-v="${r.k}" aria-pressed="${x.reel===r.k}">${esc(r.n)}</button>`).join('')}</div>
+    <b>Clips</b><div class="chips">${D.clips.map(c=>`<button class="chip" data-a="bclip" data-v="${c.id}" aria-pressed="${x.clips.includes(c.id)}">${esc(c.t)}</button>`).join('')}</div>
+    <b>Books (${x.books.length} picked)</b><input id="bbq" class="inp" placeholder="Search books" autocomplete="off"><div class="mini" id="bbres">${blockBooks(x,'')}</div>
+    <div class="mut sm">Plays the clips, then the reel, then the books. ${fmt(i.dur)} in all.</div>`}
+  return `<div class="pane insp"><div class="ph"><h3>${esc(i.lab)}</h3><span class="mut sm">${s.u?'In the timeline':'In the library'}</span></div><div class="pb"><b style="font-size:16px">${esc(i.title)}</b>${h}</div></div>`}
+function blockBooks(x,q){q=q.trim().toLowerCase();return D.books.map((b,n)=>[b,n]).filter(([b,n])=>!q||b.t.toLowerCase().includes(q)).sort((p,r)=>x.books.includes(r[1])-x.books.includes(p[1])).map(([b,n])=>`<button class="cv" data-a="bbook" data-v="${n}" aria-pressed="${x.books.includes(n)}" title="${esc(b.t)}"><div class="tile cov"><img src="${b.img}" alt="${esc(b.t)}"></div></button>`).join('')}
+function tlHTML(){const l=L(),len=loopLen(l),air=S.onAir===l.id&&!S.sim.over?l.seq[S.sim.i%Math.max(1,l.seq.length)]:null;let t=0;const intro=INTROS.find(i=>i.k===l.intro);
+  const blocks=l.seq.map(x=>{const i=info(x.k),w=Math.round(Math.min(250,Math.max(118,i.dur*2.1))),at=t;t+=i.dur;
+    return `<div class="blk ${S.sel&&S.sel.u===x.u?'sel':''} ${air&&air.u===x.u?'air':''} ${i.nb?'nb':''}" data-u="${x.u}" ${kc(i)} style="--kc:var(${KIND[i.kind][1]});width:${w}px"><div class="cap" data-dragu="${x.u}"><span class="g">${IC.grip}</span><span>${fmt(at)}</span></div><button class="bd" data-a="seltl" data-v="${x.u}">${i.img?`<img src="${i.img}" alt="">`:''}<span style="min-width:0"><b>${esc(i.title)}</b><span>${esc(i.lab)} · ${fmt(i.dur)}${i.est?' est.':''}</span></span></button></div>`}).join('');
+  return `<div class="pane tlp"><div class="ph"><h3>Timeline: ${esc(l.name)}</h3><span class="mut sm">${l.seq.length} slots · ${fmt(len)} a loop · the loop runs ${len?(3600/len).toFixed(1):0}× an hour</span></div>
+  <div class="track" id="track">${intro&&intro.k!=='none'?`<div class="blk" style="--kc:var(--k-intro);width:96px"><div class="cap" style="cursor:default;padding-left:8px"><span>Intro</span></div><div class="bd"><span><b>${esc(intro.n.split(' (')[0])}</b><span>Start of each loop</span></span></div></div>`:''}${blocks||'<div class="mut" style="padding:30px">Empty. Add something from the library.</div>'}<div class="mark" id="mark" hidden></div></div></div>`}
+function builderHTML(){const l=L(),on=S.onAir===l.id,dn=['S','M','T','W','T','F','S'],full=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  return `<div class="bbar"><label class="sm mut" for="lsel">Line-up</label><select id="lsel">${S.lineups.map(x=>`<option value="${x.id}" ${x.id===l.id?'selected':''}>${esc(x.name)}${S.onAir===x.id?' (on TV)':''}</option>`).join('')}</select>
+    <button class="btn" data-a="saveas">Save as new</button><button class="btn" data-a="rename">Rename</button>
+    <span class="sm mut">Runs by itself on</span><span class="days">${dn.map((d,n)=>`<button data-a="day" data-v="${n}" aria-pressed="${l.days.includes(n)}" aria-label="${full[n]}">${d}</button>`).join('')}</span>
+    <label class="sm mut" for="isel">Intro</label><select id="isel">${INTROS.map(x=>`<option value="${x.k}" ${l.intro===x.k?'selected':''} ${x.nb?'disabled':''}>${esc(x.n)}${x.nb?' (not built yet)':''}</option>`).join('')}</select>
+    <span class="grow"></span>${on?'<span class="pill live">On the TV. Changes go live as you make them</span>':`<span class="pill">Not on the TV. Saved</span><button class="btn red" data-a="air" data-v="${l.id}">Put on TV now</button>`}</div>
+  ${S.nameEdit?`<div class="bbar"><label class="sm mut" for="nm">${S.nameEdit==='new'?'Name the new line-up':'New name'}</label><input id="nm" class="inp" style="max-width:320px;min-height:40px;padding:8px 12px" value="${S.nameEdit==='new'?'':esc(l.name)}" autocomplete="off"><button class="btn red" data-a="nameok">Save</button><button class="btn" data-a="namex">Cancel</button></div>`:''}
+  ${l.note?`<div class="mut sm">${esc(l.note)}</div>`:''}
+  <div class="grid">${libHTML()}${monHTML()}${inspHTML()}${tlHTML()}</div>`}
+
+function render(soft){$('#vRemote').setAttribute('aria-pressed',S.view==='remote');$('#vBuilder').setAttribute('aria-pressed',S.view==='builder');
+  const v=$('#view');if(soft&&S.view==='builder'){const f=document.activeElement;if(f&&/INPUT|SELECT/.test(f.tagName))return}
+  const tr=$('#track'),sl=tr?tr.scrollLeft:0,lp=$('.lib .pb'),ls=lp?lp.scrollTop:0;
+  v.innerHTML=S.view==='remote'?remoteHTML():builderHTML();
+  const t2=$('#track');if(t2)t2.scrollLeft=sl;const l2=$('.lib .pb');if(l2)l2.scrollTop=ls;
+  const k=nowKey(),b=$('#npbar');if(b&&k){const d=Math.max(4,info(k).dur);b.style.width=Math.min(100,S.sim.t/d*100)+'%';$('#nptime').textContent=fmt(S.sim.t)+' / '+fmt(d)}}
+let tt;function toast(m){const t=$('#toast');t.textContent=m;t.hidden=false;clearTimeout(tt);tt=setTimeout(()=>t.hidden=true,2600)}
+const live=()=>{if(S.onAir===S.cur)toast('TV updated')};
+function selBlock(){return S.sel&&S.sel.k.startsWith('block:')?S.blocks.find(x=>'block:'+x.id===S.sel.k):null}
+
+document.addEventListener('click',e=>{const el=e.target.closest('[data-a]');if(!el)return;const a=el.dataset.a,v=el.dataset.v,l=L();
+  if(a==='bg'){if(e.target===el)closeSheet();return}
+  if(el.disabled)return;
+  switch(a){
+    case'view':S.view=v;try{history.replaceState(null,'','#'+v)}catch(x){}closeSheet();break;
+    case'back':step(-1);break; case'skip':step(1);break; case'pause':S.sim.paused=!S.sim.paused;break;
+    case'sheet':openSheet(v);return; case'close':closeSheet();return; case'stab':SH.tab=v;renderSheet();return;
+    case'puton':putOn(v);return; case'showbook':putOn('book:'+v);return;
+    case'air':S.onAir=v;S.sim={i:0,t:0,paused:false,over:null,rc:S.sim.rc,rr:S.sim.rr};closeSheet();toast('Line-up on the TV: '+L(v).name);break;
+    case'ltab':S.libTab=v;break; case'sellib':S.sel={k:v};break;
+    case'seltl':{const x=l.seq.find(x=>x.u==v);S.sel=S.sel&&S.sel.u===x.u?null:{k:x.k,u:x.u};break}
+    case'add':{const ix=S.sel&&S.sel.u?l.seq.findIndex(x=>x.u===S.sel.u)+1:l.seq.length;const n=U(v);l.seq.splice(ix,0,n);S.sel={k:v,u:n.u};live();break}
+    case'mv':{const ix=l.seq.findIndex(x=>x.u===S.sel.u),j=ix+ +v;if(j>=0&&j<l.seq.length){const[x]=l.seq.splice(ix,1);l.seq.splice(j,0,x);live()}break}
+    case'dup':{const ix=l.seq.findIndex(x=>x.u===S.sel.u),n=U(S.sel.k);l.seq.splice(ix+1,0,n);S.sel={k:n.k,u:n.u};live();break}
+    case'rm':{l.seq=l.seq.filter(x=>x.u!==S.sel.u);S.sel=null;if(S.sim.i>=l.seq.length)S.sim.i=0;live();break}
+    case'w':S.w[el.dataset.k]=+v;live();break;
+    case'day':{const n=+v;S.lineups.forEach(x=>{if(x!==l)x.days=x.days.filter(d=>d!==n)});l.days=l.days.includes(n)?l.days.filter(d=>d!==n):[...l.days,n];break}
+    case'saveas':S.nameEdit='new';break; case'rename':S.nameEdit='ren';break; case'namex':S.nameEdit=null;break;
+    case'nameok':{const nm=($('#nm').value||'').trim();if(!nm){toast('Give it a name first');return}
+      if(S.nameEdit==='new'){const id='l'+uid++;S.lineups.push({id,name:nm,days:[],intro:l.intro,seq:l.seq.map(x=>U(x.k))});S.cur=id;S.sel=null;toast('Saved as '+nm)}else{l.name=nm;toast('Renamed')}S.nameEdit=null;break}
+    case'newblock':{const id='b'+uid++;S.blocks.push({id,title:'',reel:'',clips:[],books:[]});S.sel={k:'block:'+id};toast('New theme. Give it a title, then pick the books');break}
+    case'breel':{const x=selBlock();x.reel=v;live();break}
+    case'bclip':{const x=selBlock();x.clips=x.clips.includes(v)?x.clips.filter(c=>c!==v):[...x.clips,v];live();break}
+    case'bbook':{const x=selBlock(),n=+v;x.books=x.books.includes(n)?x.books.filter(c=>c!==n):[...x.books,n];live();break}
+  }
+  render()});
+document.addEventListener('input',e=>{const t=e.target,b=S.sel&&S.sel.k.split(':')[1];
+  if(t.id==='bq'){SH.q=t.value;$('#bres').innerHTML=bookGrid(SH.q,'showbook')}
+  if(t.id==='bbq'){$('#bbres').innerHTML=blockBooks(selBlock(),t.value)}
+  if(t.id==='bt'){selBlock().title=t.value}
+  if(t.id==='ts'||t.id==='te'){const c=clip(b),len=clen(c);let s=+$('#ts').value,en=+$('#te').value;if(en-s<5){if(t.id==='ts')s=Math.max(0,en-5);else en=Math.min(len,s+5)}S.trim[b]={s,e:en};$('#tsv').textContent=fmt(s);$('#tev').textContent=fmt(en);const bar=$('#trimbar');bar.style.left=s/len*100+'%';bar.style.right=100-en/len*100+'%'}
+  if(t.id==='sd'){S.sdur[b]=+t.value;$('#sdv').textContent=t.value+'s'}});
+document.addEventListener('change',e=>{const t=e.target,b=S.sel&&S.sel.k.split(':')[1];
+  if(t.id==='lsel'){S.cur=t.value;S.sel=null;S.nameEdit=null;render()}
+  if(t.id==='isel'){L().intro=t.value;live();render()}
+  if(t.id==='clean'){S.clean[b]=t.checked;live()}
+  if(t.id==='pair'){S.pair[b]=t.value;live()}
+  if(t.id==='bt'||t.id==='ts'||t.id==='te'||t.id==='sd'){live();render()}});
+document.addEventListener('submit',e=>{if(e.target.id==='jf'){e.preventDefault();const n=$('#jn').value.trim();closeSheet();toast((n||'Customer')+' added. Mock only: nothing was sent to Klaviyo')}});
+
+/* drag and drop, pointer based so it works with a finger and a mouse */
+let drag=null;
+document.addEventListener('pointerdown',e=>{const g=e.target.closest('[data-drag],[data-dragu]');if(!g||!$('#track'))return;e.preventDefault();
+  const u=g.dataset.dragu?+g.dataset.dragu:null,k=u?L().seq.find(x=>x.u===u).k:g.dataset.drag;const gh=document.createElement('div');gh.className='ghost';gh.textContent=info(k).title;document.body.appendChild(gh);
+  drag={k,u,gh,idx:null,x0:e.clientX,y0:e.clientY,moved:false};dmove(e);addEventListener('pointermove',dmove);addEventListener('pointerup',dend);addEventListener('pointercancel',dend)});
+function dmove(e){if(!drag)return;if(Math.abs(e.clientX-drag.x0)+Math.abs(e.clientY-drag.y0)>6)drag.moved=true;drag.gh.style.transform=`translate(${e.clientX+10}px,${e.clientY+10}px)`;
+  const tr=$('#track'),r=tr.getBoundingClientRect(),mk=$('#mark');const inside=e.clientY>r.top-40&&e.clientY<r.bottom+40&&e.clientX>r.left-20&&e.clientX<r.right+20;
+  if(!inside||!drag.moved){drag.idx=null;mk.hidden=true;return}
+  if(e.clientX>r.right-50)tr.scrollLeft+=14;if(e.clientX<r.left+50)tr.scrollLeft-=14;
+  const bl=[...tr.querySelectorAll('.blk[data-u]')];let idx=bl.length;for(let i=0;i<bl.length;i++){const b=bl[i].getBoundingClientRect();if(e.clientX<b.left+b.width/2){idx=i;break}}
+  drag.idx=idx;mk.hidden=false;const ref=bl[idx]||bl[bl.length-1];mk.style.left=(ref?(idx<bl.length?ref.offsetLeft-4:ref.offsetLeft+ref.offsetWidth):12)+'px'}
+function dend(){removeEventListener('pointermove',dmove);removeEventListener('pointerup',dend);removeEventListener('pointercancel',dend);if(!drag)return;const d=drag;drag=null;d.gh.remove();const l=L();
+  if(d.idx!=null){if(d.u){const from=l.seq.findIndex(x=>x.u===d.u),[x]=l.seq.splice(from,1);l.seq.splice(d.idx>from?d.idx-1:d.idx,0,x);S.sel={k:x.k,u:x.u}}else{const n=U(d.k);l.seq.splice(d.idx,0,n);S.sel={k:n.k,u:n.u}}live()}
+  render()}
+
+if(location.hash==='#builder')S.view='builder';
+render();
+</script>
