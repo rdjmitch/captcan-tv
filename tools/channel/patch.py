@@ -64,7 +64,7 @@ const CH={n:0,trn:0,bag:{},bench:{},rb:false,st:{shown:0,fill:0,skip:0,stall:0,b
       queue.unshift(f);if(alt){const a=alt();if(a)return a;}
       this.st.fill++;const r=this.draw("reel");return r?S.reel(r.id):null;}
     let sc=null;try{sc=slot.it.fn?slot.it.fn():null;}catch(x){}return ok(sc);},
-  stats(){const s=this.st;return {sh:s.shown,fi:s.fill,sk:s.skip,stl:s.stall,nf:s.nf||0,w:s.waits.slice(-8),bad:s.bad,err:s.err,blk:this.n,q:queue.slice(0,8).map(q=>q.slot?q.slot.kind+":"+String(q.slot.it.id).slice(0,6):"?")};}};
+  stats(){const s=this.st;return {sh:s.shown,fi:s.fill,sk:s.skip,stl:s.stall,nf:s.nf||0,cold:s.cold||0,sw:(s.sw||[]).slice(-8),w:s.waits.slice(-8),bad:s.bad,err:s.err,blk:this.n,q:queue.slice(0,8).map(q=>q.slot?q.slot.kind+":"+String(q.slot.it.id).slice(0,6):"?")};}};
 CH.load();
 '''
 between('const FLOW={any:["reel","clip"]','function playlist(){',CH)
@@ -75,55 +75,72 @@ rep('function rebuild(h){const cur=clone(IX);IX=clone(h.snap);let sc=null;try{sc
     'function rebuild(h){const cur=clone(IX);IX=clone(h.snap);let sc=null;CH.rb=true;try{sc=h.f();}catch(e){}CH.rb=false;IX=cur;return sc;}')
 
 # ---------- two preloading YouTube players ----------
-YT=r'''/* YouTube clips load hidden in the background, two at a time: the clip that plays next, and the one after it.
-   A clip only comes on screen once it is buffered, so there is no loading screen and no dead wait between clips. */
-function mkYT(n){return {n,state:"idle",t:null,player:null,bufT:0,onEnd:null,w:null,f:null,o:null,to:0,ee:0,iv:0,want:false,hold:0,
+YT=r'''/* YouTube clips: two players are kept loaded in the background, for the clip that plays next and the one after.
+   YouTube only lets one of its players run at a time, so a waiting player is only pre-buffered while no clip is on
+   screen; otherwise it sits loaded and paused ("cued") and starts within a moment of its turn. Either way the
+   channel never sits on a loading screen waiting for a clip. */
+function mkYT(n){return {n,state:"idle",t:null,player:null,bufT:0,onEnd:null,onPlay:null,w:null,f:null,o:null,to:0,ee:0,iv:0,nv:0,wt:0,want:false,hold:0,warmed:false,pb:false,started:false,
   box(){if(this.w)return;const st=document.getElementById("stage");if(!st)return;this.w=document.createElement("div");this.w.className="ytpre";this.w.innerHTML='<div class="f"></div><div class="ovl"></div>';
     let vc=document.getElementById("vcover");if(!vc){vc=document.createElement("div");vc.id="vcover";st.appendChild(vc);}st.insertBefore(this.w,vc);
     this.f=this.w.querySelector(".f");this.o=this.w.querySelector(".ovl");},
-  load(t,want){if(this.state!=="idle")this.kill();this.box();if(!this.w)return;this.t=t;this.want=!!want;this.state="loading";const self=this,t0=Date.now();let pb=false,rdy=0,lastSt="none";
+  load(t,want){if(this.state!=="idle")this.kill();this.box();if(!this.w)return;this.t=t;this.want=!!want;this.state="loading";const self=this,t0=Date.now();
     this.f.innerHTML="";const b=document.createElement("div");this.f.appendChild(b);
-    try{this.player=new YT.Player(b,{videoId:t.id,width:WEAKTV?854:1920,height:WEAKTV?480:1080,host:YTHOST,playerVars:{autoplay:1,mute:1,controls:0,rel:0,modestbranding:1,playsinline:1,iv_load_policy:3,disablekb:1,fs:0,cc_load_policy:0,start:(t.s||0)},events:{
-      onReady:e=>{try{if(WEAKTV){const fr=e.target.getIframe();[["position","absolute"],["left","0"],["top","0"],["right","auto"],["bottom","auto"],["width","854px"],["height","480px"],["transform","scale(2.2484)"],["transform-origin","0 0"]].forEach(([k,v])=>fr.style.setProperty(k,v,"important"));}rdy=Date.now();e.target.mute();e.target.playVideo();}catch(x){}},
-      onStateChange:e=>{const p=e.target;lastSt=e.data;
-        if(self.state==="live"){if(e.data===3&&!self.bufT)self.bufT=Date.now();if(e.data===1)self.bufT=0;if(e.data===0&&self.onEnd)self.onEnd();return;}
-        if(self.state==="loading"&&self.t===t&&e.data===1&&!pb){pb=true;const t1=Date.now();try{p.pauseVideo();}catch(x){}
-          clearInterval(self.iv);self.iv=setInterval(()=>{if(self.state!=="loading"||self.t!==t){clearInterval(self.iv);return;}try{const d=p.getDuration()||150,ahead=(p.getVideoLoadedFraction()||0)*d-(t.s||0);
-            if(ahead>=8||Date.now()-t1>12000){clearInterval(self.iv);try{p.seekTo(t.s||0,true);p.pauseVideo();}catch(x){}self.state="ready";clearTimeout(self.to);delete CH.st.bad[t.id];CH.wait(Math.round((Date.now()-t0)/1e3));
-              if(self.want){self.want=false;pushScreen("trailer","yt:"+t.id);}}}catch(x){}},500);}},
+    try{this.player=new YT.Player(b,{videoId:t.id,width:WEAKTV?854:1920,height:WEAKTV?480:1080,host:YTHOST,playerVars:{autoplay:0,mute:1,controls:0,rel:0,modestbranding:1,playsinline:1,iv_load_policy:3,disablekb:1,fs:0,cc_load_policy:0,start:(t.s||0)},events:{
+      onReady:e=>{if(self.t!==t||self.state!=="loading")return;try{if(WEAKTV){const fr=e.target.getIframe();[["position","absolute"],["left","0"],["top","0"],["right","auto"],["bottom","auto"],["width","854px"],["height","480px"],["transform","scale(2.2484)"],["transform-origin","0 0"]].forEach(([k,v])=>fr.style.setProperty(k,v,"important"));}e.target.mute();}catch(x){}
+        self.state="cued";clearTimeout(self.to);CH.wait(Math.round((Date.now()-t0)/1e3));
+        if(self.want){self.want=false;pushScreen("trailer","yt:"+t.id);}else setTimeout(()=>{try{YTM.sync();}catch(x){}},60);},
+      onStateChange:e=>{const p=e.target;if(self.t!==t)return;
+        if(self.state==="live"){if(e.data===3&&!self.bufT&&self.started)self.bufT=Date.now();if(e.data===1){self.bufT=0;if(self.onPlay){const f=self.onPlay;self.onPlay=null;f();}}if(e.data===0&&self.onEnd)self.onEnd();return;}
+        if(self.state==="warm"&&e.data===1&&!self.pb){self.pb=true;const t1=Date.now();try{p.pauseVideo();}catch(x){}
+          clearInterval(self.iv);self.iv=setInterval(()=>{if(self.state!=="warm"||self.t!==t){clearInterval(self.iv);return;}try{const d=p.getDuration()||150,ahead=(p.getVideoLoadedFraction()||0)*d-(t.s||0);
+            if(ahead>=8||Date.now()-t1>12000){clearInterval(self.iv);clearTimeout(self.wt);try{p.seekTo(t.s||0,true);p.pauseVideo();}catch(x){}self.state="ready";delete CH.st.bad[t.id];}}catch(x){}},500);}},
       onError:e=>{if(self.t===t)self.fail("err"+(e&&e.data));}}});}catch(x){this.fail("throw");return;}
-    /* a player that is ready but has not started gets a nudge every 4s; no start within 25s = give up on this try and load again */
-    clearInterval(this.iv);this.iv=setInterval(()=>{if(self.state!=="loading"||self.t!==t||pb){if(!pb)clearInterval(self.iv);return;}if(rdy){try{self.player.mute();self.player.playVideo();}catch(x){}}},4000);
-    clearTimeout(this.to);this.to=setTimeout(()=>{if(self.state==="loading"&&self.t===t&&!pb)self.fail("timeout "+(rdy?"st"+lastSt:"notready"));},25000);},
+    clearTimeout(this.to);this.to=setTimeout(()=>{if(self.state==="loading"&&self.t===t)self.fail("notready");},25000);},
+  /* pre-buffer while nothing else is playing; if it will not start in the background it simply stays cued */
+  warm(){if(this.state!=="cued"||this.warmed)return;const t=this.t;this.warmed=true;this.pb=false;this.state="warm";try{this.player.mute();this.player.playVideo();}catch(x){}
+    clearTimeout(this.wt);this.wt=setTimeout(()=>{if(this.state==="warm"&&this.t===t&&!this.pb){try{this.player.pauseVideo();}catch(x){}this.state="cued";CH.st.cold=(CH.st.cold||0)+1;}},15000);},
+  /* another clip is about to play: stop any background playback at once */
+  cool(){if(this.state!=="warm")return;clearTimeout(this.wt);clearInterval(this.iv);try{this.player.pauseVideo();}catch(x){}this.state="cued";this.warmed=false;this.pb=false;},
   /* a clip that fails twice in a row sits out for 10 minutes so it cannot hold the channel up */
   fail(why){const id=this.t&&this.t.id;if(id){CH.st.nf=(CH.st.nf||0)+1;CH.st.bad[id]=(CH.st.bad[id]||0)+1;CH.st.err=why+" "+id+" @"+new Date().toTimeString().slice(0,5);if(CH.st.bad[id]>=2){CH.bench[id]=Date.now()+10*60000;CH.st.bad[id]=0;}}this.kill();setTimeout(()=>{try{YTM.sync();}catch(x){}},500);},
-  kill(){clearInterval(this.iv);clearInterval(this.ee);clearTimeout(this.to);try{this.player&&this.player.destroy();}catch(x){}this.player=null;if(this.f)this.f.innerHTML="";if(this.o)this.o.innerHTML="";if(this.w)this.w.classList.remove("on");this.state="idle";this.t=null;this.bufT=0;this.want=false;this.onEnd=null;this.hold=0;},
+  kill(){clearInterval(this.iv);clearInterval(this.ee);clearInterval(this.nv);clearTimeout(this.to);clearTimeout(this.wt);try{this.player&&this.player.destroy();}catch(x){}this.player=null;if(this.f)this.f.innerHTML="";if(this.o)this.o.innerHTML="";if(this.w)this.w.classList.remove("on");this.state="idle";this.t=null;this.bufT=0;this.want=false;this.onEnd=null;this.onPlay=null;this.hold=0;this.warmed=false;this.pb=false;this.started=false;},
+  can(){return this.state==="ready"||this.state==="cued"||this.state==="warm";},
   scene(){const self=this,t=this.t;this.hold=Date.now()+6000;const el=$('<section class="scene trailer ytp"></section>');let d=0;try{d=this.player.getDuration()||0;}catch(x){}
     /* run for the clip's real length (never cut a trailer short); a clip with no end time is capped at 5 minutes */
     const len=Math.min(300,Math.max(0,(t.e||d||0)-(t.s||0)))||170;
-    const sc={id:"trailer",rep:true,chrome:"cinema",dur:len+8,el,manual:true};let T2=[],done=false;
+    const sc={id:"trailer",rep:true,chrome:"cinema",dur:len+16,el,manual:true};let T2=[],done=false;
     const end=()=>{if(done)return;done=true;T2.forEach(x=>{clearTimeout(x);clearInterval(x);});sc.onEnd&&sc.onEnd();};
-    el._start=()=>{if(self.state!=="ready"||self.t!==t){end();return;}self.onEnd=end;self.show();T2.push(setTimeout(end,(len+6)*1000));T2.push(setInterval(()=>{if(self.bufT&&Date.now()-self.bufT>8000){CH.st.stall++;CH.st.err="stall "+t.id;end();}},1000));};
+    el._start=()=>{if(!self.can()||self.t!==t){end();return;}self.onEnd=end;self.show();T2.push(setTimeout(end,(len+14)*1000));T2.push(setInterval(()=>{if(self.bufT&&Date.now()-self.bufT>8000){CH.st.stall++;CH.st.err="stall "+t.id;end();}},1000));};
     el._cleanup=()=>{T2.forEach(x=>{clearTimeout(x);clearInterval(x);});if(self.t===t)self.hide();};return sc;},
-  show(){const t=this.t,p=this.player;this.state="live";this.bufT=0;this.hold=0;
+  show(){const t=this.t,p=this.player,pre=this.state==="ready",t0=Date.now();YTS.forEach(y=>{if(y!==this)y.cool();});clearTimeout(this.wt);clearInterval(this.iv);
+    this.state="live";this.bufT=0;this.hold=0;this.started=false;
     const dd=(()=>{if(!t.rel)return"";const a=new Date(t.rel+"T00:00:00"),n=now(),b=new Date(n.getFullYear(),n.getMonth(),n.getDate()),d=Math.round((a-b)/864e5);return d>0?`<span class="d"><b>${d}</b> ${d===1?"day to go":"days to go"}</span>`:`<span class="d">In theatres now</span>`;})()||(t.when?`<span class="d">${esc(t.when)}</span>`:"");
     this.o.innerHTML=`<div class="lt"><p>${esc(t.sub||"Official trailer")}</p><h2>${esc(t.t)}</h2>${dd}</div><div class="tie"></div>`;
     findBooks(t.kw||t.t,8).then(bs=>{bs=bs.filter(p=>p.price>=5).sort((a,b)=>b.price-a.price);if(!bs.length||this.state!=="live"||this.t!==t)return;const q=bs[0],u=qrURL(link(q,"trailer"));const tie=this.o.querySelector(".tie");if(tie)tie.innerHTML=`<img class="tc" src="${img(q.img,300)}" alt=""><div><span>In the shop now</span><b>${esc(splitT(q.title)[0])}</b><em>${money(q.price)}</em></div>${u?`<img class="tq" src="${u}" alt="">`:""}`;}).catch(()=>{});
-    LASTTR=Date.now();CURPL=p;CURV=null;clearTimeout(YTM.rd);Radio.duck(true);this.w.classList.add("on");clearInterval(this.ee);this.ee=setInterval(()=>{try{const d=p.getDuration(),c=p.getCurrentTime();if(d>10&&c>((t.e||d)-1.6)&&this.onEnd)this.onEnd();}catch(x){}},500);try{p.seekTo(t.s||0,true);p.playVideo();}catch(x){}
-    setTimeout(()=>{if(TVOL>0&&this.t===t){try{p.unMute();p.setVolume(TVOL);}catch(x){}}},350);setTimeout(()=>{try{YTM.sync();}catch(x){}},1200);},
+    LASTTR=Date.now();CURPL=p;CURV=null;clearTimeout(YTM.rd);Radio.duck(true);
+    /* the picture comes up the moment the video is actually moving */
+    const reveal=()=>{if(this.t!==t||this.state!=="live"||this.started)return;this.started=true;clearInterval(this.nv);this.w.classList.add("on");delete CH.st.bad[t.id];
+      const s=CH.st.sw=CH.st.sw||[];s.push(Math.round((Date.now()-t0)/100)/10);if(s.length>10)s.shift();
+      clearInterval(this.ee);this.ee=setInterval(()=>{try{const d=p.getDuration(),c=p.getCurrentTime();if(d>10&&c>((t.e||d)-1.6)&&this.onEnd)this.onEnd();}catch(x){}},500);
+      setTimeout(()=>{if(TVOL>0&&this.t===t){try{p.unMute();p.setVolume(TVOL);}catch(x){}}},350);setTimeout(()=>{try{YTM.sync();}catch(x){}},1500);};
+    this.onPlay=reveal;try{p.mute();p.seekTo(t.s||0,true);p.playVideo();}catch(x){}
+    clearInterval(this.nv);this.nv=setInterval(()=>{if(this.t!==t||this.state!=="live"||this.started){clearInterval(this.nv);return;}
+      try{if(p.getPlayerState()===1){reveal();return;}p.playVideo();}catch(x){}
+      if(Date.now()-t0>9000){clearInterval(this.nv);CH.st.nf=(CH.st.nf||0)+1;CH.st.bad[t.id]=(CH.st.bad[t.id]||0)+1;CH.st.err="nostart "+t.id+" @"+new Date().toTimeString().slice(0,5);if(CH.st.bad[t.id]>=2){CH.bench[t.id]=Date.now()+10*60000;CH.st.bad[t.id]=0;}if(this.onEnd)this.onEnd();}},pre?400:1500);},
   /* the radio only comes back if no other clip starts straight after this one */
   hide(){if(CURPL===this.player)CURPL=null;this.kill();clearTimeout(YTM.rd);YTM.rd=setTimeout(()=>{if(!YTS.some(y=>y.state==="live"))Radio.duck(false);},1500);setTimeout(()=>{try{YTM.sync();}catch(x){}},300);}};}
 const YTS=[mkYT(0),mkYT(1)];
 const YTM={rd:0,
   ok(){return !IS_REMOTE&&YTREADY&&typeof YT!=="undefined"&&!!YT.Player&&!window.DEADTAB;},
-  find(id,st){return YTS.find(y=>y.t&&y.t.id===id&&(!st||y.state===st));},
+  find(id){return YTS.find(y=>y.t&&y.t.id===id);},
   sync(){if(!this.ok())return;const want=TRON===false?[]:CH.plan();
-    YTS.forEach(y=>{if((y.state==="loading"||y.state==="ready")&&!y.want&&!(y.hold>Date.now())&&!want.some(t=>t.id===y.t.id))y.kill();});
-    want.forEach(t=>{if(this.find(t.id))return;const y=YTS.find(y=>y.state==="idle");if(y)y.load(t);});},
-  sceneFor(id){const y=this.find(id,"ready");return y?y.scene():null;},
-  /* someone asked for one clip from the remote: load it now and put it up the moment it is ready */
+    YTS.forEach(y=>{if(y.state!=="idle"&&y.state!=="live"&&!y.want&&!(y.hold>Date.now())&&!want.some(t=>t.id===y.t.id))y.kill();});
+    want.forEach(t=>{if(this.find(t.id))return;const y=YTS.find(y=>y.state==="idle");if(y)y.load(t);});
+    if(want[0]&&!YTS.some(y=>y.state==="live"||y.state==="warm"||y.hold>Date.now())){const y=this.find(want[0].id);if(y)y.warm();}},
+  sceneFor(id){const y=this.find(id);return y&&y.can()?y.scene():null;},
+  /* someone asked for one clip from the remote: load it now and put it up the moment it is loaded */
   demand(id){if(!this.ok())return;const t=[...((MARKET&&MARKET.trailers)||[]),...CLIPS].find(x=>x.id===id);if(!t)return;
-    let y=this.find(id);if(y){if(y.state==="ready")pushScreen("trailer","yt:"+id);else if(y.state==="loading")y.want=true;return;}
+    let y=this.find(id);if(y){if(y.can())pushScreen("trailer","yt:"+id);else if(y.state==="loading")y.want=true;return;}
     y=YTS.find(y=>y.state==="idle")||YTS.find(y=>y.state!=="live");if(!y)return;y.kill();y.load(t,true);},
   killAll(){YTS.forEach(y=>y.kill());}};
 '''
