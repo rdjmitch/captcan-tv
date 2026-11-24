@@ -3351,7 +3351,7 @@ const keyNote=t=>{for(const [re,n,y] of KEYS)if(re.test(t))return {note:n,year:y
 
 
 CONFIG.ticker=["Every book bagged and boarded","Pre-sales close Monday 8pm","New releases every Tuesday","New back issues every Friday","Hold Box: no time limit, no storage fees","We buy and consign collections","CaptCan Cash: 10% back on pre-sales","Free account: scan any code on screen"];
-const BUILD="1123-2150a";const REELS=[{k:"doom",n:"Doom",d:23},{k:"batman",n:"Absolute Batman",d:25.5},{k:"midnight",n:"Midnight",d:25.4},{k:"blacksuit",n:"Black Suit",d:23}];const SITE="https://www.captcancomics.ca",API="2025-10";
+const BUILD="1123-2205a";const CLIPS=[{id:"WTOhGmgKMsU",t:"Batman: The Animated Series",sub:"The 1992 opening",when:"",kw:"Batman"}];const TRL=()=>[...((MARKET&&MARKET.trailers)||[]),...CLIPS];const REELS=[{k:"doom",n:"Doom",d:23},{k:"batman",n:"Absolute Batman",d:25.5},{k:"midnight",n:"Midnight",d:25.4},{k:"blacksuit",n:"Black Suit",d:23}];const SITE="https://www.captcancomics.ca",API="2025-10";
 /* helpers */
 const NW="h1,h2,h3,p,b,span,figcaption,.sub,.txt,.book,.lab,.sm,.when,.after,.lead,.pts div";
 function noWidow(root){root.querySelectorAll(NW).forEach(e=>{if(e.children.length>2)return;const w=document.createTreeWalker(e,NodeFilter.SHOW_TEXT);let last=null;while(w.nextNode()){const n=w.currentNode;n.nodeValue=n.nodeValue.replace(/(\w)-(\w)/g,"$1\u2011$2");if(n.nodeValue.trim())last=n;}if(!last)return;const v=last.nodeValue,i=v.trimEnd().lastIndexOf(" ");if(i>0&&v.trim().split(/ +/).length>2&&v.slice(i+1).trim().length<=10)last.nodeValue=v.slice(0,i)+"\u00a0"+v.slice(i+1);});return root;}
@@ -3551,7 +3551,7 @@ const S={
     const w=e.title.split(" "),l=w.pop();
     return {id:"event",dur:9,el:$(`<section class="scene event"><div class="photo" style="background-image:url('${img(FEED.shop,1920)}')"></div><div class="veil"></div><div class="copy"><p class="eye in">${esc(eye)}</p><h1 class="H in d1">${esc(w.join(" "))} <em>${esc(l)}</em></h1><p class="txt in d2">${esc(e.text)}</p></div></section>`)};},
   trailer(i){const live=liveT;
-    const ALL=[...(UTR||[]).filter(x=>x&&x.mp4&&x.t),...(MARKET.trailers||[])].filter(live);if(!ALL.length)return null;
+    const ALL=[...(UTR||[]).filter(x=>x&&x.mp4&&x.t),...TRL()].filter(live);if(!ALL.length)return null;
     if(i==="yt")return YTP.state==="ready"?YTP.scene():null;
     if(typeof i==="string"&&i.indexOf("yt:")===0){const id=i.slice(3);if(YTP.state==="ready"&&YTP.t&&YTP.t.id===id)return YTP.scene();YTP.kill();YTP.prep(id,true);return null;}
     if(TRON===false)return null;const MP=ALL.filter(x=>x.mp4);
@@ -3756,7 +3756,7 @@ const YTP={state:"idle",t:null,player:null,next:0,k:0,want:false,bufT:0,onEnd:nu
   box(){if(this.w)return;const st=document.getElementById("stage");if(!st)return;this.w=document.createElement("div");this.w.id="ytpre";this.w.innerHTML='<div class="f"></div><div class="ovl"></div>';st.appendChild(this.w);const vc=document.createElement("div");vc.id="vcover";st.appendChild(vc);this.f=this.w.querySelector(".f");this.o=this.w.querySelector(".ovl");},
   log(ev,x){if(this.n++>14)return;try{post(Object.assign({cmd:"ytp",ev,id:this.t&&this.t.id,w:WEAKTV},x||{}),"-ack");}catch(e){}},
   prep(id,want){if(this.off&&!want)return;if(IS_REMOTE||NOTTV||!YTREADY||typeof YT==="undefined"||!YT.Player)return;if(want)this.want=true;if(this.state!=="idle")return;if(!id&&(Date.now()<this.next||Date.now()-LASTTR<TRGAP-150000))return;if(TRON===false&&!want)return;
-    const L=(MARKET.trailers||[]).filter(x=>x.id&&liveT(x));if(!L.length)return;this.box();if(!this.w)return;
+    const L=TRL().filter(x=>x.id&&liveT(x));if(!L.length)return;this.box();if(!this.w)return;
     const t=(id&&L.find(x=>x.id===id))||L[(this.k++)%L.length];this.t=t;this.state="loading";const t0=Date.now();let pb=false;
     this.f.innerHTML="";const b=document.createElement("div");this.f.appendChild(b);
     try{this.player=new YT.Player(b,{videoId:t.id,width:WEAKTV?854:1920,height:WEAKTV?480:1080,host:YTHOST,playerVars:{autoplay:1,mute:1,controls:0,rel:0,modestbranding:1,playsinline:1,iv_load_policy:3,disablekb:1,fs:0,cc_load_policy:0},events:{
@@ -3797,8 +3797,8 @@ const Radio={a:null,on:false,url:"",name:"",vol:.35,ducked:false,locked:true,
   apply(r){if(!r||NOTTV)return;if(r.url&&/somafm\.com/.test(r.url)){r=Object.assign({},r,{url:DEFST[0].url,name:DEFST[0].name});}this.vol=r.vol!=null?r.vol:this.vol;const url=r.url||(r.id?stationUrl(r.id):"");const changed=url&&url!==this.url;this.url=url||this.url;const ds=DEFST.find(x=>x.url===this.url);this.name=ds?ds.name:(r.name||this.name);this.on=!!r.on&&!!this.url;
     if(!this.on){this.fade(0,()=>this.el().pause());return;}const a=this.el();if(changed){a.src=this.url;this.play();return;}if(!a.paused&&!this.ducked&&!this.locked){this.fade(this.vol);return;}this.play();},
   play(){if(!this.on||this.ducked)return;const a=this.el();if(!a.src||a.src!==this.url)a.src=this.url;if(!a.paused&&!this.locked){this.fade(this.vol);return;}a.volume=0;a.play().then(()=>{this.locked=false;this.fade(this.vol);}).catch(()=>{this.locked=true;});},
-  fade(to,done){const a=this.el();clearInterval(this.fi);const step=()=>{const d=to-a.volume;if(Math.abs(d)<.02){a.volume=to;clearInterval(this.fi);done&&done();}else a.volume=Math.max(0,Math.min(1,a.volume+d*.2));};this.fi=setInterval(step,60);},
-  duck(on){this.ducked=on;if(!this.on)return;if(on)this.fade(0,()=>this.el().pause());else this.play();},
+  fade(to,done){const a=this.el();clearInterval(this.fi);const up=to>a.volume,k=up&&this.slowUp?.025:(up?.2:.07);const step=()=>{const d=to-a.volume;if(Math.abs(d)<.02){a.volume=to;clearInterval(this.fi);if(up)this.slowUp=false;done&&done();}else a.volume=Math.max(0,Math.min(1,a.volume+Math.sign(d)*Math.max(Math.abs(d)*k,.004)));};this.fi=setInterval(step,60);},
+  duck(on){this.ducked=on;if(!on)this.slowUp=true;if(!this.on)return;if(on)this.fade(0,()=>this.el().pause());else this.play();},
   unlock(){if(this.on&&this.locked)this.play();},
   st:{drop:0,err:0,fix:0},
   dog(){const a=this.a;if(!a||!this.on||this.ducked||this.locked)return;if(a.paused||a.ended){this.st.drop++;this.st.fix++;a.src=this.url;this.play();}}};
@@ -3914,7 +3914,7 @@ function remoteUI(){
      <div class="grid2" style="margin-top:10px"><button class="on" id="spshow">Show now</button><button id="spadd">Add to rotation</button></div>
      <h3>Your screens in rotation</h3><div class="chips" id="splist"></div>
      <h3>Built in</h3><div class="chips">${DEFSPOTS.map(s=>`<button data-spb="${esc(s.q)}">${esc(s.h)}</button>`).join("")}</div></div><h2>Every screen</h2><p class="lead">What you see is what goes up. Tap one to put it on the TV.</p>
-    <h3>Trailers (sound on)</h3><div class="rtiles">${MARKET.trailers.map((t,i)=>`<div class="rtile" data-p="trailer:yt:${t.id}" role="button" tabindex="0"><div class="pv"><img class="yt" src="https://i.ytimg.com/vi/${t.id}/hqdefault.jpg" alt=""><span class="tag">Trailer</span></div><b>${esc(t.t)}${t.sub?", "+esc(t.sub):""}</b></div>`).join("")}</div>
+    <h3>Trailers and clips (sound on)</h3><div class="rtiles">${TRL().map((t,i)=>`<div class="rtile" data-p="trailer:yt:${t.id}" role="button" tabindex="0"><div class="pv"><img class="yt" src="https://i.ytimg.com/vi/${t.id}/hqdefault.jpg" alt=""><span class="tag">Trailer</span></div><b>${esc(t.t)}${t.sub?", "+esc(t.sub):""}</b></div>`).join("")}</div>
     <h3>Sell</h3><div class="rtiles">${T("board","Hot this week")}${T("wall","New this week")}${T("hero","#1 seller")}${T("inc","Incentive covers")}${T("trades","Trades and hardcovers")}${T("keys","Just landed")}${T("run","Friday's big run")}${T("blow","25% off blowout")}${T("soon","Coming soon")}${T("excl","Our exclusives")}${T("merch","Merch")}${T("feat","Staff picks")}${T("cotd","Cover of the day")}${T("art","Art highlight")}${T("spot","Character spotlight")}${T("upload","Friday upload countdown")}</div>
     <h3>Market and news</h3><div class="rtiles">${T("market","Hot 10")}${T("alpha","Market spotlight")}${T("sold","Just sold here")}${T("vel","Moving fastest")}${T("timeline","Movie keys")}${T("news","Comic news")}${T("fact","Did you know")}</div>
     <h3>CaptCan</h3><div class="rtiles">${T("join","Make an account")}${T("app","The app")}${T("about","Our story")}${T("svc","CaptCan Cash")}${T("presale","Pre-sales")}${T("open","CaptCan intro")}</div>
