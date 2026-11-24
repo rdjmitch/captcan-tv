@@ -133,3 +133,9 @@ Read this first in any new chat about the store TV or the intro.
 - New: when the stick opens the internet copy (captcancomics.ca/tv) it moves itself to the Mac mini copy (`goHome`, default http://192.168.50.253:8788/?tv, at most once per 30 minutes; the remote state key `home` overrides it, `home:"off"` disables it).
 - The remote's mode buttons (Full mix, Selling and so on) do nothing since the loop was stripped; staff tried them at 1:07 to 1:17pm. That is what "the remote isn't doing anything" is. Remote rebuild still open.
 - Always read `tron`, `paused` and the remote's commands on the relay before judging what the TV is doing.
+
+### Update Nov 24, 8pm (BUILD 1124-2000v pushed; loads when the channel next opens or at the morning self-update)
+- Reilly (6:47pm): he never finished setting up the stick, staff must not have to find or open anything, the TV must come on by itself, and he wants it running all day tomorrow without him.
+- Fire TV app 1.1 built (app/captcan-tv.apk): opens the Mac mini copy first (http://192.168.50.253:8788), falls back to the internet copy and retries the Mac mini every 10 minutes, starts at power-on, comes back by itself 3 minutes after Home is pressed (Back twice is the deliberate exit).
+- `~/Movies/TV/CaptCanTV/Install CaptCan TV on the stick.command` on the Mac mini: finds the stick on the network, installs the app over ADB, grants start-at-boot, turns off the stick's sleep timer, opens the app, writes `install-log.txt` and `stick-address.txt`. BLOCKED on Reilly: ADB debugging ON on the stick, then double-click that file and accept the prompt on the TV. Nothing on the stick has been proven yet.
+- Absolute Batman and Black Suit reels rebuilt in the v3 style (configs tools/art-reel/w3_bat.json, w3_black.json; mastheads kept out of the letters by focal point + zoom, fills clamped so art always covers the letter). Midnight is still the old reel: its theme needs confirming before a rebuild.

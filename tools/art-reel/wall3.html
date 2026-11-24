@@ -23,9 +23,13 @@ function word(par,C,size,top){const w=document.createElement('div');w.className=
   w.Ls=[...C.title].map((ch,i)=>{const L=document.createElement('span');L.className='L';
     if(ch===' '){L.innerHTML='<i>&nbsp;</i>';L.style.width=size*0.22+'px';w.appendChild(L);return null;}
     L.innerHTML=`<i class="back">${ch}</i><i class="fill">${ch}</i><i class="edge">${ch}</i>`;w.appendChild(L);const f=C.letters[i%C.letters.length];L.f=f;L.fill=L.querySelector('.fill');L.fill.style.backgroundImage=`url(${B(f.c)})`;return L;}).filter(Boolean);
-  par.appendChild(w);w.size=size;return w;}
+  par.appendChild(w);
+  /* fit: long titles shrink until the whole word sits inside the frame */
+  let tw=0;[...w.children].forEach(c=>tw+=c.getBoundingClientRect().width);if(tw>1760){size=Math.floor(size*1760/tw);w.style.fontSize=size+'px';w.style.top=((1080-size)/2-10)+'px';[...w.children].forEach(c=>{if(!c.f&&c.style.width)c.style.width=size*0.22+'px';});}
+  if(C.over&&top<900){const o=document.createElement('div');o.textContent=C.over;o.style.cssText=`position:absolute;left:0;right:0;top:${(1080-size)/2-10-size*0.2}px;text-align:center;font-family:AN;font-size:${Math.round(size*0.17)}px;letter-spacing:.42em;color:#fff;text-transform:uppercase;text-shadow:0 4px 30px rgba(0,0,0,.9)`;par.appendChild(o);w.over=o;}
+  w.size=size;return w;}
 function placeFill(w,drift){w.Ls.forEach(L=>{const r=L.fill.getBoundingClientRect(),f=L.f,bw=r.width*(f.z||2.2),bh=bw/AR[f.c];
-  L.fill.style.backgroundSize=`${bw}px ${bh}px`;L.fill.style.backgroundPosition=`${r.width/2-f.x*bw}px ${r.height/2-f.y*bh+drift}px`;});}
+  L.fill.style.backgroundSize=`${bw}px ${bh}px`;/* never let the art fall short of the letter: clamp so the cover always fills it */const px=Math.min(0,Math.max(r.width-bw,r.width/2-f.x*bw)),py=Math.min(0,Math.max(r.height-bh,r.height/2-f.y*bh+drift));L.fill.style.backgroundPosition=`${px}px ${py}px`;});}
 let C,L1,L2,L3,L4,W1,W4,shelf,rows=[],bug,lock;
 function build(){
   document.body.style.setProperty('--glow',C.glow);
@@ -36,7 +40,7 @@ function build(){
   L2=layer();L2.style.background=`radial-gradient(ellipse at 50% 40%,${C.bg1} 0%,${C.bg0} 75%)`;
   shelf=document.createElement('div');shelf.style.cssText='position:absolute;left:0;top:44px;height:870px;white-space:nowrap';L2.appendChild(shelf);
   let x=0;shelf.cs=C.shelf.map(n=>{const c=cover(shelf,n,870);c.style.left=x+'px';c.style.top='0';c.x=x;x+=870*AR[n]+44;return c;});shelf.w=x-44;
-  lock=document.createElement('div');lock.textContent=C.title;lock.style.cssText='position:absolute;left:56px;bottom:40px;font-family:AN;font-size:96px;line-height:1;color:#fff;letter-spacing:.04em;text-transform:uppercase';L2.appendChild(lock);
+  lock=document.createElement('div');lock.textContent=C.lock||C.title;lock.style.cssText='position:absolute;left:56px;bottom:40px;font-family:AN;font-size:96px;line-height:1;color:#fff;letter-spacing:.04em;text-transform:uppercase';L2.appendChild(lock);
   bug=document.createElement('img');bug.src='logo_white_ca.png';bug.style.cssText='position:absolute;right:56px;bottom:52px;width:330px;opacity:.9';L2.appendChild(bug);
   // 3 mosaic: two rows sliding against each other, edge to edge
   L3=layer();L3.style.background='#000';const g=document.createElement('div');g.style.cssText='position:absolute;inset:0;transform-origin:50% 50%';L3.appendChild(g);L3.g=g;
