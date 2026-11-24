@@ -35,3 +35,9 @@ Read this first in any new chat about the store TV or the intro.
 - Do not add screens to the loop that were not asked for. Cut before adding.
 - Find things first (files, links, what is installed) before asking Reilly.
 - No downloading video or music; clips play from YouTube. Reilly supplies audio and any poster with actors.
+
+## Update Nov 24, 11am (supersedes loop notes above)
+- BUILD 1124-1105a. The loop is ONLY art reels + clips/trailers, in every mode (playlist() returns FLOW for all modes). Old screens (board, wall, keys, guess, join, howto) are out of the loop; still reachable from the remote "Put up now".
+- Cause of "still shows screens I hate": the Fire Stick was in saved mode "sell", which ran the old per-mode playlists.
+- Fire Stick (Silk, AFTKRT) confirmed on this build via relay ack, sound unlocked, Doomsday trailer playing.
+- To add a screen back: add its key to FLOW.any / FLOW.wed.
