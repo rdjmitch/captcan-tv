@@ -35,3 +35,11 @@ Read this first in any new chat about the store TV or the intro.
 - Do not add screens to the loop that were not asked for. Cut before adding.
 - Find things first (files, links, what is installed) before asking Reilly.
 - No downloading video or music; clips play from YouTube. Reilly supplies audio and any poster with actors.
+
+## Clips from files (Nov 24 2026, 12:20am) — branch `clips-from-files`
+- Reilly sent the clip files (4 zips: 11 cartoon openings, 6 movie scenes, 6 talking clips incl. the 16-min WIRED one, X-Men 97 trailer). All 19 clips in `CLIPS` have a file. The earlier note "no clip files are needed, they play from YouTube" was wrong: YouTube does not play reliably on the Samsung.
+- Each rotation clip is trimmed to its in/out points and converted to 1080p H.264 + AAC, loudness-evened, named `<YouTubeID>.mp4`.
+- index.html (BUILD 1124-0010f): if `clips/manifest.json` sits next to the page (`{"files":[ids]}`), those clips play from `clips/<id>.mp4`, clean and full screen (no overlay, no bottom bar), sound on with a muted fallback, radio ducks. Loop clip slots take the next file clip in the mixed order with no 150s gap; every 4th slot plays a YouTube trailer if one is ready. With no manifest the page behaves exactly as before, so this is safe to merge.
+- Tested in headless Chrome with a real file: reel, clip (full length, unmuted, radio ducked), New this week, reel, clip. Not tested on the Samsung or a Fire Stick.
+- `clips/` is git-ignored on purpose: studio video must not go in this public repo. Hosting is the open decision (unlisted Cloudflare R2 bucket recommended; or files on the Fire Stick / served from the Mac mini on the shop network).
+- Still to do: after a clip, cut to the matching art reel and books; trailers (Doomsday etc.) still come from YouTube; held-back talking clips need cut points; Superman opening is 240p.
