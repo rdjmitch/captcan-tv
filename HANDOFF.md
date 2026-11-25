@@ -209,3 +209,9 @@ Read this first in any new chat about the store TV or the intro.
 ## Nov 24, 10pm
 - Six v4 reels rendered and sent to Reilly: `v4/*.mp4` (doom, black, bat, grails, amazing, new). NOT in `v/` or `REELS` yet: waiting on his yes. To launch: copy to `v/`, add grails, amazing and new to `REELS` (all `noend:1`, d 18.5), bump BUILD, and do it outside store hours.
 - To re-render: covers from `tools/art-reel/v4/covers.txt` (Shopify files host, `?width=1100`), trim white borders, slabs also saved as art-only crops with an `x` suffix (crop 8.5%/19%/91.5%/97.2%), then `node shots3.js w4_<name>.json video`. Run one render at a time (fixed port and frames folder).
+
+## Nov 24, 8:45pm: LIVE build 1124-2045w (Reilly: update captcancomics.ca/tv tonight; he is not at the shop Nov 24 or 25 and cannot reach the stick)
+- `REELS` is now newweek, grails, doom, amazing, blacksuit, batman (the v4 files, in `v/`). Old Midnight reel removed. He rated v4 a fail, but it replaced older reels he rated worse; it is the stopgap for Wed Nov 25, not approved work.
+- Wednesday rule in `S.reel`: on Wednesdays every second reel is `newweek` (counter `WEDN`). `v/newweek.mp4` must be re-rendered each Tuesday from that week's tag or it goes stale. A reel tapped from the remote on a Wednesday can be swapped for newweek by the same rule.
+- Stick install is NOT possible until Reilly is back at the shop. Do not ask him for it. The TV needs someone in the shop to open captcancomics.ca/tv in Silk and press OK once.
+- Unfinished: `edit.html` Black Suit edit (cutout hero over flat colour, hard cuts on single covers with small labels) in the render workspace; cutouts via rembg work on some covers only (Secret Wars 8, Doom on the throne), title overflows the frame.
