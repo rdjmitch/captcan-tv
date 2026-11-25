@@ -1,3 +1,19 @@
+# VERDICT Nov 24, 8:13pm: the v4 reels are a FAIL. Read this before the brief below.
+Reilly on the six v4 reels: "still a fail for what I've said and what we can do." Asked which part, he picked all four:
+1. The look and edit: one template (letters, sliding covers, cover wall) repeated six times is a cover slideshow, not the cinematic art edits he has described.
+2. Still the books: slabs and keys were closer but are not the books he would put up.
+3. It is not a channel: he keeps being shown single reels. He wants to see the whole hour working together (clips, products, art, flow).
+4. The TV does not run itself.
+On references he said there is not much saved or liked on his Instagram; "do what's best for best output".
+
+Do NOT send another reel from `wall3.html`. Do not ask him for a yes on v4. What to do instead:
+- Edits: find real references yourself (comic-art edit accounts on Instagram and YouTube: flat single-colour backgrounds with just the art, cinematic Doom and black suit edits), study them frame by frame, and replicate. Use character cutouts: the Adobe connector can cut a figure out of a cover (select subject / remove background), which has never been tried here. Each theme gets its own edit, not a shared template. After Effects is on the MacBook.
+- Books: show him the candidate books for a theme as a picture grid and let him strike and add BEFORE any edit is built. His taste: black suit Spidey, Red Hulk, Doom, Absolute Batman, Midnight Marvel, Wolverine.
+- Channel: the deliverable is a recording of 10 or more minutes of the real page running (file clips, art, products, ident), not a single piece.
+- Stick: nothing replaces his three minutes (ADB on, run the installer). Ask for that once, plainly, and prove it on the relay.
+
+---
+
 # CaptCan TV: THE BRIEF (written Nov 24 2026, 9pm, after reading every TV chat and note since Nov 17)
 
 Read this section first. It is the one direction for the TV. Everything below it is history.
