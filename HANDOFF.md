@@ -215,3 +215,7 @@ Read this first in any new chat about the store TV or the intro.
 - Wednesday rule in `S.reel`: on Wednesdays every second reel is `newweek` (counter `WEDN`). `v/newweek.mp4` must be re-rendered each Tuesday from that week's tag or it goes stale. A reel tapped from the remote on a Wednesday can be swapped for newweek by the same rule.
 - Stick install is NOT possible until Reilly is back at the shop. Do not ask him for it. The TV needs someone in the shop to open captcancomics.ca/tv in Silk and press OK once.
 - Unfinished: `edit.html` Black Suit edit (cutout hero over flat colour, hard cuts on single covers with small labels) in the render workspace; cutouts via rembg work on some covers only (Secret Wars 8, Doom on the throne), title overflows the frame.
+
+## Nov 24, 9pm: LIVE build 1124-2100x
+- Reilly was confused that the loop was only reels and clips: the older screens were never deleted, only out of the loop since 11am. He would not pick which to restore ("why should I have to describe this"), so Claude decided from his own notes: on Wednesdays the product slot rotates How the site works, Hold Box, Pre-sales and Sign-up (his line: Wednesday buyers ask what is in stock, where things are and how to get them); other days the product slot is Sign-up only. Wall, board, keys and the games stay out. `SCREENS.product` is a getter.
+- Wednesday reel rule changed: New This Week returns about every 4 minutes (timestamp `WEDN`), not every second reel, so it cannot dominate when clips are slow to load.
