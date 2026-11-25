@@ -88,7 +88,7 @@ Out, by name: Guess the Grade, Name That Book (zoomed cover game), the old Doom 
 - Folder `Movies/TV/CaptCanTV`: 19 trimmed 1080p clip files, a small server that starts by itself, and "Install CaptCan TV on the stick" (one double-click installer).
 - The stick moves itself to the Mac mini copy so clips play from files with no YouTube badge. If the Mac mini is off, clips fall back to YouTube.
 
-**The app (built, never run on the stick)**
+**The app (installed on the stick Nov 25, 3:00pm; power-on start not yet proven)**
 - `app/captcan-tv.apk` in the repo. Starts on power-up, full screen, sound without a press, returns by itself after Home, falls back to the internet copy.
 
 **What the loop plays (build 1125-1430a)**

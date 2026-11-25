@@ -231,3 +231,9 @@ Read this first in any new chat about the store TV or the intro.
 - Reilly: "this is not at all even what we have built or what I have asked for". Cause: since Nov 24 11am the loop used none of the ~60 screens built Nov 17 to 23, only reels and clips. Restored into the channel blocks: `SCREENS.ident` = spotlights, hero book, hot this week, cover of the day, exclusives, just sold, runs, incentives, big books, trades, vote; `SCREENS.product` = sign-up, app, services, pre-sales, market, about, merch, coming soon, plus how-to and Hold Box on Wednesdays and the upload screen on Tuesdays. Each block now has two of these, two reels and three or four clips; nothing repeats until its pool has played.
 - Still out on his word: guess the grade, name that book, old Doom, board, wall, keys; Monk and signing-day screens stay switch-on only; news and fact left out as text-heavy.
 - Not looked at with eyes in this session (the render box cannot reach the storefront feed): review each restored screen on a real browser and cut any that are weak.
+
+## Wed Nov 25, 3:03pm: APP INSTALLED ON THE STICK
+- Reilly enabled developer mode and ADB at the shop and ran the Mac mini installer. install-log.txt: found 192.168.50.71 (AFTKRT), install Success, start at power-on ok, version 1.1.0, running.
+- Relay at 3:02pm: `app 1.1.0 AFTKRT os30`, build 1125-1430a, from the Mac mini copy (19 files), sound unlocked with no press, 60 fps, 0 jank, 2 file clips and 6 screens in 2 minutes, 0 errors. `fs` reads false inside the app (the app is full screen natively; viewport 1680x945).
+- NOT yet proven: power-off / power-on brings it back by itself; return after Home.
+- A second device is also answering pings as a TV (no app, not local, YouTube clip failures). Find and close it: it wastes relay messages and muddies the log.
