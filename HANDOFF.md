@@ -219,3 +219,8 @@ Read this first in any new chat about the store TV or the intro.
 ## Nov 24, 9pm: LIVE build 1124-2100x
 - Reilly was confused that the loop was only reels and clips: the older screens were never deleted, only out of the loop since 11am. He would not pick which to restore ("why should I have to describe this"), so Claude decided from his own notes: on Wednesdays the product slot rotates How the site works, Hold Box, Pre-sales and Sign-up (his line: Wednesday buyers ask what is in stock, where things are and how to get them); other days the product slot is Sign-up only. Wall, board, keys and the games stay out. `SCREENS.product` is a getter.
 - Wednesday reel rule changed: New This Week returns about every 4 minutes (timestamp `WEDN`), not every second reel, so it cannot dominate when clips are slow to load.
+
+## Wed Nov 25, 1:10pm: relay check (Reilly: staff say it is not working properly)
+- Staff remote pinged at 9:12, 10:28, 10:32, 11:03, 11:40, 11:42 with NO answer from the TV, and sent "show newweek" at 11:41 and settings at 11:45 and 11:48 into nothing: the channel was not open on the stick all morning. That is the complaint, and why the remote "does nothing".
+- First answer 12:50pm. At 1:08pm the stick (AFTKRT, Silk) is on build 1124-2100x from the Mac mini copy: full screen, sound unlocked, 59 fps, 9 file clips and 19 screens in 18 minutes, 0 fails, 0 errors. `tron` is still false (staff switched trailers off Nov 24), so no trailers play.
+- Root fix is still the app + ADB grant. Needs one person at the TV with the stick remote for two presses (ADB debugging on, then Allow). Claude can run the Mac mini installer itself through computer use once ADB is on.
