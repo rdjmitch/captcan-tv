@@ -82,7 +82,7 @@ public class MainActivity extends Activity {
         return !(host.equals("rdjmitch.github.io") || host.endsWith("captcancomics.ca") || host.startsWith("192.168.") || host.startsWith("10."));
       }
       @Override public void onPageFinished(WebView v, String url) {
-        if (!errored && url != null && url.startsWith("https")) { pageOk = true; retry = 0; lastBeat = SystemClock.elapsedRealtime(); note.setVisibility(View.GONE); v.requestFocus(); }
+        if (!errored && url != null && url.startsWith("http")) {   /* the Mac mini copy is http: 1.1.0 only accepted https here, so the "starting" note never went away */ pageOk = true; retry = 0; lastBeat = SystemClock.elapsedRealtime(); note.setVisibility(View.GONE); v.requestFocus(); }
       }
       @Override public void onReceivedError(WebView v, WebResourceRequest r, WebResourceError e) {
         if (r.isForMainFrame()) failed();
@@ -145,7 +145,7 @@ public class MainActivity extends Activity {
 
   @Override protected void onPause() { super.onPause(); pausedAt = SystemClock.elapsedRealtime(); if (web != null) web.onPause(); }
 
-  /* If someone presses Home by accident, the channel comes back by itself after 3 minutes.
+  /* If someone presses Home by accident, the channel comes back by itself after 40 seconds (this is also what brings it up when the stick wakes to the Fire TV home screen).
      Pressing Back twice is the deliberate way out and does not come back. */
   android.app.PendingIntent returnIntent() {
     android.content.Intent i = new android.content.Intent(this, MainActivity.class);
@@ -154,7 +154,7 @@ public class MainActivity extends Activity {
   }
   void cancelReturn() { try { ((android.app.AlarmManager) getSystemService(ALARM_SERVICE)).cancel(returnIntent()); } catch (Throwable t) {} }
   @Override protected void onStop() { super.onStop();
-    if (!leaving) { try { ((android.app.AlarmManager) getSystemService(ALARM_SERVICE)).set(android.app.AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + 3 * 60 * 1000, returnIntent()); } catch (Throwable t) {} } }
+    if (!leaving) { try { ((android.app.AlarmManager) getSystemService(ALARM_SERVICE)).set(android.app.AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + 40 * 1000, returnIntent()); } catch (Throwable t) {} } }
   @Override protected void onStart() { super.onStart(); leaving = false; cancelReturn(); }
 
   @Override protected void onDestroy() { h.removeCallbacksAndMessages(null); if (web != null) { try { web.destroy(); } catch (Throwable t) {} } super.onDestroy(); }
