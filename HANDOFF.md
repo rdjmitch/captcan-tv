@@ -1,3 +1,5 @@
+# READ MASTER-BRIEF.md FIRST (written Nov 25 2026). It is the one brief, the diagnosis and the full export. This file is history.
+
 # VERDICT Nov 24, 8:13pm: the v4 reels are a FAIL. Read this before the brief below.
 Reilly on the six v4 reels: "still a fail for what I've said and what we can do." Asked which part, he picked all four:
 1. The look and edit: one template (letters, sliding covers, cover wall) repeated six times is a cover slideshow, not the cinematic art edits he has described.
