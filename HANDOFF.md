@@ -1,3 +1,53 @@
+# CaptCan TV: THE BRIEF (written Nov 24 2026, 9pm, after reading every TV chat and note since Nov 17)
+
+Read this section first. It is the one direction for the TV. Everything below it is history.
+
+## What Reilly is asking for, in his words across all the chats
+"Our TV channel almost." Staff turn the TV on and it is on by itself: live, fresh, fitting the day, and awesome. It runs all day without him. It shows great art and covers big, current trailers, cartoon openings, movie scenes, short talking clips, CaptCan's own best reels and products that sell, and it never feels like the same few things on a loop. Every piece is designed, planned and finished before it goes on the TV. He is not the owner and he is not the TV operator.
+
+## Why it kept missing (the honest list)
+1. Books were picked by title search, so reels were full of whatever new variants had the word in the title. The shop's real strength (graded keys, silver age, its own exclusives) was not on screen. FIXED in reel set v4, see "Book rule".
+2. Pieces went on the shop TV half-done and were patched live during store hours. RULE now: build and check off-air, show Reilly the finished piece, launch once.
+3. The TV was judged from the relay without reading whether staff had paused it or switched trailers off.
+4. The stick was never set up: no app, Silk needs a press after every load, nothing brings the channel back after Home. The app and installer exist but have never run on the stick.
+5. Too little content: 4 reels and 19 clips cannot feel like a channel however they are ordered.
+
+## Book rule (applies to every themed reel, screen and product pick)
+- Lead with the real keys CaptCan has in stock for that theme: graded slabs and raw key issues. Then the best modern covers. Never build a theme from a title search.
+- Every book must be the theme (black suit reel = Spider-Man in the black suit on the cover). No near-misses.
+- Include CaptCan's own exclusives when the theme has one (Absolute Batman #20 Lashley).
+- No later printings shown as keys. No washed-out foil scans. No pin-up covers on the shop TV.
+- Evidence to use: 30-day sales by title (what the shop actually sells), in-stock books at $450 and up, then the theme's known key issues checked against stock.
+- Slabs are shown whole on the big shelf shot (the grade sells it) and as art-only crops inside the title letters and the wall.
+- When a featured key sells, the reel is still good art, but refresh a theme once about a third of its lead books are gone. Source list with image files: `tools/art-reel/v4/covers.txt`; line-ups: `tools/art-reel/v4/*.json`.
+
+## The channel, piece by piece, and what "done" means
+| Piece | Done means | State Nov 24, 9pm |
+|---|---|---|
+| Stick | TV on = channel on, full screen, sound, no presses; comes back by itself after Home; survives a power cut with one press at most | App 1.1 and one-click installer built, never run. Needs Reilly: ADB debugging on, run the installer on the Mac mini |
+| Clips | All 19 play from the Mac mini files, clean, no YouTube badge; trailers from files too | File playback built and tested on a desktop; not yet seen on the stick. Trailers still YouTube |
+| Loop | Blocks, nothing repeats until the rest has played, no reel back to back, Doomsday trailer about every 30 min | Built, tested off-air |
+| Themed reels | At least 10, each passing the book rule, in the image-in-letters style he said yes to | v4 set: Doom, Black Suit, Absolute Batman, Grails, The Amazing (Spider-Man), New This Week. Waiting on his yes. Next: Midnight Marvel, Hulk (incl. Red Hulk), X-Men, Spawn/McFarlane, TMNT, Horror (pre-code + EC), Stan Lee signed, Wolverine |
+| Wednesday | New-release reel from that week's tag (pattern NOV2526NR) plays every block on Wednesday | Reel built for Nov 25. Auto-weekly build not done |
+| Tuesday | Upload-day reel from the same tag once the upload is live | Not built |
+| Product picks on clips | 3 to 4 books rotating during a clip, matched to the clip, keys first, price and "in the shop now" | Not built (one card after 14s today) |
+| Own reels | Wolverine reel etc. with a "follow us on Instagram" tag | Needs the files and the handle from Reilly |
+| Idents and intro slot | Short CaptCan ident between blocks; slot ready for the CaptCan 6 intro | Slots exist, empty |
+| Phone remote | What is on, what is next, skip, back, pause, put this on now. Every button does something | Old remote still live; mode buttons do nothing |
+| Computer editor | Premiere-style timeline: drag blocks, see every screen, order and how often it plays | Mock only (branch remote-rebuild) |
+| Plumbing | Mac mini address reserved; relay without a daily cap | Open |
+
+## Launch order (no step goes on the shop TV until the one before is proven)
+1. Reilly's yes on the v4 reels (he has the videos). Then they replace the old four in `v/` and `REELS`.
+2. Stick install (his three minutes), then prove on the relay: app running, clips from files, sound, boot start.
+3. Wednesday line-up on for Nov 25 before open, not during store hours.
+4. Product picks, own reels, idents. 5. Phone remote. 6. Computer editor.
+
+## Standing rules
+No changes to the shop TV during store hours. Show the real rendered piece first; nothing new in the loop without his yes. No ripping video or music. No em dashes in anything a customer reads; Canadian spelling; CAD. Never make "ask Jayden / Dad / staff" his next step. No new bots, alerts or scheduled tasks. Read `tron`, `paused` and the staff remote's commands on the relay before saying how the TV is doing. Ping the relay sparingly (free tier caps at about 250 messages a day for the whole shop).
+
+---
+
 # CaptCan TV and intro: where things stand (Nov 23 2026, late)
 
 Read this first in any new chat about the store TV or the intro.
