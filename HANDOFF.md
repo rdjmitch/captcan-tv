@@ -249,3 +249,10 @@ Read this first in any new chat about the store TV or the intro.
 ## Thu Nov 26, 1:30pm: build 1126-1330a, selling screens get half the channel
 - Reilly: "even before, the marketing purposes we built this for have now been totally stripped?" Checked live: the selling screens were never deleted (book screens: hero, spotlights, hot, cover of the day, exclusives, just sold, runs, incentives, big books, trades, vote; shop screens: sign-up, app, services, pre-sales, market, about, merch, coming soon; render with live stock and prices). But only 2 of every 9 slots were selling; the rest were reels and clips. On the TV he saw a zoomed, cut-off page, so even those were unreadable.
 - Changed BLOCKS so about half of every block is selling: block A intro, book, shop, reel, trailer, book, shop, cartoon, book, scene, shop, own; block B book, shop, reel, cartoon, book, shop, scene, book, shop, reel, talk, own. Same screens, no new ones.
+
+## Thu Nov 26, 2pm: build 1126-1405a (Reilly: books move too fast, some screens ugly like the app one; "we have the Fire Stick and the full setup, just build it")
+- Reviewed every book and shop screen at 1920x1080 in the Mac's browser with live data.
+- App and sign-up screens rebuilt on the hero layout (one headline, one line, QR, one big live cover, offset so they never show the same cover). Old four-text-box versions gone.
+- Out of the loop (still on the remote): Runs (small-cover grid), Market top-5 list, About timeline (text-heavy). Kept: spotlights, hero, cover of the day, exclusives, just sold, incentives, big books, trades, vote, services, pre-sales, merch, coming soon (+ how-to and Hold Box Wed, upload Tue).
+- Pace: book and shop screens now hold at least 18s (grids 20s); art reels play at 0.8 speed (dur scaled).
+- TV still not answering the relay (no acks since ~4:40pm Nov 25) though Reilly says the app is on and running. Remote cannot work until that is found. Next debug step needs the Mac mini folder (adb logcat from the stick); folder access request was blocked on Nov 26.
