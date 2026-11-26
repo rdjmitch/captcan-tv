@@ -256,3 +256,8 @@ Read this first in any new chat about the store TV or the intro.
 - Out of the loop (still on the remote): Runs (small-cover grid), Market top-5 list, About timeline (text-heavy). Kept: spotlights, hero, cover of the day, exclusives, just sold, incentives, big books, trades, vote, services, pre-sales, merch, coming soon (+ how-to and Hold Box Wed, upload Tue).
 - Pace: book and shop screens now hold at least 18s (grids 20s); art reels play at 0.8 speed (dur scaled).
 - TV still not answering the relay (no acks since ~4:40pm Nov 25) though Reilly says the app is on and running. Remote cannot work until that is found. Next debug step needs the Mac mini folder (adb logcat from the stick); folder access request was blocked on Nov 26.
+
+## Thu Nov 26, 2:50pm: builds 1126-1430a to 1126-1450a
+- Product picks on every clip and trailer (`tieRot`): up to 4 matched in-stock books (single issues first, then price; omnibus/archive/gallery/TPB pushed back), rotate every 9s with price and QR, card appears at 14s. File clips from the Mac mini had NO product card before; they do now. Checked in the Mac browser with "Black Suit": 4 picks, rotating.
+- New This Week reel only plays in the week it was built for (`NWFOR`, now 2026-11-25). From Dec 1 it drops out until re-rendered for that Wednesday and NWFOR is bumped. OPEN: weekly re-render each Tuesday from that week's new-release tag.
+- Mac mini address 192.168.50.253:8788 did not load from the Mac's own browser at 2:45pm (navigation failed). If the server is down, the app runs the internet copy and clips come from YouTube. Needs a look with the Mac mini folder.
