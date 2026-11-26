@@ -237,3 +237,11 @@ Read this first in any new chat about the store TV or the intro.
 - Relay at 3:02pm: `app 1.1.0 AFTKRT os30`, build 1125-1430a, from the Mac mini copy (19 files), sound unlocked with no press, 60 fps, 0 jank, 2 file clips and 6 screens in 2 minutes, 0 errors. `fs` reads false inside the app (the app is full screen natively; viewport 1680x945).
 - NOT yet proven: power-off / power-on brings it back by itself; return after Home.
 - A second device is also answering pings as a TV (no app, not local, YouTube clip failures). Find and close it: it wastes relay messages and muddies the log.
+
+## Thu Nov 26, 1pm: build 1126-1300a (zoom fix) pushed and LIVE on GitHub
+- Reilly at 12:42: the app is open on the TV but the zoom is weird, things play in the top left corner, glitched; the remote does nothing either.
+- CAUSE (reproduced in headless Chrome with the app's settings: 960x540 CSS, DPR 2, mobile WebView, wide viewport on): off-stage elements (#cut, #run ticker, bar) made the layout viewport grow to 1680x945 on a 960x540 screen, so fit() scaled the 1920 stage for 1680 while the TV only shows the top-left 960. That is the "zoomed into the top left" picture. Yesterday's app ack already showed vw 1680x945; it was misread as normal.
+- FIX: viewport meta pinned (minimum-scale=1, maximum-scale=1, user-scalable=no) and html/body position:fixed to the screen. Re-test: innerWidth 960, stage scale 0.5, full 1920x1080 frame visible with its border. Remote CSS override keeps position static so the phone remote still scrolls (checked at 390px).
+- Relay: ZERO acks from any TV since at least 4:40pm Nov 25. Pings at 8:12, 10:29, 10:30 today and my reload + ping at ~1pm got no answer. So the remote "does nothing" because the page on the stick is not hearing the relay. The fix lands on the next page load: the app's Menu (three lines) button reloads it, or the app's 4-minute no-heartbeat reload, or the 7 to 9:30am self-update.
+- Open: after the reload, confirm an ack (vw should read 960x540 or the stick's real CSS size, fs, app version). If still no acks, the relay listener inside the app WebView is the next thing to debug (compare 1.1.0 at 3:02pm Nov 25, which did ack).
+- Consider app 1.3: setLoadWithOverviewMode(true) + setInitialScale as a second guard (needs ADB reinstall from the Mac mini; not needed for this fix).
